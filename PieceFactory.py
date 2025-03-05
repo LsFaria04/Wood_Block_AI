@@ -28,6 +28,9 @@ class PieceFactory:
         return piece
     
     def type1(self, XLen,YLen):
+        if XLen != YLen:
+            print("Square must have the same size for the height and length. Returning a Type 2 Piece (Rectangle)")
+            return self.type2(XLen, YLen)
         pieceMatrix = []
         for _ in range(YLen):
             line = []
@@ -38,11 +41,12 @@ class PieceFactory:
     
     def type2(self, XLen,YLen):
         if XLen == YLen:
-            print("Rectangle cannot have the same size for the height and length")
+            print("Rectangle cannot have the same size for the height and length.  Returning a Type 1 Piece (Square)")
+            return self.type1(XLen, YLen)
         pieceMatrix = []
-        for y in range(YLen):
+        for _ in range(YLen):
             line = []
-            for x in range(XLen):
+            for _ in range(XLen):
                 line.append(1)
             pieceMatrix.append(line)
         return Piece(2, False, XLen, YLen, pieceMatrix)
