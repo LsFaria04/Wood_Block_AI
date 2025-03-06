@@ -10,27 +10,26 @@ class PieceFactory:
     #type 5 -> T shape
     #type 6 -> rotated T shape
 
-    def create_piece(self, XLen,YLen, type, rev): 
+    def create_piece(self, XLen, YLen, piece_type, rev): 
         piece = None    
-        if type == 1:
+        if piece_type == 1:
             piece = self.type1(XLen, YLen)
-        elif type == 2:
+        elif piece_type == 2:
             piece = self.type2(XLen, YLen)
-        elif type == 3:
+        elif piece_type == 3:
             piece = self.type3(XLen, YLen, rev)
-        elif type == 4:
+        elif piece_type == 4:
             piece = self.type4(XLen, YLen, rev)
-        elif type == 5:
+        elif piece_type == 5:
             piece = self.type5(XLen, YLen, rev)
-        elif type == 6:
+        elif piece_type == 6:
             piece = self.type6(XLen, YLen, rev)
 
         return piece
     
     def type1(self, XLen,YLen):
         if XLen != YLen:
-            print("Square must have the same size for the height and length. Returning a Type 2 Piece (Rectangle)")
-            return self.type2(XLen, YLen)
+            raise ValueError("Square must have the same size for the height and length.")
         pieceMatrix = []
         for _ in range(YLen):
             line = []
@@ -39,17 +38,11 @@ class PieceFactory:
             pieceMatrix.append(line)
         return Piece(1, False, XLen, YLen,pieceMatrix)
     
-    def type2(self, XLen,YLen):
-        if XLen == YLen:
-            print("Rectangle cannot have the same size for the height and length.  Returning a Type 1 Piece (Square)")
-            return self.type1(XLen, YLen)
-        pieceMatrix = []
-        for _ in range(YLen):
-            line = []
-            for _ in range(XLen):
-                line.append(1)
-            pieceMatrix.append(line)
-        return Piece(2, False, XLen, YLen, pieceMatrix)
+    def type2(self, XLen, YLen):
+            if XLen == YLen:
+                raise ValueError("Rectangle cannot have the same size for the height and length.")
+            pieceMatrix = [[1 for _ in range(XLen)] for _ in range(YLen)]
+            return Piece(2, False, XLen, YLen, pieceMatrix)
     
     def type3(self, XLen,YLen, rev):
         pieceMatrix = []
@@ -60,7 +53,7 @@ class PieceFactory:
                 if (x == (XLen - 1) or y == (YLen -1)) and rev:
                     line.append(1)
                 #normal L
-                elif (x == 1 or y == (YLen -1)) and not rev:
+                elif (x == 0 or y == (YLen - 1)) and rev:
                     line.append(1)
                 else:
                     line.append(0)
@@ -76,7 +69,7 @@ class PieceFactory:
                 if (x == (XLen - 1) or y == 1) and rev:
                     line.append(1)
                 #normal L
-                elif (x == 1 or y == 1) and not rev:
+                elif (x == 0 or y == 1) and not rev:
                     line.append(1)
                 else:
                     line.append(0)
@@ -85,7 +78,7 @@ class PieceFactory:
         
     def type5(self, XLen,YLen,rev):
         idx_leg = round(XLen / 2)
-        pieceMatrix = []
+        idx_leg = XLen // 2
         for y in range(YLen):
             line = []
             for x in range(XLen):
@@ -93,7 +86,7 @@ class PieceFactory:
                 if (x == idx_leg or y == (YLen - 1)) and rev:
                     line.append(1)
                 #normal T
-                elif (x == idx_leg or y == 1 ) and not rev:
+                elif (x == idx_leg or y == (YLen - 1)) and not rev:
                     line.append(1)
                 else:
                     line.append(0)
@@ -101,16 +94,16 @@ class PieceFactory:
         return Piece(5, rev, XLen, YLen, pieceMatrix)
 
     def type6(self, XLen,YLen, rev):
-        idx_leg = round(YLen / 2)
-        pieceMatrix = []
+        idx_leg = YLen // 2
+        idx_leg = YLen // 2
         for y in range(YLen):
             line = []
             for x in range(XLen):
                 #reversed T (mirror is the Y axis)
-                if (x == (XLen - 1) or y == idx_leg) and rev:
+                if (x == 0 or y == idx_leg) and rev:
                     line.append(1)
                 #normal T
-                elif (x == 1 or y == idx_leg ) and not rev:
+                elif (x == (XLen - 1) or y == idx_leg) and not rev:
                     line.append(1)
                 else:
                     line.append(0)
