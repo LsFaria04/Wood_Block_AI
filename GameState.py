@@ -14,6 +14,8 @@ class GameState:
             for x in range(len(self.board[0])):
                 if self.board[y][x]:
                     gui.drawRectangle(10 * x,10 * y, 10,10,(0,0,255))
+    
+    
         
 
 
