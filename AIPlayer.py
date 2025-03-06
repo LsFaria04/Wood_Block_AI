@@ -19,7 +19,7 @@ class AIPlayer:
         elif self.algorithm == 4:
             self.uniform_cost()
         elif self.algorithm == 5:
-            self.greedy(gamestate, lambda state : self.occupied_space(state) + self.near_full_line(state))
+            return self.greedy(gamestate, lambda state : self.occupied_space(state) + self.near_full_line(state))
         elif self.algorithm == 6:
             self.a_star()
         elif self.algorithm == 7:
