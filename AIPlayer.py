@@ -1,4 +1,6 @@
 import numpy as np
+from collections import deque
+import Tree as TreeNode
 from GameState import GameState
 import heapq
 
@@ -27,8 +29,31 @@ class AIPlayer:
         else:
             print("Algorithm is not available")
     
-    def bfs(self):
+    def child_states(gamestate):
+        new_states = []
+        #if (canPlay(gamestate.))
+
+    def bfs(self, gamestate, goalstate, possible_states):
+        root = TreeNode(gamestate)   # create the root node in the search tree
+        queue = deque([root])   # initialize the queue to store the nodes
+
+        while queue:
+            node = queue.popleft()   # get first element in the queue
+            if goalstate(node.state):   # check goal state
+                return node
+
+            for state in possible_states(node.state):
+                # go through next states
+                # create tree node with the new state
+                newNode = TreeNode(state)
+
+                # link child node to its parent in the tree
+                newNode.parent = node
+
+                # enqueue the child node
+                queue.append(newNode)
         return None
+
     def dfs(self):
         return None
     def iteractive_deepening(self):
