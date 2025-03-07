@@ -10,7 +10,7 @@ class AppState:
 
     def __init__(self):
         self.state = 2
-        self.gui = GUI(1270, 720, "Wood Block")
+        self.gui = GUI(600, 720, "Wood Block")
         self.game_state = GameState(16) # deve ser alterado no menu dependendo da setting
         self.player = AIPlayer(5) #Use the greedy for testing
 
