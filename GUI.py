@@ -29,11 +29,15 @@ class GUI:
         x_offset = 30
         y_offset = 30
         self.screen.blit(self.block_background, (x * x_offset, y *y_offset))
+
     def get_event(self):
         event = pygame.event.poll()
 
-        if(event.type == pygame.QUIT):
+        if event.type == pygame.QUIT:
             return 'q'
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                return 'q'
             
     def refresh_screen(self):
         pygame.display.flip()

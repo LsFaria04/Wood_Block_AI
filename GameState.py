@@ -5,7 +5,7 @@ from Piece import Piece
 from copy import deepcopy
 
 class GameState:
-    def __init__(self, board_size ,board = [],  move_history = None, Q = None, L = None) :
+    def __init__(self, board_size, board=[], move_history=None, Q=None, L=None):
         if len(board) == 0:
             self.board = np.zeros((board_size, board_size))
             self.Q = deque() #where the pieces will be stored by order
@@ -28,7 +28,7 @@ class GameState:
 
     def generate_pieces(self):
         # Example of generating pieces and adding them to the queue
-        for _ in range(3):  # Generate 10 pieces for example
+        for _ in range(3):  # Generate 3 pieces for example
             piece = self.piece_factory.create_piece(4, 4, 1, False)  # Example piece
             self.Q.append(piece)
         self.L = [self.Q.popleft() for _ in range(3)]  # Initial selection of pieces
