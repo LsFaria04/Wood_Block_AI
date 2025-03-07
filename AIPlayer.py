@@ -13,7 +13,7 @@ class AIPlayer:
         AI play. Returns the move history that lead to the solution or fail if no solution was found
         '''
         if self.algorithm == 1:
-            self.bfs()
+            self.bfs(gamestate)
         elif self.algorithm == 2:
             self.dfs()
         elif self.algorithm == 3:
