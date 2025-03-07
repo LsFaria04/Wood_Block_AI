@@ -6,21 +6,29 @@ class GUI:
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
+        self.block_img = pygame.image.load("block.png")
+        self.block_img = pygame.transform.scale(self.block_img, (30, 30))
     
     def __del__(self):
         pygame.quit()
 
-    def drawRectangle(self, x, y, width, height, color):
-        r,g,b = color
-        pygame.draw.rect(self.screen, pygame.Color(r,g,b), pygame.Rect(x,y, width, height))
-    
-    def getEvent(self):
+    def drawPiece(self, piece, x_offset, y_offset, block_size):
+        for (x, y) in piece.getOccupiedCells():
+            self.screen.blit(self.block_img, (x_offset + x * block_size, y_offset + y * block_size))
+
+    def draw_rectangle(self, cords):
+        x,y = cords
+        x_offset = 30
+        y_offset = 30
+        self.screen.blit(self.block_img, (x * x_offset, y *y_offset))
+
+    def get_event(self):
         event = pygame.event.poll()
 
         if(event.type == pygame.QUIT):
             return 'q'
             
-    def refreshScreen(self):
+    def refresh_screen(self):
         pygame.display.flip()
 
 
