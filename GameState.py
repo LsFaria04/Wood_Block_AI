@@ -86,6 +86,8 @@ class GameState:
 
         return True
 
+
+
     def move(self, piece_idx, cords):
         '''Executes a move updating the game board with the given piece in the given coordinates. Assumes that the move is possible !!!!'''
         x,y = cords

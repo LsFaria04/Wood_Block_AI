@@ -28,21 +28,17 @@ class AIPlayer:
             self.a_star_weighted()
         else:
             print("Algorithm is not available")
-    
-    def child_states(gamestate):
-        new_states = []
-        #if (canPlay(gamestate.))
 
-    def bfs(self, gamestate, goalstate, possible_states):
+    def bfs(self, gamestate):
         root = TreeNode(gamestate)   # create the root node in the search tree
         queue = deque([root])   # initialize the queue to store the nodes
 
         while queue:
             node = queue.popleft()   # get first element in the queue
-            if goalstate(node.state):   # check goal state
+            if gamestate.goal_state():   # check goal state
                 return node
 
-            for state in possible_states(node.state):
+            for state in gamestate.children():
                 # go through next states
                 # create tree node with the new state
                 newNode = TreeNode(state)
