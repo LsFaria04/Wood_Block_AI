@@ -24,8 +24,6 @@ class GameState:
             self.move_history = deepcopy(move_history)
     
 
-        
-
     def generate_pieces(self):
         # Example of generating pieces and adding them to the queue
         for _ in range(3):  # Generate 3 pieces for example
@@ -34,13 +32,24 @@ class GameState:
         self.L = [self.Q.popleft() for _ in range(3)]  # Initial selection of pieces
 
     def draw_board(self, gui):
-        board_size = len(self.board)
-        for y in range(len(self.board)):
-            for x in range(len(self.board[0])):
-                if self.board[y][x] == 1:
-                    gui.draw_rectangle((x,y))
+        offset_x, offset_y = 2, 1 # Offset to draw the board
+
+        for y, row in enumerate(self.board):
+            for x, cell in enumerate(row):
+                pos = (x + offset_x, y + offset_y)
+                if cell == 1:
+                    gui.draw_rectangle(pos)
                 else:
-                    gui.draw_background((x,y))
+                    gui.draw_background(pos)
+
+    def draw_current_pieces(self, gui):
+        # Draws the three pieces available for the player below the game board
+        tile_size = 30
+        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        spacing = 180
+
+        for i, piece in enumerate(self.L[:3]):
+            gui.drawPiece(piece, offset_x + i * spacing, offset_y, tile_size)
 
     def children(self):
         '''
