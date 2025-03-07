@@ -40,7 +40,7 @@ class GameState:
                 if cell == 1:
                     gui.draw_rectangle(pos)
                 else:
-                    gui.draw_background(pos)
+                    gui.draw_board_background(pos)
 
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board

@@ -10,6 +10,8 @@ class GUI:
         self.block_background = pygame.image.load("block_darker_wood.png")
         self.block_img = pygame.transform.scale(self.block_img, (30, 30))
         self.block_background = pygame.transform.scale(self.block_background, (30, 30))
+        self.background = pygame.image.load("wood.jpg")
+        self.background = pygame.transform.scale(self.background, (width, height))
     
     def __del__(self):
         pygame.quit()
@@ -24,11 +26,14 @@ class GUI:
         y_offset = 30
         self.screen.blit(self.block_img, (x * x_offset, y *y_offset))
 
-    def draw_background(self, cords):
+    def draw_board_background(self, cords):
         x,y = cords
         x_offset = 30
         y_offset = 30
         self.screen.blit(self.block_background, (x * x_offset, y *y_offset))
+
+    def draw_background(self):
+        self.screen.blit(self.background, (0,0))
 
     def get_event(self):
         event = pygame.event.poll()

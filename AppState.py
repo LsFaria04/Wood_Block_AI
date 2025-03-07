@@ -19,6 +19,7 @@ class AppState:
     def step(self):
         #Prepara o proximo passo no frame
         #precisa ser atualizado
+        self.gui.draw_background()
         self.game_state.draw_board(self.gui)
         self.game_state.draw_current_pieces(self.gui)
         self.gui.refresh_screen()
