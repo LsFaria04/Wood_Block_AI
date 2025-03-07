@@ -39,6 +39,8 @@ class GameState:
             for x in range(len(self.board[0])):
                 if self.board[y][x] == 1:
                     gui.draw_rectangle((x,y))
+                else:
+                    gui.draw_background((x,y))
 
     def children(self):
         '''
