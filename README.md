@@ -10,7 +10,7 @@
 
 - **Objective:** The player must place all blocks on the grid in such a way that every square in a line or column are filled. The game is won when all the pieces are played.
 
-- **Scoring:** The player's score is determined by the time taken to complete the puzzle, lines/columns filled (n points per block) . Bonus points are awarded when several lines/columns are filled at the same time.
+- **Scoring:** The player's score is determined by the time taken to complete the puzzle, lines/columns filled, with n points awarded per block. Bonus points are awarded when several lines/columns are filled at the same time.
 
 ## Search Problem Formulation
 
@@ -34,7 +34,7 @@
     - **Name:** Move(Piece, Position)
     - **Preconditions:** The board must have space for the piece in the position selected
     - **Effects:** Piece added to the board, removed from the current selection list and a new piece a poped from the queue and inserted into the selection list.
-    - **Cost:** Moves to where more lines/columns become closer to be completed have higher cost.
+    - **Cost:** Moves that bring more lines/columns closer to completion have a higher cost.
     Moves that complete lines/columns have a very high cost.
     The player should choose the move with the highest cost.
 

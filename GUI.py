@@ -6,11 +6,11 @@ class GUI:
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
-        self.block_img = pygame.image.load("block.png")
-        self.block_background = pygame.image.load("block_darker_wood.png")
+        self.block_img = pygame.image.load("images/block.png")
+        self.block_background = pygame.image.load("images/block_darker_wood.png")
         self.block_img = pygame.transform.scale(self.block_img, (30, 30))
         self.block_background = pygame.transform.scale(self.block_background, (30, 30))
-        self.background = pygame.image.load("wood.jpg")
+        self.background = pygame.image.load("images/wood.jpg")
         self.background = pygame.transform.scale(self.background, (width, height))
     
     def __del__(self):
@@ -18,7 +18,7 @@ class GUI:
 
     def drawPiece(self, piece, x_offset, y_offset, block_size):
         for (x, y) in piece.getOccupiedCells():
-            self.screen.blit(self.block_img, (x_offset + x * block_size, y_offset + y * block_size))
+            self.screen.blit(self.block_img, (x_offset + (piece.x + x) * block_size, y_offset + (piece.y + y) * block_size))
 
     def draw_rectangle(self, cords):
         x,y = cords
@@ -43,7 +43,15 @@ class GUI:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 return 'q'
-            
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # Left mouse button
+                return 'mousedown'
+        elif event.type == pygame.MOUSEMOTION:
+            return 'mousemove'
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:  # Left mouse button
+                return 'mouseup'
+
     def refresh_screen(self):
         pygame.display.flip()
 
