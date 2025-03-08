@@ -64,8 +64,8 @@ class AppState:
             self.dragging_piece = None  # Stop dragging the piece
 
     def is_mouse_on_piece(self, piece, pos):
-        piece_x = piece.x * 30 #convert pos to pixels
-        piece_y  = piece.y * 30
+        piece_x = piece.x #convert pos to pixels
+        piece_y  = piece.y
         piece_width = piece.xlen * 30
         piece_height = piece.ylen * 30
         print(f"Mouse Position: {pos}")

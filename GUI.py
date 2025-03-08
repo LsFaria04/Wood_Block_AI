@@ -16,9 +16,11 @@ class GUI:
     def __del__(self):
         pygame.quit()
 
-    def drawPiece(self, piece, x_offset, y_offset, block_size):
+    def drawPiece(self, piece, block_size):
         for (x, y) in piece.getOccupiedCells():
-            self.screen.blit(self.block_img, (x_offset + (piece.x + x) * block_size, y_offset + (piece.y + y) * block_size))
+            # Use stored `piece.x` and `piece.y` for drawing
+            self.screen.blit(self.block_img, (piece.x + x * block_size, piece.y + y * block_size))
+
 
     def draw_rectangle(self, cords):
         x,y = cords

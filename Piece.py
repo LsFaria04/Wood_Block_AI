@@ -1,5 +1,5 @@
 class Piece:
-    def __init__(self, type, isRev, xlen, ylen, matrix, x=0, y=0):
+    def __init__(self, type, isRev, xlen, ylen, matrix, x, y):
         self.type = type
         self.xlen = xlen
         self.ylen = ylen

@@ -25,11 +25,18 @@ class GameState:
     
 
     def generate_pieces(self):
-        # Example of generating pieces and adding them to the queue
-        for _ in range(3):  # Generate 3 pieces for example
-            piece = self.piece_factory.create_piece(4, 4, 1, False)  # Example piece
+        tile_size = 30
+        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        spacing = 180
+
+        for i in range(3):
+            x, y = offset_x + i * spacing, offset_y
+            piece = self.piece_factory.create_piece(x, y, 4, 4, 1, False)
+            print(f"Generated piece {i} at ({piece.x}, {piece.y})") 
             self.Q.append(piece)
-        self.L = [self.Q.popleft() for _ in range(3)]  # Initial selection of pieces
+
+        self.L = [self.Q.popleft() for _ in range(3)]
+
 
     def draw_board(self, gui):
         offset_x, offset_y = 2, 1 # Offset to draw the board
@@ -45,11 +52,9 @@ class GameState:
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board
         tile_size = 30
-        offset_x, offset_y = 60, len(self.board) * tile_size + 70
-        spacing = 180
 
         for i, piece in enumerate(self.L[:3]):
-            gui.drawPiece(piece, offset_x + i * spacing, offset_y, tile_size)
+            gui.drawPiece(piece, tile_size)
 
     def children(self):
         '''
