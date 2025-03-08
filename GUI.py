@@ -20,8 +20,10 @@ class GUI:
     def drawPiece(self, piece, block_size):
         self.screen_needs_update = True
         for (x, y) in piece.getOccupiedCells():
+            draw_x = piece.x + x * block_size
+            draw_y = piece.y + y * block_size
             # Use stored `piece.x` and `piece.y` for drawing
-            self.screen.blit(self.block_img, (piece.x + x * block_size, piece.y + y * block_size))
+            self.screen.blit(self.block_img, (draw_x, draw_y))
 
 
     def drawRectangle(self, cords):
