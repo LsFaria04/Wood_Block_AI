@@ -6,6 +6,7 @@ class GUI:
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
+        self.screen_needs_update = False
         self.block_img = pygame.image.load("images/block.png")
         self.block_background = pygame.image.load("images/block_darker_wood.png")
         self.block_img = pygame.transform.scale(self.block_img, (30, 30))
@@ -17,25 +18,28 @@ class GUI:
         pygame.quit()
 
     def drawPiece(self, piece, block_size):
+        self.screen_needs_update = True
         for (x, y) in piece.getOccupiedCells():
             # Use stored `piece.x` and `piece.y` for drawing
             self.screen.blit(self.block_img, (piece.x + x * block_size, piece.y + y * block_size))
 
 
-    def draw_rectangle(self, cords):
-        x,y = cords
+    def drawRectangle(self, cords):
+        self.screen_needs_update = True
+        x, y = cords
         x_offset = 30
         y_offset = 30
         self.screen.blit(self.block_img, (x * x_offset, y *y_offset))
 
-    def draw_board_background(self, cords):
+    def drawBoardBackground(self, cords):
         x,y = cords
         x_offset = 30
         y_offset = 30
         self.screen.blit(self.block_background, (x * x_offset, y *y_offset))
 
     def draw_background(self):
-        self.screen.blit(self.background, (0,0))
+        self.screen_needs_update = True
+        self.screen.blit(self.background, (0, 0))
 
     def get_event(self):
         event = pygame.event.poll()
@@ -55,6 +59,8 @@ class GUI:
                 return 'mouseup'
 
     def refresh_screen(self):
-        pygame.display.flip()
+        if self.screen_needs_update:
+            pygame.display.flip()
+            self.screen_needs_update = False
 
 

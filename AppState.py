@@ -45,15 +45,15 @@ class AppState:
         for i, piece in enumerate(self.game_state.L):
             if self.is_mouse_on_piece(piece, pos):
                 self.dragging_piece = piece
-                self.drag_offset = (pos[0] - piece.x * 30, pos[1] - piece.y * 30)  # Adjust the offset
+                self.drag_offset = (pos[0] - piece.x, pos[1] - piece.y)
                 print(f"Dragging piece {i} at position ({piece.x}, {piece.y})") 
                 break
 
     def handle_mousemove(self):
         if self.dragging_piece:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            self.dragging_piece.x = (mouse_x - self.drag_offset[0]) // 30
-            self.dragging_piece.y = (mouse_y - self.drag_offset[1]) // 30
+            self.dragging_piece.x = (mouse_x - self.drag_offset[0]) 
+            self.dragging_piece.y = (mouse_y - self.drag_offset[1])
 
     def handle_mouseup(self):
         if self.dragging_piece:

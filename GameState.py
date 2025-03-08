@@ -45,9 +45,9 @@ class GameState:
             for x, cell in enumerate(row):
                 pos = (x + offset_x, y + offset_y)
                 if cell == 1:
-                    gui.draw_rectangle(pos)
+                    gui.drawRectangle(pos)
                 else:
-                    gui.draw_board_background(pos)
+                    gui.drawBoardBackground(pos)
 
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board
