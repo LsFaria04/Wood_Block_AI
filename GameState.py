@@ -28,7 +28,7 @@ class GameState:
 
     def generate_pieces(self):
         # Example of generating pieces and adding them to the queue
-        for _ in range(3):  # Generate 10 pieces for example
+        for _ in range(4):  # Generate 10 pieces for example
             piece = self.piece_factory.create_piece(4, 4, 1, False)  # Example piece
             self.Q.append(piece)
         self.L = [self.Q.popleft() for _ in range(3)]  # Initial selection of pieces
@@ -156,11 +156,11 @@ class GameState:
         '''
         Displays the moves made by the AI to win the game 
         '''
-
-        for move in move_history:
-            piece_idx, cords = move
-            print(move)
-            self.move(piece_idx, cords)
+        if move_history: 
+            for move in move_history:
+                piece_idx, cords = move
+                
+                self.move(piece_idx, cords)
 
 
 
