@@ -1,9 +1,8 @@
-from AppState import AppState
-import pygame
+from AppState import AppState, STATE_EXIT
 
 def main():
     state = AppState()
-    while state.state != 3:   
+    while state.state != STATE_EXIT:   
         state.step()
 
 if __name__ == "__main__":

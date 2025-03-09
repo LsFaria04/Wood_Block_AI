@@ -25,11 +25,18 @@ class GameState:
     
 
     def generate_pieces(self):
-        # Example of generating pieces and adding them to the queue
-        for _ in range(3):  # Generate 3 pieces for example
-            piece = self.piece_factory.create_piece(4, 4, 1, False)  # Example piece
+        tile_size = 30
+        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        spacing = 180
+
+        for i in range(3):
+            x, y = offset_x + i * spacing, offset_y
+            piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
+            print(f"Generated piece {i} at ({piece.x}, {piece.y})") 
             self.Q.append(piece)
-        self.L = [self.Q.popleft() for _ in range(3)]  # Initial selection of pieces
+
+        self.L = [self.Q.popleft() for _ in range(3)]
+
 
     def draw_board(self, gui):
         offset_x, offset_y = 2, 1 # Offset to draw the board
@@ -38,18 +45,16 @@ class GameState:
             for x, cell in enumerate(row):
                 pos = (x + offset_x, y + offset_y)
                 if cell == 1:
-                    gui.draw_rectangle(pos)
+                    gui.drawRectangle(pos)
                 else:
-                    gui.draw_board_background(pos)
+                    gui.drawBoardBackground(pos)
 
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board
         tile_size = 30
-        offset_x, offset_y = 60, len(self.board) * tile_size + 70
-        spacing = 180
 
         for i, piece in enumerate(self.L[:3]):
-            gui.drawPiece(piece, offset_x + i * spacing, offset_y, tile_size)
+            gui.drawPiece(piece, tile_size)
 
     def children(self):
         '''
@@ -85,9 +90,9 @@ class GameState:
 
         x,y = cords
 
-        if y + piece.ylen >= lin_size :
+        if y + piece.ylen >= lin_size + 1 :
             return False
-        if x + piece.xlen >= col_size:
+        if x + piece.xlen >= col_size + 1:
             return False
 
         for y_offset in range(piece.ylen):
