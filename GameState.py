@@ -31,7 +31,7 @@ class GameState:
 
         for i in range(3):
             x, y = offset_x + i * spacing, offset_y
-            piece = self.piece_factory.create_piece(x, y, 4, 4, 1, False)
+            piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
             print(f"Generated piece {i} at ({piece.x}, {piece.y})") 
             self.Q.append(piece)
 
