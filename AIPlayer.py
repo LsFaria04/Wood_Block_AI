@@ -19,7 +19,7 @@ class AIPlayer:
         elif self.algorithm == 4:
             self.uniform_cost()
         elif self.algorithm == 5:
-            self.greedy(gamestate, lambda state : self.occupied_space(state) + self.near_full_line(state))
+            return self.greedy(gamestate, lambda state : self.occupied_space(state) + self.near_full_line(state))
         elif self.algorithm == 6:
             self.a_star()
         elif self.algorithm == 7:
@@ -53,6 +53,7 @@ class AIPlayer:
                 if state in visited:
                     continue
                 heapq.heappush(states, state)
+
         return None
 
     def a_star(self):
@@ -71,13 +72,7 @@ class AIPlayer:
             for block in line:
                 if block == 1:
                     counter += 1
-        return counter / (len(board) * len(board[0]))
-    
-    def numb_pieces(self,game_state):
-        '''
-        Determines the number of pieces to play. Less is better
-        '''
-        return len(game_state.L) + len(game_state.Q) * 2
+        return counter
     
     def near_full_line(self,game_state):
         '''
