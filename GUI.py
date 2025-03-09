@@ -16,19 +16,14 @@ class GUI:
         for (x, y) in piece.getOccupiedCells():
             self.screen.blit(self.block_img, (x_offset + x * block_size, y_offset + y * block_size))
 
-    def draw_rectangle(self, cords):
-        x,y = cords
-        x_offset = 30
-        y_offset = 30
-        self.screen.blit(self.block_img, (x * x_offset, y *y_offset))
-
-    def get_event(self):
+    
+    def getEvent(self):
         event = pygame.event.poll()
 
         if(event.type == pygame.QUIT):
             return 'q'
             
-    def refresh_screen(self):
+    def refreshScreen(self):
         pygame.display.flip()
 
 

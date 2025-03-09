@@ -79,7 +79,6 @@ class PieceFactory:
     def type5(self, XLen,YLen,rev):
         idx_leg = round(XLen / 2)
         idx_leg = XLen // 2
-        pieceMatrix = []
         for y in range(YLen):
             line = []
             for x in range(XLen):
@@ -97,7 +96,6 @@ class PieceFactory:
     def type6(self, XLen,YLen, rev):
         idx_leg = YLen // 2
         idx_leg = YLen // 2
-        pieceMatrix = []
         for y in range(YLen):
             line = []
             for x in range(XLen):
