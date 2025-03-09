@@ -60,10 +60,10 @@ class AppState:
     def handle_mouseup(self):
         if self.dragging_piece:
             pos = pygame.mouse.get_pos()
-            grid_x = (pos[0] - self.drag_offset[0]) // 30
-            grid_y = (pos[1] - self.drag_offset[1]) // 30
+            grid_x = round((pos[0] - self.drag_offset[0]) / 30) - 2
+            grid_y = round((pos[1] - self.drag_offset[1]) / 30) - 1
 
-            # Check if the position is valid for placing the piece
+            # Check if the position is valid    for placing the piece
             if self.game_state.is_move_possible(self.game_state.L.index(self.dragging_piece), (grid_x, grid_y)):
                 self.game_state.move(self.game_state.L.index(self.dragging_piece), (grid_x, grid_y))
                 self.dragging_piece.isPlaced = True

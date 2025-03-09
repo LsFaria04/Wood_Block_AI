@@ -90,9 +90,9 @@ class GameState:
 
         x,y = cords
 
-        if y + piece.ylen >= lin_size :
+        if y + piece.ylen >= lin_size + 1 :
             return False
-        if x + piece.xlen >= col_size:
+        if x + piece.xlen >= col_size + 1:
             return False
 
         for y_offset in range(piece.ylen):
