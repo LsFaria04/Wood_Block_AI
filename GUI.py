@@ -19,28 +19,27 @@ class GUI:
 
     def drawPiece(self, piece, block_size):
         self.screen_needs_update = True
-        for (x, y) in piece.getOccupiedCells():
+        occupied_cells = piece.getOccupiedCells()
+        for (x, y) in occupied_cells:
             draw_x = piece.x + x * block_size
             draw_y = piece.y + y * block_size
             # Use stored `piece.x` and `piece.y` for drawing
             self.screen.blit(self.block_img, (draw_x, draw_y))
-
 
     def drawRectangle(self, cords):
         self.screen_needs_update = True
         x, y = cords
         x_offset = 30
         y_offset = 30
-        self.screen.blit(self.block_img, (x * x_offset, y *y_offset))
+        self.screen.blit(self.block_img, (x * x_offset, y * y_offset))
 
-    def drawBoardBackground(self, cords):
-        x,y = cords
+    def draw_board_background(self, cords):
+        x, y = cords
         x_offset = 30
         y_offset = 30
         self.screen.blit(self.block_background, (x * x_offset, y *y_offset))
 
     def draw_background(self):
-        self.screen_needs_update = True
         self.screen.blit(self.background, (0, 0))
 
     def get_event(self):
@@ -59,10 +58,19 @@ class GUI:
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:  # Left mouse button
                 return 'mouseup'
+        else:
+            return None
 
     def refresh_screen(self):
         if self.screen_needs_update:
             pygame.display.flip()
             self.screen_needs_update = False
+
+    def draw_timer(self, time_taken):
+        font = pygame.font.Font(None, 36)
+        time_text = f"Time: {int(time_taken)}s"
+        text_surface = font.render(time_text, True, (255, 255, 255)) 
+        self.screen.blit(text_surface, (10, 5))
+
 
 

@@ -8,7 +8,7 @@ class GameState:
     def __init__(self, board_size, board=[], move_history=None, Q=None, L=None):
         if len(board) == 0:
             self.board = np.zeros((board_size, board_size))
-            self.Q = deque() #where the pieces will be stored by order
+            self.Q = deque() # where the pieces will be stored by order
             self.L = [] # where the pieces that the player can choose are stored
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
@@ -32,7 +32,6 @@ class GameState:
         for i in range(3):
             x, y = offset_x + i * spacing, offset_y
             piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
-            print(f"Generated piece {i} at ({piece.x}, {piece.y})") 
             self.Q.append(piece)
 
         self.L = [self.Q.popleft() for _ in range(3)]
@@ -47,7 +46,7 @@ class GameState:
                 if cell == 1:
                     gui.drawRectangle(pos)
                 else:
-                    gui.drawBoardBackground(pos)
+                    gui.draw_board_background(pos)
 
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board
