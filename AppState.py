@@ -89,7 +89,6 @@ class AppState:
                 self.dragging_piece.isPlaced = True
             
             self.dragging_piece = None  # Stop dragging the piece
-            self.game_state.generate_pieces()
             self.game_state.draw_current_pieces(self.gui)
 
     def update_piece_position(self, x, y):

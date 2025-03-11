@@ -13,7 +13,9 @@ class GameState:
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
             self.move_history = []
-            self.generate_pieces()
+            for i in range(4):
+                self.generate_pieces()
+            self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
         else:
@@ -33,8 +35,6 @@ class GameState:
             x, y = offset_x + i * spacing, offset_y
             piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
             self.Q.append(piece)
-
-        self.L = [self.Q.popleft() for _ in range(3)]
 
 
     def draw_board(self, gui):
