@@ -15,7 +15,7 @@ class GameState:
             self.piece_factory = PieceFactory()
             self.points = 0
             self.move_history = []
-            for i in range(3):
+            for i in range(4):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
