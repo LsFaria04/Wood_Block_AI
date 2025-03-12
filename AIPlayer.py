@@ -1,4 +1,6 @@
 import numpy as np
+from collections import deque
+import Tree as TreeNode
 from GameState import GameState
 import heapq
 
@@ -11,7 +13,7 @@ class AIPlayer:
         AI play. Returns the move history that lead to the solution or fail if no solution was found
         '''
         if self.algorithm == 1:
-            self.bfs()
+            self.bfs(gamestate)
         elif self.algorithm == 2:
             self.dfs()
         elif self.algorithm == 3:
@@ -26,9 +28,28 @@ class AIPlayer:
             self.a_star_weighted()
         else:
             print("Algorithm is not available")
-    
-    def bfs(self):
+
+    def bfs(self, gamestate):
+        root = TreeNode(gamestate)   # create the root node in the search tree
+        queue = deque([root])   # initialize the queue to store the nodes
+
+        while queue:
+            node = queue.popleft()   # get first element in the queue
+            if gamestate.goal_state():   # check goal state
+                return node
+
+            for state in gamestate.children():
+                # go through next states
+                # create tree node with the new state
+                newNode = TreeNode(state)
+
+                # link child node to its parent in the tree
+                newNode.parent = node
+
+                # enqueue the child node
+                queue.append(newNode)
         return None
+
     def dfs(self):
         return None
     def iteractive_deepening(self):

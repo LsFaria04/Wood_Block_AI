@@ -5,15 +5,17 @@ from Piece import Piece
 from copy import deepcopy
 
 class GameState:
-    def __init__(self, board_size, board = [], L = [], Q = deque(),  move_history = []) :
-        if len(board) == 0: 
+    def __init__(self, board_size, board=[], move_history=None, Q=None, L=None):
+        if len(board) == 0:
             self.board = np.zeros((board_size, board_size))
-            self.Q = Q #where the pieces will be stored by order
-            self.L = L # where the pieces that the player can choose are stored
+            self.Q = deque() # where the pieces will be stored by order
+            self.L = [] # where the pieces that the player can choose are stored
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
-            self.move_history = move_history
-            self.generatePieces()
+            self.move_history = []
+            for i in range(4):
+                self.generate_pieces()
+            self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
             
@@ -27,19 +29,34 @@ class GameState:
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
 
-    def generatePieces(self):
-        # Example of generating pieces and adding them to the queue
-        for _ in range(3):  # Generate 10 pieces for example
-            piece = self.piece_factory.create_piece(4, 4, 1, False)  # Example piece
-            self.Q.append(piece)
-        self.L = [self.Q.popleft() for _ in range(3)]  # Initial selection of pieces
+    def generate_pieces(self):
+        tile_size = 30
+        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        spacing = 180
 
-    def drawBoard(self, gui):
-        board_size = len(self.board)
-        for y in range(len(self.board)):
-            for x in range(len(self.board[0])):
-                if self.board[y][x] == 1:
-                    gui.draw_rectangle((x,y))
+        for i in range(3):
+            x, y = offset_x + i * spacing, offset_y
+            piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
+            self.Q.append(piece)
+
+
+    def draw_board(self, gui):
+        offset_x, offset_y = 2, 1 # Offset to draw the board
+
+        for y, row in enumerate(self.board):
+            for x, cell in enumerate(row):
+                pos = (x + offset_x, y + offset_y)
+                if cell == 1:
+                    gui.drawRectangle(pos)
+                else:
+                    gui.draw_board_background(pos)
+
+    def draw_current_pieces(self, gui):
+        # Draws the three pieces available for the player below the game board
+        tile_size = 30
+
+        for i, piece in enumerate(self.L[:3]):
+            gui.drawPiece(piece, tile_size)
 
     def children(self):
         '''
@@ -75,9 +92,9 @@ class GameState:
 
         x,y = cords
 
-        if y + piece.ylen >= lin_size :
+        if y + piece.ylen >= lin_size + 1 :
             return False
-        if x + piece.xlen >= col_size:
+        if x + piece.xlen >= col_size + 1:
             return False
 
         for y_offset in range(piece.ylen):
@@ -86,6 +103,8 @@ class GameState:
                     return False
 
         return True
+
+
 
     def move(self, piece_idx, cords):
         '''Executes a move updating the game board with the given piece in the given coordinates. Assumes that the move is possible !!!!'''
