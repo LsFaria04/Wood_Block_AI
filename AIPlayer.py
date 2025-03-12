@@ -21,9 +21,9 @@ class AIPlayer:
         elif self.algorithm == 4:
             self.uniform_cost()
         elif self.algorithm == 5:
-            return self.greedy(gamestate, lambda state : (-gamestate.points * len(gamestate.board)) + self.occupied_space(state) + self.near_full_line(state))
+            return self.greedy(gamestate, self.heuristic3)
         elif self.algorithm == 6:
-            self.a_star()
+            return self.a_star(gamestate, self.heuristic3)
         elif self.algorithm == 7:
             self.a_star_weighted()
         else:
@@ -67,11 +67,11 @@ class AIPlayer:
             current_state = heapq.heappop(states)
             visited.add(current_state)
 
+            res = self.heuristic1(current_state)
             if current_state.game_over() :
                 print("Game Over")
                 print(current_state.points)
                 return current_state.move_history
-
             for state in current_state.children():
                 if state in visited:
                     continue
@@ -79,17 +79,18 @@ class AIPlayer:
 
         return None
 
-    def a_star(self):
-        return None
+    def a_star(self, game_state, heuristic):
+        #Uses the game points as the cost of a state. More points mean less cost
+        return self.greedy(game_state, lambda state : sum([-game_state.points for game_state in state.move_history ]) + heuristic(state))
+    
     def a_star_weighted(self):
         return None
     
 
-    def occupied_space(self, game_state):
+    def occupied_space(self, board):
         '''
         Determines the amount of space that is occupied and returns a cost to use as a heuristic. Less is better
         '''
-        board = game_state.board
         counter = 0
         for line in board:
             for block in line:
@@ -97,12 +98,11 @@ class AIPlayer:
                     counter += 1
         return counter
     
-    def near_full_line(self,game_state):
+    def near_full_line(self,board):
         '''
         Determines the space left to fill a line or column. Less is better.
         It penalizes a line/column if more than half of the line is free.
         '''
-        board = game_state.board
         line_numb = len(board)
         col_numb = len(board[0])
         lines = np.zeros(line_numb)
@@ -117,16 +117,33 @@ class AIPlayer:
         accum = 0
         for value in lines:
             #check if the line needs to be penalized
-            if value < line_numb / 2:
+            if value > col_numb / 2:
                 accum += value
-            else:
-                accum += line_numb
         
         for value in columns:
             #check if the column needs to be penalized
-            if value < col_numb:
+            if value > line_numb / 2:
                 accum += value
-            else:
-                accum += col_numb
         
         return accum
+    
+
+    def heuristic1(self, gamestate):
+        # Gives more weight to the obtention of points.
+        # The near_full_line function give more weight to states that have more lines almost completed
+        res = (-gamestate.points  * len(gamestate.board) * len(gamestate.board[0])) + self.near_full_line(gamestate.board)
+        return res
+    
+    def heuristic2(self, gamestate):
+        # Gives more weight to the obtention of points.
+        # The near_full_line function give more weight to states that have more lines almost completed
+        res = (-gamestate.points  * len(gamestate.board) * len(gamestate.board[0])) + self.occupied_space(gamestate.board)
+        return res
+    
+    def heuristic3(self, gamestate):
+        # Gives more weight to the obtention of points.
+        # The near_full_line function give more weight to states that have more lines almost completed
+        res = (-gamestate.points) + self.near_full_line(gamestate.board)
+        return res
+    
+    

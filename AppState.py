@@ -13,8 +13,8 @@ class AppState:
         pygame.init()
         self.state = STATE_GAME
         self.gui = GUI(600, 720, "Wood Block")
-        self.game_state = GameState(16) # should be changed in the menu depending on the setting
-        self.player = AIPlayer(5) #Use the greedy for testing
+        self.game_state = GameState(10) # should be changed in the menu depending on the setting
+        self.player = AIPlayer(6) #Use the greedy for testing
 
         self.dragging_piece = None
         self.drag_offset = (0, 0)

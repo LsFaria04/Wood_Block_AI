@@ -3,7 +3,6 @@ import numpy as np
 from PieceFactory import PieceFactory
 from Piece import Piece
 from copy import deepcopy
-import time
 
 class GameState:
     def __init__(self, board_size, board=[], move_history=None, Q=None, L=None, points = 0):
@@ -15,7 +14,7 @@ class GameState:
             self.piece_factory = PieceFactory()
             self.points = 0
             self.move_history = []
-            for i in range(4):
+            for i in range(10):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
@@ -31,6 +30,12 @@ class GameState:
             self.move_history = deepcopy(move_history)
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
+
+
+    def __hash__(self):
+        return hash(( str([item for sublist in self.board for item in sublist]), len(self.Q), len(self.L), self.points))
+    def __eq__(self, other) :
+        return [item for sublist in self.board for item in sublist] == [item for sublist in other.board for item in sublist] and len(self.Q) == len(other.Q) and self.points == other.points
 
     def generate_pieces(self):
         tile_size = 30
@@ -119,7 +124,7 @@ class GameState:
                 if piece.matrix[y_offset][x_offset] == 1:
                     self.board[y + y_offset][x + x_offset] = 1
         
-        self.move_history.append(self.board)
+        self.move_history.append(self)
 
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
         if len(self.Q) > 0:
@@ -184,9 +189,8 @@ class GameState:
         for move in move_history:
             
             gui.draw_background()
-            self.board = move
-            self.draw_board(gui)
-            self.draw_current_pieces(gui)
+            move.draw_board(gui)
+            move.draw_current_pieces(gui)
             gui.refresh_screen()
 
 
