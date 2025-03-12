@@ -15,6 +15,12 @@ class GUI:
     def drawPiece(self, piece, x_offset, y_offset, block_size):
         for (x, y) in piece.getOccupiedCells():
             self.screen.blit(self.block_img, (x_offset + x * block_size, y_offset + y * block_size))
+    
+    def draw_rectangle(self, cords):
+         x,y = cords
+         x_offset = 30
+         y_offset = 30
+         self.screen.blit(self.block_img, (x * x_offset, y *y_offset))
 
     
     def getEvent(self):

@@ -2,18 +2,30 @@ from collections import deque
 import numpy as np
 from PieceFactory import PieceFactory
 from Piece import Piece
+from copy import deepcopy
 
 class GameState:
-    def __init__(self, board_size, move_history) :
-        self.board = np.zeros((board_size, board_size))
-        self.Q = deque() #where the pieces will be stored by order
-        self.L = [] # where the pieces that the player can choose are stored
-        self.piece = None  # Initialize self.piece
-        self.piece_factory = PieceFactory()
-        self.move_history = move_history
-        self.generatePieces()
-        if self.L:
-            self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
+    def __init__(self, board_size, board = [], L = [], Q = deque(),  move_history = []) :
+        if len(board) == 0: 
+            self.board = np.zeros((board_size, board_size))
+            self.Q = Q #where the pieces will be stored by order
+            self.L = L # where the pieces that the player can choose are stored
+            self.piece = None  # Initialize self.piece
+            self.piece_factory = PieceFactory()
+            self.move_history = move_history
+            self.generatePieces()
+            if self.L:
+                self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
+            
+        else:
+            self.board = deepcopy(board)
+            self.Q = deepcopy(Q) #where the pieces will be stored by order
+            self.L = deepcopy(L) # where the pieces that the player can choose are stored
+            self.piece = None  # Initialize self.piece
+            self.piece_factory = PieceFactory()
+            self.move_history = deepcopy(move_history)
+            if self.L:
+                self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
 
     def generatePieces(self):
         # Example of generating pieces and adding them to the queue
@@ -26,12 +38,8 @@ class GameState:
         board_size = len(self.board)
         for y in range(len(self.board)):
             for x in range(len(self.board[0])):
-                if self.board[y][x] == 1 and self.piece:
-                    occupied_cells = self.piece.getOccupiedCells()  # Get the cells occupied by the piece
-                    for (px, py) in occupied_cells:
-                        # Draw the piece in the correct position on the board
-                        if (x == px and y == py):
-                            gui.drawPiece(self.piece, x * board_size, y * board_size, board_size)
+                if self.board[y][x] == 1:
+                    gui.draw_rectangle((x,y))
 
     def children(self):
         '''
@@ -48,10 +56,8 @@ class GameState:
                     if self.board[y][x] != 0:
                         continue
                     if self.is_move_possible(piece_idx, (x,y)):
-                        child = GameState(lin_size, self.move_history)
-                        child.board = self.board
+                        child = GameState(lin_size, self.board, self.L, self.Q, self.move_history)
                         child.move(piece_idx, (x,y))
-                        print(child.board)
                         children.append(child)
 
         return children
@@ -84,6 +90,7 @@ class GameState:
     def move(self, piece_idx, cords):
         '''Executes a move updating the game board with the given piece in the given coordinates. Assumes that the move is possible !!!!'''
         x,y = cords
+        print(self.L)
         piece = self.L[piece_idx]
 
         for y_offset in range(piece.ylen):
