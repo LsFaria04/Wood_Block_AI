@@ -31,7 +31,6 @@ class AppState:
             self.time_taken = time.time() - self.start_time
 
     def step(self):
-
         if self.state == STATE_GAME:
             self.start_timer()
 

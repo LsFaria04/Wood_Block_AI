@@ -43,7 +43,7 @@ class GUI:
         self.screen.blit(self.background, (0, 0))
 
     
-    def getEvent(self):
+    def get_event(self):
         event = pygame.event.poll()
 
         if event.type == pygame.QUIT:

@@ -21,7 +21,7 @@ class AIPlayer:
         elif self.algorithm == 4:
             self.uniform_cost()
         elif self.algorithm == 5:
-            return self.greedy(gamestate, lambda state : self.occupied_space(state) + self.near_full_line(state))
+            return self.greedy(gamestate, lambda state : (-gamestate.points * len(gamestate.board)) + self.occupied_space(state) + self.near_full_line(state))
         elif self.algorithm == 6:
             self.a_star()
         elif self.algorithm == 7:
@@ -68,6 +68,8 @@ class AIPlayer:
             visited.add(current_state)
 
             if current_state.game_over() :
+                print("Game Over")
+                print(current_state.points)
                 return current_state.move_history
 
             for state in current_state.children():

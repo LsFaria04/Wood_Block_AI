@@ -3,17 +3,19 @@ import numpy as np
 from PieceFactory import PieceFactory
 from Piece import Piece
 from copy import deepcopy
+import time
 
 class GameState:
-    def __init__(self, board_size, board=[], move_history=None, Q=None, L=None):
+    def __init__(self, board_size, board=[], move_history=None, Q=None, L=None, points = 0):
         if len(board) == 0:
             self.board = np.zeros((board_size, board_size))
             self.Q = deque() # where the pieces will be stored by order
             self.L = [] # where the pieces that the player can choose are stored
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
+            self.points = 0
             self.move_history = []
-            for i in range(4):
+            for i in range(3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
@@ -25,6 +27,7 @@ class GameState:
             self.L = deepcopy(L) # where the pieces that the player can choose are stored
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
+            self.points = points
             self.move_history = deepcopy(move_history)
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
@@ -73,7 +76,7 @@ class GameState:
                     if self.board[y][x] != 0:
                         continue
                     if self.is_move_possible(piece_idx, (x,y)):
-                        child = GameState(lin_size, self.board, self.L, self.Q, self.move_history)
+                        child = GameState(lin_size, self.board,self.move_history, self.Q, self.L, self.points)
                         child.move(piece_idx, (x,y))
                         children.append(child)
 
@@ -109,7 +112,6 @@ class GameState:
     def move(self, piece_idx, cords):
         '''Executes a move updating the game board with the given piece in the given coordinates. Assumes that the move is possible !!!!'''
         x,y = cords
-        print(self.L)
         piece = self.L[piece_idx]
 
         for y_offset in range(piece.ylen):
@@ -117,7 +119,7 @@ class GameState:
                 if piece.matrix[y_offset][x_offset] == 1:
                     self.board[y + y_offset][x + x_offset] = 1
         
-        self.move_history.append((piece, cords))
+        self.move_history.append(self.board)
 
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
         if len(self.Q) > 0:
@@ -158,6 +160,8 @@ class GameState:
         lin_size = len(self.board)
         col_size = len(self.board[0])
 
+        self.points += lin_size * (len(full_lines) + len(full_columns))
+
         #remove the lines
         for col in range(col_size):
             for lin in full_lines:
@@ -177,11 +181,13 @@ class GameState:
         '''
         Displays the moves made by the AI to win the game 
         '''
-
         for move in move_history:
-            piece_idx, cords = move
-            print(move)
-            self.move(piece_idx, cords)
+            
+            gui.draw_background()
+            self.board = move
+            self.draw_board(gui)
+            self.draw_current_pieces(gui)
+            gui.refresh_screen()
 
 
 
