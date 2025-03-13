@@ -13,7 +13,7 @@ class AIPlayer:
         AI play. Returns the move history that lead to the solution or fail if no solution was found
         '''
         if self.algorithm == 1:
-            self.bfs(gamestate)
+            return self.bfs(gamestate)
         elif self.algorithm == 2:
             self.dfs()
         elif self.algorithm == 3:
@@ -30,24 +30,25 @@ class AIPlayer:
             print("Algorithm is not available")
 
     def bfs(self, gamestate):
-        root = TreeNode(gamestate)   # create the root node in the search tree
-        queue = deque([root])   # initialize the queue to store the nodes
+        queue = deque([gamestate])          # initialize the queue to store the nodes
+        visited = set()
+        possibleGoalStates = []
 
         while queue:
-            node = queue.popleft()   # get first element in the queue
-            if gamestate.goal_state():   # check goal state
-                return node
+            state = queue.popleft()
+            visited.add(state) 
+                                    # get first element in the queue
+            if state.game_over():      # check goal state
+                possibleGoalStates.append(state)
 
-            for state in gamestate.children():
-                # go through next states
-                # create tree node with the new state
-                newNode = TreeNode(state)
+            for childState in state.children():
+                if (childState not in visited):
+                    queue.append(childState)
+                    
 
-                # link child node to its parent in the tree
-                newNode.parent = node
+        bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
 
-                # enqueue the child node
-                queue.append(newNode)
+        print(bestState.move_history)
         return None
 
     def dfs(self):
