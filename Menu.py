@@ -1,6 +1,10 @@
 class Menu:
     def __init__(self) :
         self.selected = -1
+        self.current_menu = "Main"
+        self.main_menu_options = ["Human", "Ai", "Exit"]
+        self.pause_menu_options = ["Resume", "Restart", "Exit"]
+        self.config_menu = ["Continue"]
         self.options = ["Human", "Ai", "Exit"]
     
 
@@ -22,3 +26,28 @@ class Menu:
     def mouse_down_option(self):
         if self.selected != -1:
             return self.options[self.selected]
+    
+    def change_menu(self, new_menu):
+        if new_menu == "Main":
+            self.current_menu = "Main"
+            self.options = self.main_menu_options
+            self.selected = -1
+        if new_menu == "Pause":
+            self.current_menu = "Pause"
+            self.options = self.pause_menu_options
+            self.selected = -1
+    
+    def menu_action(self, option):
+        if self.current_menu == "Main":
+            #if option == "Human":
+                #self.current_menu = "Config"
+                #self.options = self.config_menu
+            if option == "Ai":
+                #self.current_menu = "Config"
+                #self.options = self.config_menu
+                return "Ai"
+            elif option == "Exit":
+                return "Exit"
+        
+
+        

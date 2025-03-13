@@ -70,6 +70,8 @@ class GUI:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 return 'q'
+            if event.key == pygame.K_ESCAPE:
+                return 'esc'
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Left mouse button
                 return 'mousedown'

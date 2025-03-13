@@ -99,6 +99,10 @@ class AppState:
             self.handle_mousemove()
         elif event == 'mouseup':
             self.handle_mouseup()
+        elif event == 'esc':
+            self.menu.change_menu("Pause")
+            self.state = STATE_MENU
+            self.gui.screen_needs_update = True
         if self.state == STATE_EXIT:
             pygame.quit()
 
