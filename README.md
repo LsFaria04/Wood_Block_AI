@@ -46,6 +46,32 @@
 
 ## Bibliography
 
+
+
+def bfs(self, gamestate):
+
+        queue = deque([gamestate])          # initialize the queue to store the nodes
+        visited = set()
+        possibleGoalStates = []
+
+        while queue:
+            state = queue.popleft()
+            visited.add(state) 
+                                            # get first element in the queue
+            if state.game_over:      # check goal state
+                possibleGoalStates.append(state)
+
+            for childState in state.children():
+                if (childState not in visited):
+                    queue.append(childState)
+                    
+
+        bestState = max([state for state in possibleGoalStates], lambda state: state.points)
+
+        print(bestState.move_history)
+        return None
+
+
 https://play.google.com/store/apps/details?id=com.block.puzzle.free.wood&hl=en 
 
 
