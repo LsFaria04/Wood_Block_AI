@@ -33,7 +33,7 @@
 - **Operators:**
     - **Name:** Move(Piece, Position)
     - **Preconditions:** The board must have space for the piece in the position selected
-    - **Effects:** Piece added to the board, removed from the current selection list and a new piece a poped from the queue and inserted into the selection list.
+    - **Effects:** Piece added to the board, removed from the current selection list and a new piece is popped from the queue and inserted into the selection list.
     - **Cost:** Moves that bring more lines/columns closer to completion have a higher cost.
     Moves that complete lines/columns have a very high cost.
     The player should choose the move with the highest cost.
@@ -45,6 +45,32 @@
     Evaluates the shape of the piece and gives a higher score if the position has the perfect shape for that piece
 
 ## Bibliography
+
+
+
+def bfs(self, gamestate):
+
+        queue = deque([gamestate])          # initialize the queue to store the nodes
+        visited = set()
+        possibleGoalStates = []
+
+        while queue:
+            state = queue.popleft()
+            visited.add(state) 
+                                            # get first element in the queue
+            if state.game_over:      # check goal state
+                possibleGoalStates.append(state)
+
+            for childState in state.children():
+                if (childState not in visited):
+                    queue.append(childState)
+                    
+
+        bestState = max([state for state in possibleGoalStates], lambda state: state.points)
+
+        print(bestState.move_history)
+        return None
+
 
 https://play.google.com/store/apps/details?id=com.block.puzzle.free.wood&hl=en 
 

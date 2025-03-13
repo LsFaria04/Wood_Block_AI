@@ -15,6 +15,7 @@ class AppState:
 
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         self.state = STATE_GAME
         self.game_type = GAME_TYPE_HUMAN
         self.gui = GUI(600, 720, "Wood Block")
@@ -26,6 +27,15 @@ class AppState:
 
         self.start_time = None 
         self.time_taken = 0  # Time taken to complete the game
+
+        self.load_music()
+        self.play_music()
+
+    def load_music(self):
+        pygame.mixer.music.load("music/lock_in_song.mp3")
+
+    def play_music(self):
+        pygame.mixer.music.play(-1)
 
     def start_timer(self):
         if self.start_time is None:  # Only start the timer once
