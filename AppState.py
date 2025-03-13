@@ -67,6 +67,8 @@ class AppState:
             option = self.menu.mouse_down_option()
             if option == "Human":
                 self.state = STATE_GAME
+            elif option == "Exit":
+                self.state = STATE_EXIT
         elif event == 'mousemove':
             pos = pygame.mouse.get_pos()
             self.menu.mouse_over_option(pos)
