@@ -3,7 +3,6 @@ import pygame
 class GUI:
 
     def __init__(self, width, height, caption):
-        pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
         self.screen_needs_update = False

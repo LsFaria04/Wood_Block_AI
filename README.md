@@ -33,7 +33,7 @@
 - **Operators:**
     - **Name:** Move(Piece, Position)
     - **Preconditions:** The board must have space for the piece in the position selected
-    - **Effects:** Piece added to the board, removed from the current selection list and a new piece a poped from the queue and inserted into the selection list.
+    - **Effects:** Piece added to the board, removed from the current selection list and a new piece is popped from the queue and inserted into the selection list.
     - **Cost:** Moves that bring more lines/columns closer to completion have a higher cost.
     Moves that complete lines/columns have a very high cost.
     The player should choose the move with the highest cost.

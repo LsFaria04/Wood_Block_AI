@@ -50,8 +50,24 @@ class AIPlayer:
                 queue.append(newNode)
         return None
 
-    def dfs(self):
+    def dfs(self, gamestate):
+        stack = [TreeNode(gamestate)]
+        visited = set()
+
+        while stack:
+            node = stack.pop()
+            if node.state.goal_state():
+                return node
+            
+            if node.state not in visited:
+                visited.add(node.state)
+
+                for state in node.state.children():
+                    new_node = TreeNode(state)
+                    new_node.parent = node
+                    stack.append(new_node)
         return None
+    
     def iteractive_deepening(self):
         return None
     def uniform_cost(self):
