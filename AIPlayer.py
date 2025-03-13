@@ -84,11 +84,9 @@ class AIPlayer:
             current_state = heapq.heappop(states)
             visited.add(current_state)
 
-            res = self.heuristic1(current_state)
             if current_state.game_over() :
-                print("Game Over")
-                print(current_state.points)
                 return current_state.move_history
+            
             for state in current_state.children():
                 if state in visited:
                     continue

@@ -1,13 +1,13 @@
 from GUI import GUI
 from GameState import GameState
 from AIPlayer import AIPlayer
+from Menu import Menu
 import pygame
 import time
 
-STATE_MAIN_MENU = 1
-STATE_GAME_CONFIG = 2
-STATE_GAME = 3
-STATE_EXIT = 4
+STATE_MENU = 1
+STATE_GAME = 2
+STATE_EXIT = 3
 
 GAME_TYPE_HUMAN = 5
 GAME_TYPE_AI = 6
@@ -16,11 +16,12 @@ class AppState:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
-        self.state = STATE_GAME
+        self.state = STATE_MENU
         self.game_type = GAME_TYPE_HUMAN
         self.gui = GUI(600, 720, "Wood Block")
-        self.game_state = GameState(4) # should be changed in the menu depending on the setting
+        self.game_state = GameState(10) # should be changed in the menu depending on the setting
         self.player = AIPlayer(1) #Use the greedy for testing
+        self.menu = Menu()
 
         self.dragging_piece = None
         self.drag_offset = (0, 0)
@@ -46,11 +47,35 @@ class AppState:
             self.time_taken = time.time() - self.start_time
 
     def step(self):
-        move_history = self.player.play(self.game_state)
-        self.game_state.reconstruct_play(move_history, self.gui)
+        
         if self.state == STATE_GAME:
-            self.start_timer()
+            self.step_game()
+        elif self.state == STATE_MENU:
+            self.step_menu()
+    
+    def step_menu(self):
+         # Prepare the next step in the frame
+        self.gui.draw_background()
+        self.menu.draw_menu(self.gui)
+        self.gui.refresh_screen()
+        
+        event = self.gui.get_event()
 
+        if event == 'q':
+            self.state = STATE_EXIT
+        elif event == 'mousedown':
+            option = self.menu.mouse_down_option()
+            if option == "Human":
+                self.state = STATE_GAME
+        elif event == 'mousemove':
+            pos = pygame.mouse.get_pos()
+            self.menu.mouse_over_option(pos)
+        if self.state == STATE_EXIT:
+            pygame.quit()
+    
+    def step_game(self):
+        if self.start_time is None:
+            self.start_timer()
         self.update_time()
 
         # Prepare the next step in the frame

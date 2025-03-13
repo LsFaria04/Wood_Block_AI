@@ -5,11 +5,13 @@ class GUI:
     def __init__(self, width, height, caption):
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
-        self.screen_needs_update = False
+        self.screen_needs_update = True
         self.block_img = pygame.image.load("images/block.png")
         self.block_background = pygame.image.load("images/block_darker_wood.png")
         self.block_img = pygame.transform.scale(self.block_img, (30, 30))
         self.block_background = pygame.transform.scale(self.block_background, (30, 30))
+        self.menu_button_img = pygame.image.load("images/wood_button.png")
+        self.menu_button = pygame.transform.scale(self.menu_button_img, (200, 70))
         self.background = pygame.image.load("images/wood.jpg")
         self.background = pygame.transform.scale(self.background, (width, height))
     
@@ -40,6 +42,24 @@ class GUI:
 
     def draw_background(self):
         self.screen.blit(self.background, (0, 0))
+    
+    def draw_button(self, cords, text):
+        x,y = cords
+        self.screen.blit(self.menu_button, (x, y))
+        font = pygame.font.Font(None, 42)
+        text_surface = font.render(text, True, (255, 255, 255)) 
+        lenx,leny = text_surface.get_size()
+        self.screen.blit(text_surface, (x + 100 - (lenx // 2), y + 35 - (leny // 2)))
+    
+    def draw_menu_title(self, text):
+        x = 300
+        y = 60
+
+        font = pygame.font.Font(None, 100)
+        text_surface = font.render(text, True, (255, 255, 255))
+        lenx,leny = text_surface.get_size()
+        self.screen.blit(text_surface, (x - (lenx // 2), y - (leny // 2)))
+
 
     
     def get_event(self):
