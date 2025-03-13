@@ -65,10 +65,26 @@ class AppState:
             self.state = STATE_EXIT
         elif event == 'mousedown':
             option = self.menu.mouse_down_option()
-            if option == "Human":
-                self.state = STATE_GAME
-            elif option == "Exit":
-                self.state = STATE_EXIT
+
+            if self.menu.current_menu == "Main":
+                if option == "Human":
+                    self.state = STATE_GAME
+                elif option == "Exit":
+                    self.state = STATE_EXIT
+
+            elif self.menu.current_menu == "Pause":
+                if option == "Resume":
+                    self.state = STATE_GAME
+                elif option == "Restart":
+                    self.state = STATE_GAME
+                    self.start_time = None
+                    self.game_state = GameState(10)
+                elif option == "Exit":
+                    self.menu.change_menu("Main")
+                    self.gui.screen_needs_update = True
+                    self.start_time = None
+                    self.game_state = GameState(10)
+
         elif event == 'mousemove':
             pos = pygame.mouse.get_pos()
             self.menu.mouse_over_option(pos)
