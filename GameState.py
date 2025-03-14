@@ -197,7 +197,17 @@ class GameState:
     
     def game_over(self):
         # no pieces to play 
-        return len(self.L) == 0 and len(self.Q) == 0
+        if len(self.L) == 0 and len(self.Q) == 0:
+            return True
+        
+        # if there is at least one possible move
+        for piece_idx in range(len(self.L)):
+            for y in range(len(self.board)):
+                for x in range(len(self.board[0])):
+                    if self.is_move_possible(piece_idx, (x, y)):
+                        return False
+                    
+        return True # No possible moves
     
     def reconstruct_play(self, move_history, gui):
         '''
