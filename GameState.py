@@ -44,8 +44,13 @@ class GameState:
 
         for i in range(3):
             x, y = offset_x + i * spacing, offset_y
+            print("Piece generated at: ")
+            print(x)
+            print(" ")
+            print(y)
             piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
             self.Q.append(piece)
+
 
 
     def draw_board(self, gui):
@@ -100,6 +105,8 @@ class GameState:
 
         x,y = cords
 
+        if y < 0 or x < 0:
+            return False 
         if y + piece.ylen >= lin_size + 1 :
             return False
         if x + piece.xlen >= col_size + 1:
@@ -127,8 +134,18 @@ class GameState:
         self.move_history.append(self)
 
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
+
+        tile_size = 30
+        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        spacing = 180
+
+        newX, newY = offset_x + piece_idx * spacing, offset_y
+
         if len(self.Q) > 0:
             self.L[piece_idx] = self.Q.popleft()
+            piece = self.L[piece_idx]
+            piece.x = newX
+            piece.y = newY
         else:
             self.L.pop(piece_idx)
         
