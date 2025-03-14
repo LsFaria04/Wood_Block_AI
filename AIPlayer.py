@@ -48,8 +48,7 @@ class AIPlayer:
 
         bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
 
-        print(bestState.move_history)
-        return None
+        return bestState.move_history
 
     def dfs(self, gamestate):
         stack = [TreeNode(gamestate)]
@@ -71,8 +70,29 @@ class AIPlayer:
     
     def iteractive_deepening(self):
         return None
+    
     def uniform_cost(self):
-        return None
+        states = []  # Min-heap for UCS
+        heapq.heappush(states, (0, self.gamestate))
+        visited = set()
+        possibleGoalStates = []
+
+        while states:
+            cost, current_state = heapq.heappop(states)
+            
+            if current_state.game_over() :
+                possibleGoalStates.append(current_state)
+            
+            visited.add(current_state)
+
+            for childState in current_state.children():
+                if current_state in visited:
+                    continue
+                heapq.heappush(states, (-childState.points + cost, childState))
+
+        bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
+
+        return bestState.move_history
     
 
     def greedy(self, game_state, heuristic):
