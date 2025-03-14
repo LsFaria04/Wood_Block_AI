@@ -33,7 +33,7 @@ class AppState:
         self.play_music()
 
     def load_music(self):
-        pygame.mixer.music.load("music/lock_in_song.mp3")
+        pygame.mixer.music.load("music/jazz.mp3")
 
     def play_music(self):
         pygame.mixer.music.play(-1)

@@ -209,11 +209,3 @@ class GameState:
             move.draw_board(gui)
             move.draw_current_pieces(gui)
             gui.refresh_screen()
-
-
-
-
-
-
-    
-
