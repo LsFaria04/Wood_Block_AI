@@ -40,7 +40,7 @@ class AppState:
 
     def start_timer(self):
         if self.start_time is None:  # Only start the timer once
-            self.start_time = time.time()  # 1Start the timer when the game begins
+            self.start_time = time.time()  # Start the timer when the game begins
 
     def update_time(self):
         if self.start_time is not None:

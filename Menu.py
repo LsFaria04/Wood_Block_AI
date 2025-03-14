@@ -5,7 +5,7 @@ class Menu:
         self.main_menu_options = ["Human", "Ai", "Exit"]
         self.pause_menu_options = ["Resume", "Restart", "Exit"]
         self.config_menu = ["Continue"]
-        self.options = ["Human", "Ai", "Exit"]
+        self.options = ["Human", "AI", "Exit"]
     
 
     def draw_menu(self, gui):
