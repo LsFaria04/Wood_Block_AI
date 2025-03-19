@@ -1,7 +1,7 @@
 from collections import deque
 import numpy as np
+import random 
 from PieceFactory import PieceFactory
-from Piece import Piece
 from copy import deepcopy
 
 class GameState:
@@ -38,15 +38,28 @@ class GameState:
         return [item for sublist in self.board for item in sublist] == [item for sublist in other.board for item in sublist] and len(self.Q) == len(other.Q) and self.points == other.points
 
     def generate_pieces(self):
+        
         tile_size = 30
         offset_x, offset_y = 60, len(self.board) * tile_size + 70
         spacing = 180
 
-        for i in range(3):
-            x, y = offset_x + i * spacing, offset_y
-            piece = self.piece_factory.create_piece(x, y, 4, 2, 2, False)
-            self.Q.append(piece)
+        common_pieces = [
+        (1, 2, 2),  # Small square
+        (1, 3, 3),  # Medium square
+        (2, 4, 2),  # Horizontal rectangle
+        (2, 2, 4),  # Vertical rectangle
+        (3, 3, 2),  # L-shape
+        (4, 3, 2),  # Inverted L-shape
+        (5, 3, 2),  # T-shape
+        (6, 3, 2),  # Rotated T-shape
+        ]
 
+        for i in range(3):
+            pieceType, xLen, yLen = random.choice(common_pieces)
+            isReversed = random.choice([True, False])
+            x, y = offset_x + i * spacing, offset_y
+            piece = self.piece_factory.create_piece(x, y, xLen, yLen, pieceType, isReversed)
+            self.Q.append(piece)
 
 
     def draw_board(self, gui):
