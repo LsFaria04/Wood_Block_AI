@@ -68,7 +68,8 @@ class AppState:
 
             if self.menu.current_menu == "Main":
                 if option == "Human":
-                    self.state = STATE_GAME
+                    self.gui.screen_needs_update = True
+                    self.menu.change_menu("GameConfig")
                 elif option == "Exit":
                     self.state = STATE_EXIT
 
@@ -84,6 +85,17 @@ class AppState:
                     self.gui.screen_needs_update = True
                     self.start_time = None
                     self.game_state = GameState(10)
+            
+            elif self.menu.current_menu == "GameConfig":
+                if option == "Random":
+                    self.state = STATE_GAME
+                elif option == "Load Config":
+                    self.menu.change_menu("LoadConfig")
+                    self.gui.screen_needs_update = True
+            
+            elif self.menu.current_menu == "LoadConfig":
+                if option == "Continue":
+                    self.state = STATE_GAME
 
         elif event == 'mousemove':
             pos = pygame.mouse.get_pos()
