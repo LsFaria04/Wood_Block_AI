@@ -97,5 +97,5 @@ class GUI:
         self.screen.blit(text_surface, (10, 5))
 
     def draw_hint_button(self):
-        x, y = 545, 0
+        x, y = 545, 5
         self.screen.blit(self.hint_button, (x, y))
