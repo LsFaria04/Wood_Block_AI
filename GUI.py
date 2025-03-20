@@ -14,6 +14,8 @@ class GUI:
         self.menu_button = pygame.transform.scale(self.menu_button_img, (200, 70))
         self.background = pygame.image.load("images/wood.jpg")
         self.background = pygame.transform.scale(self.background, (width, height))
+        self.hint_button_img = pygame.image.load("images/hint.png")
+        self.hint_button = pygame.transform.scale(self.hint_button_img, (50, 50))
     
     def __del__(self):
         pygame.quit()
@@ -94,5 +96,6 @@ class GUI:
         text_surface = font.render(time_text, True, (255, 255, 255)) 
         self.screen.blit(text_surface, (10, 5))
 
-
-
+    def draw_hint_button(self):
+        x, y = 545, 0
+        self.screen.blit(self.hint_button, (x, y))

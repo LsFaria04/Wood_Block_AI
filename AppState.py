@@ -33,7 +33,7 @@ class AppState:
         self.play_music()
 
     def load_music(self):
-        pygame.mixer.music.load("music/jazz.mp3")
+        pygame.mixer.music.load("music/lock_in_song.mp3")
 
     def play_music(self):
         pygame.mixer.music.play(-1)
@@ -112,6 +112,7 @@ class AppState:
         self.gui.draw_background()
         self.game_state.draw_board(self.gui)
         self.game_state.draw_current_pieces(self.gui)
+        self.gui.draw_hint_button()
 
         self.gui.draw_timer(self.time_taken)
 
