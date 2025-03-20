@@ -56,10 +56,12 @@ class AppState:
     def step_menu(self):
          # Prepare the next step in the frame
         self.gui.draw_background()
+
         self.menu.draw_menu(self.gui)
         self.gui.refresh_screen()
         
         event = self.gui.get_event()
+        
 
         if event == 'q':
             self.state = STATE_EXIT
@@ -68,7 +70,6 @@ class AppState:
 
             if self.menu.current_menu == "Main":
                 if option == "Human":
-                    self.gui.screen_needs_update = True
                     self.menu.change_menu("GameConfig")
                 elif option == "Exit":
                     self.state = STATE_EXIT
@@ -88,14 +89,15 @@ class AppState:
             
             elif self.menu.current_menu == "GameConfig":
                 if option == "Random":
-                    self.state = STATE_GAME
+                    self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
                     self.menu.change_menu("LoadConfig")
-                    self.gui.screen_needs_update = True
             
-            elif self.menu.current_menu == "LoadConfig":
+            elif self.menu.current_menu == "LoadConfig" or self.menu.current_menu == "ChooseConfig":
+                
                 if option == "Continue":
                     self.state = STATE_GAME
+            
 
         elif event == 'mousemove':
             pos = pygame.mouse.get_pos()

@@ -14,6 +14,8 @@ class GUI:
         self.menu_button = pygame.transform.scale(self.menu_button_img, (200, 70))
         self.background = pygame.image.load("images/wood.jpg")
         self.background = pygame.transform.scale(self.background, (width, height))
+
+
     
     def __del__(self):
         pygame.quit()
@@ -59,6 +61,29 @@ class GUI:
         text_surface = font.render(text, True, (255, 255, 255))
         lenx,leny = text_surface.get_size()
         self.screen.blit(text_surface, (x - (lenx // 2), y - (leny // 2)))
+    
+    def draw_arrow_button(self, isLeft, cords):
+        x,y = cords
+        small_button =  pygame.transform.scale(self.menu_button_img, (50, 50))
+        self.screen.blit(small_button, (x,y))
+        font = pygame.font.Font(None, 48)
+        font.set_bold(True)
+        text_surface = font.render('>', True, (255, 255, 255)) 
+        if isLeft:
+            text_surface = font.render('<', True, (255, 255, 255)) 
+        lenx,leny = text_surface.get_size()
+        self.screen.blit(text_surface, (x + 25 - (lenx // 2), y + 25 - (leny // 2)))
+    
+    def draw_option_text(self, cords, text):
+        x,y = cords
+        font = pygame.font.Font(None, 42)
+        text_surface = font.render(text, True, (255, 255, 255)) 
+        lenx,leny = text_surface.get_size()
+        self.screen.blit(text_surface, (155 + x - (lenx // 2), y + 25 - (leny // 2)))
+
+
+
+
 
 
     
