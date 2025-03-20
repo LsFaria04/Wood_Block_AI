@@ -29,6 +29,8 @@ class AppState:
         self.start_time = None 
         self.time_taken = 0  # Time taken to complete the game
 
+        self.score = 0
+
         self.load_music()
         self.play_music()
 
@@ -115,6 +117,7 @@ class AppState:
         self.gui.draw_hint_button()
 
         self.gui.draw_timer(self.time_taken)
+        self.gui.draw_score(self.score)
 
         self.gui.refresh_screen()
         
