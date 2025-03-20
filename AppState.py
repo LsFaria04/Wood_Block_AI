@@ -114,8 +114,10 @@ class AppState:
         self.gui.draw_background()
         self.game_state.draw_board(self.gui)
         self.game_state.draw_current_pieces(self.gui)
+        self.gui.draw_hint_button()
 
         self.gui.draw_timer(self.time_taken)
+        self.gui.draw_score(self.game_state.points)
 
         self.gui.refresh_screen()
         

@@ -68,7 +68,7 @@ class AIPlayer:
                     stack.append(new_node)
         return None
     
-    def iteractive_deepening(self):
+    def iterative_deepening(self):
         return None
     
     def uniform_cost(self):
