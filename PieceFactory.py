@@ -44,7 +44,7 @@ class PieceFactory:
             pieceMatrix = [[1 for _ in range(XLen)] for _ in range(YLen)]
             return Piece(2, False, XLen, YLen, pieceMatrix, x, y )
     
-    def type3(self, x, y, XLen,YLen, rev):
+    def type3(self, x1, y1, XLen,YLen, rev):
         pieceMatrix = []
         for y in range(YLen):
             line = []
@@ -53,30 +53,30 @@ class PieceFactory:
                 if (x == (XLen - 1) or y == (YLen -1)) and rev:
                     line.append(1)
                 #normal L
-                elif (x == 0 or y == (YLen - 1)) and rev:
+                elif (x == 0 or y == (YLen - 1)) and not rev:
                     line.append(1)
                 else:
                     line.append(0)
             pieceMatrix.append(line)
-        return Piece(3, rev, XLen, YLen, pieceMatrix, x, y)
+        return Piece(3, rev, XLen, YLen, pieceMatrix, x1, y1)
     
-    def type4(self, x, y, XLen,YLen,rev):
+    def type4(self, x1, y1, XLen,YLen,rev):
         pieceMatrix = []
         for y in range(YLen):
             line = []
             for x in range(XLen):
                 #reversed L (mirror is the Y axis)
-                if (x == (XLen - 1) or y == 1) and rev:
+                if (x == (XLen - 1) or y == 0) and rev:
                     line.append(1)
                 #normal L
-                elif (x == 0 or y == 1) and not rev:
+                elif (x == 0 or y == 0) and not rev:
                     line.append(1)
                 else:
                     line.append(0)
             pieceMatrix.append(line)
-        return Piece(4, rev, XLen, YLen, pieceMatrix, x, y)
+        return Piece(4, rev, XLen, YLen, pieceMatrix, x1, y1)
         
-    def type5(self, x, y, XLen,YLen,rev):
+    def type5(self, x1, y1, XLen,YLen,rev):
         pieceMatrix = []
         idx_leg = round(XLen / 2)
         idx_leg = XLen // 2
@@ -92,9 +92,9 @@ class PieceFactory:
                 else:
                     line.append(0)
             pieceMatrix.append(line)
-        return Piece(5, rev, XLen, YLen, pieceMatrix, x, y)
+        return Piece(5, rev, XLen, YLen, pieceMatrix, x1, y1)
 
-    def type6(self, x, y, XLen,YLen, rev):
+    def type6(self, x1, y1, XLen,YLen, rev):
         pieceMatrix = []
         idx_leg = YLen // 2
         idx_leg = YLen // 2
@@ -110,4 +110,4 @@ class PieceFactory:
                 else:
                     line.append(0)
             pieceMatrix.append(line)
-        return Piece(6, rev, XLen, YLen, pieceMatrix, x, y)
+        return Piece(6, rev, XLen, YLen, pieceMatrix, x1, y1)

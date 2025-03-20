@@ -77,7 +77,7 @@ class GameState:
         # Draws the three pieces available for the player below the game board
         tile_size = 30
 
-        for i, piece in enumerate(self.L[:3]):
+        for i, piece in enumerate(self.L):
             gui.drawPiece(piece, tile_size)
 
     def children(self):
