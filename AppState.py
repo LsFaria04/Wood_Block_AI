@@ -29,13 +29,11 @@ class AppState:
         self.start_time = None 
         self.time_taken = 0  # Time taken to complete the game
 
-        self.score = 0
-
         self.load_music()
         self.play_music()
 
     def load_music(self):
-        pygame.mixer.music.load("music/lock_in_song.mp3")
+        pygame.mixer.music.load("music/jazz.mp3")
 
     def play_music(self):
         pygame.mixer.music.play(-1)
@@ -117,7 +115,7 @@ class AppState:
         self.gui.draw_hint_button()
 
         self.gui.draw_timer(self.time_taken)
-        self.gui.draw_score(self.score)
+        self.gui.draw_score(self.game_state.points)
 
         self.gui.refresh_screen()
         
