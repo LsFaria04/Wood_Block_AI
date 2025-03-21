@@ -19,8 +19,8 @@ class AppState:
         self.state = STATE_MENU
         self.game_type = GAME_TYPE_HUMAN
         self.gui = GUI(600, 720, "Wood Block")
-        self.game_state = None # should be changed in the menu depending on the setting
-        self.player = None #Use the greedy for testing
+        self.game_state = GameState(10,12) # should be changed in the menu depending on the setting
+        self.player = AIPlayer(1) #Use the greedy for testing
         self.menu = Menu()
 
         self.dragging_piece = None
