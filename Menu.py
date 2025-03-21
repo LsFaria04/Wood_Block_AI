@@ -14,13 +14,17 @@ class Menu:
 
         #Options in the configuration menus (options, option selected)
         self.load_conf_menu = [(["Config1", "Config2"], 0)]
-        self.choose_conf_menu = [(["5", "10"],0), (["6","18", "30"],0), (["BFS", "DFS", "Iterac_Deep", "UCS", "Greedy", "A*"], 0 )]
+        self.choose_conf_menu = [(["5", "10"],0), (["6","18", "30"],0), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 )]
         
         self.conf_options = self.load_conf_menu #the current conf options in use
         self.arrow_selected = (-1,-1) # Arrow Button selected (idx, isleft)
+
+        self.config_descriptions = [
+            "Board Size (NxN)",
+            "Number of Pieces",
+            "Hint Algorithm"
+        ]
  
-
-
     def draw_menu(self, gui):
         '''
         Generic menu draw
@@ -47,6 +51,8 @@ class Menu:
         y_space = 500 // ((len(self.conf_options)) + 1) # space for the config selection and continue button
 
         for idx, config in enumerate(self.conf_options):
+            gui.draw_option_text((150, y_space + y_space*idx - 45), self.config_descriptions[idx])
+
             gui.draw_arrow_button(True, (150, y_space + y_space*idx))
             gui.draw_arrow_button(False, (400, y_space + y_space*idx))
             options, selected = config
