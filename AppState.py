@@ -86,12 +86,12 @@ class AppState:
                 elif option == "Restart":
                     self.state = STATE_GAME
                     self.start_time = None
-                    self.game_state = GameState(10)
+                    self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))
                 elif option == "Exit":
                     self.menu.change_menu("Main")
+                    self.state = STATE_MENU
                     self.gui.screen_needs_update = True
                     self.start_time = None
-                    self.game_state = GameState(10)
             
             elif self.menu.current_menu == "GameConfig":
                 if option == "Random":
