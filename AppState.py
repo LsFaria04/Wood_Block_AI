@@ -19,8 +19,8 @@ class AppState:
         self.state = STATE_MENU
         self.game_type = GAME_TYPE_HUMAN
         self.gui = GUI(600, 720, "Wood Block")
-        self.game_state = GameState(10) # should be changed in the menu depending on the setting
-        self.player = AIPlayer(1) #Use the greedy for testing
+        self.game_state = None # should be changed in the menu depending on the setting
+        self.player = None #Use the greedy for testing
         self.menu = Menu()
 
         self.dragging_piece = None
@@ -92,8 +92,18 @@ class AppState:
                     self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
                     self.menu.change_menu("LoadConfig")
-            
-            elif self.menu.current_menu == "LoadConfig" or self.menu.current_menu == "ChooseConfig":
+
+            elif self.menu.current_menu == "ChooseConfig":
+                if option == "Continue":
+                    print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
+                    self.saved_config = [options[selected] for options, selected in self.menu.choose_conf_menu]
+                    print("DEBUG: saved_config =", self.saved_config)  # Debugging line
+                    self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
+                    self.player = AIPlayer(self.saved_config[2])  
+                    
+                    self.state = STATE_GAME  
+
+            elif self.menu.current_menu == "LoadConfig":
                 
                 if option == "Continue":
                     self.state = STATE_GAME
@@ -106,6 +116,11 @@ class AppState:
             pygame.quit()
     
     def step_game(self):
+        if self.game_state is None:
+            print("Error: GameState is not initialized!")
+            self.state = STATE_MENU  # Go back to the menu instead of crashing
+            return
+    
         if self.start_time is None:
             self.start_timer()
         self.update_time()

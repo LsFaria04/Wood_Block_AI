@@ -136,7 +136,7 @@ class Menu:
             self.conf_options = self.load_conf_menu
             self.selected = -1
         if new_menu == "ChooseConfig" :
-            self.current_menu = "LoadConfig"
+            self.current_menu = "ChooseConfig"
             self.options = self.load_config_menu
             self.conf_options = self.choose_conf_menu
 

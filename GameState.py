@@ -5,7 +5,7 @@ from PieceFactory import PieceFactory
 from copy import deepcopy
 
 class GameState:
-    def __init__(self, board_size, board=[], move_history=None, Q=None, L=None, points = 0):
+    def __init__(self, board_size, nPieces, board=[], move_history=None, Q=None, L=None, points = 0):
         if len(board) == 0:
             self.board = np.zeros((board_size, board_size))
             self.Q = deque() # where the pieces will be stored by order
@@ -14,7 +14,7 @@ class GameState:
             self.piece_factory = PieceFactory()
             self.points = 0
             self.move_history = []
-            for i in range(4):
+            for i in range(nPieces//3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
