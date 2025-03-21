@@ -19,7 +19,7 @@ class AppState:
         self.state = STATE_MENU
         self.game_type = GAME_TYPE_HUMAN
         self.gui = GUI(600, 720, "Wood Block")
-        self.game_state = GameState(10,12) # should be changed in the menu depending on the setting
+        self.game_state = GameState(10,12)  # GameState dimensions are set initially and can be updated in the menu
         self.player = AIPlayer(1) #Use the greedy for testing
         self.menu = Menu()
 
@@ -33,10 +33,16 @@ class AppState:
         self.play_music()
 
     def load_music(self):
-        pygame.mixer.music.load("music/jazz.mp3")
+        try:
+            pygame.mixer.music.load("music/jazz.mp3")
+        except pygame.error as e:
+            print(f"Error loading music file: {e}")
 
     def play_music(self):
-        pygame.mixer.music.play(-1)
+        try:
+            pygame.mixer.music.play(-1)
+        except pygame.error as e:
+            print(f"Error playing music: {e}")
 
     def start_timer(self):
         if self.start_time is None:  # Only start the timer once
@@ -157,19 +163,17 @@ class AppState:
         # Get the position where the mouse was clicked
         pos = pygame.mouse.get_pos()
         for piece in self.game_state.L:
-            for i, piece in enumerate(self.game_state.L):
-                if self.is_mouse_on_piece(piece, pos):
-                    if piece.isPlaced:
-                        continue  # Skip this piece
-                    self.dragging_piece = piece
-                    self.drag_offset = (pos[0] - piece.x, pos[1] - piece.y)
-                    break
+            if self.is_mouse_on_piece(piece, pos):
+                if piece.isPlaced:
+                    continue  # Skip this piece
+                self.dragging_piece = piece
+                self.drag_offset = (pos[0] - piece.x, pos[1] - piece.y)
+                break
 
     def handle_mousemove(self):
         if self.dragging_piece:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            if self.dragging_piece:
-                self.update_piece_position(mouse_x - self.drag_offset[0], mouse_y - self.drag_offset[1])
+            self.update_piece_position(mouse_x - self.drag_offset[0], mouse_y - self.drag_offset[1])
 
     def handle_mouseup(self):
         if self.dragging_piece:

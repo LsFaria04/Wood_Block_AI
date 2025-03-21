@@ -1,6 +1,6 @@
 import numpy as np
 from collections import deque
-import Tree as TreeNode
+from Tree import TreeNode
 from GameState import GameState
 import heapq
 
@@ -15,9 +15,9 @@ class AIPlayer:
         if self.algorithm == 1:
             return self.bfs(gamestate)
         elif self.algorithm == 2:
-            self.dfs()
+            return self.dfs(gamestate)
         elif self.algorithm == 3:
-            self.iteractive_deepening()
+            self.iterative_deepening()
         elif self.algorithm == 4:
             self.uniform_cost()
         elif self.algorithm == 5:
@@ -46,9 +46,11 @@ class AIPlayer:
                     queue.append(childState)
                     
 
-        bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
-
-        return bestState.move_history
+        if possibleGoalStates:
+            bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
+            return bestState.move_history
+        else:
+            return None
 
     def dfs(self, gamestate):
         stack = [TreeNode(gamestate)]
