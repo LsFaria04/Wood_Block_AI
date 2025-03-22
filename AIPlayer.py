@@ -25,7 +25,8 @@ class AIPlayer:
         elif self.algorithm == 6:
             return self.a_star(gamestate, self.heuristic3)
         elif self.algorithm == 7:
-            self.a_star_weighted()
+            #used the board plus the number of pieces as the weight in the algorithm, so that the heuristic weight is proportional to the size of the game 
+            self.a_star_weighted(gamestate, self.heuristic3, (len(gamestate.board) + len(gamestate.Q) + len(gamestate.L)))
         else:
             print("Algorithm is not available")
 
@@ -120,8 +121,9 @@ class AIPlayer:
         #Uses the game points as the cost of a state. More points mean less cost
         return self.greedy(game_state, lambda state : sum([-game_state.points for game_state in state.move_history ]) + heuristic(state))
     
-    def a_star_weighted(self):
-        return None
+    def a_star_weighted(self, game_state, heuristic, weight):
+         #adds a weight to the heuristic
+         return self.greedy(game_state, lambda state : sum([-game_state.points for game_state in state.move_history ]) + weight * heuristic(state))
     
 
     def occupied_space(self, board):
