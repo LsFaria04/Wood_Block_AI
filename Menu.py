@@ -13,8 +13,8 @@ class Menu:
         self.options = ["Human", "AI", "Exit"] #options in use in the current menu
 
         #Options in the configuration menus (options, option selected)
-        self.load_conf_menu = [(["Config1", "Config2"], 0)]
-        self.choose_conf_menu = [(["5", "10"],0), (["6","18", "30"],0), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 )]
+        self.load_conf_menu = [(["Config1", "Config2"], 0, "Configuration")]
+        self.choose_conf_menu = [(["5", "10"],0,"Board Size (NxN)" ), (["6","18", "30"],0,"Number of Pieces"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 , "AI Algorithm")]
         
         self.conf_options = self.load_conf_menu #the current conf options in use
         self.arrow_selected = (-1,-1) # Arrow Button selected (idx, isleft)
@@ -51,11 +51,12 @@ class Menu:
         y_space = 500 // ((len(self.conf_options)) + 1) # space for the config selection and continue button
 
         for idx, config in enumerate(self.conf_options):
-            gui.draw_option_text((150, y_space + y_space*idx - 45), self.config_descriptions[idx])
+            options, selected, description = config
+            gui.draw_option_text((150, y_space + y_space*idx - 45), description)
 
             gui.draw_arrow_button(True, (150, y_space + y_space*idx))
             gui.draw_arrow_button(False, (400, y_space + y_space*idx))
-            options, selected = config
+            
             gui.draw_option_text((150,y_space + y_space*idx),options[selected])
 
         gui.draw_button((200, (y_space + y_space*len(self.conf_options))), "Continue")
@@ -104,16 +105,16 @@ class Menu:
             return self.options[self.selected]
     
     def mouse_down_conf_menu(self, isleft, idx):
-        options, selected = self.conf_options[idx]
+        options, selected, description = self.conf_options[idx]
 
         if isleft:
             if (selected - 1) >= 0:
                 selected -=1
-                self.conf_options[idx] = (options, selected)
+                self.conf_options[idx] = (options, selected, description)
         else:
             if (selected + 1) < len(options):
                 selected +=1
-                self.conf_options[idx] = (options, selected)
+                self.conf_options[idx] = (options, selected,description)
 
         return None
     
