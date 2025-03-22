@@ -2,6 +2,8 @@ from GUI import GUI
 from GameState import GameState
 from AIPlayer import AIPlayer
 from Menu import Menu
+from ConfigFileParser import parse_config_file
+from collections import deque
 import pygame
 import time
 
@@ -102,7 +104,7 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
-                    self.saved_config = [options[selected] for options, selected, description in self.menu.choose_conf_menu]
+                    self.saved_config = [options[selected] for options, selected, description in self.menu.conf_options]
                     print("DEBUG: saved_config =", self.saved_config)  # Debugging line
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2])  
@@ -112,6 +114,20 @@ class AppState:
             elif self.menu.current_menu == "LoadConfig":
                 
                 if option == "Continue":
+                    self.saved_config = [options[selected] for options, selected, description in self.menu.conf_options]
+                    filename = "config_files/" + self.saved_config[0] + ".txt"
+                    board,pieces,points = parse_config_file(filename)
+
+                    self.game_state.board = board
+                    self.game_state.L = pieces[:3]
+                    self.game_state.points = points
+                    self.game_state.Q = deque()
+                    for piece in pieces[3:]:
+                        self.game_state.Q.append(piece)
+
+                    self.player = AIPlayer(self.saved_config[1])
+                    
+
                     self.state = STATE_GAME
             
 

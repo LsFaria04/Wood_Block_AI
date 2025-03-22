@@ -9,6 +9,7 @@ def parse_config_file(filename):
     points = 0
     current = ""
     factory = PieceFactory()
+    piece_counter = 0
     for line in file:
       
       #check if the line is a section separator
@@ -26,12 +27,24 @@ def parse_config_file(filename):
         if current == "b":
             board_line = list(map(lambda item: int(item), line.split(',')))
             board.append(board_line)
+            
         elif current == "pi":
+
+            if piece_counter == 3:
+                #new piece row
+                piece_counter = 0
+
+            tile_size = 30
+            offset_x, offset_y = 60, len(board) * tile_size + 70
+            spacing = 180
             piece_conf = list(map(lambda item: int(item), line.split(',')))
             if len(piece_conf) != 4:
                 print("Not a piece config")
-            piece = factory.create_piece(0,0, piece_conf[0], piece_conf[1], piece_conf[2], piece_conf[3])
+            x, y = offset_x + piece_counter * spacing, offset_y
+            piece = factory.create_piece(x,y, piece_conf[0], piece_conf[1], piece_conf[2], piece_conf[3])
             pieces.append(piece)
+            piece_counter += 1
+
         elif current == "po":
             points = int(line)
     

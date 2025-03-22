@@ -13,7 +13,7 @@ class Menu:
         self.options = ["Human", "AI", "Exit"] #options in use in the current menu
 
         #Options in the configuration menus (options, option selected)
-        self.load_conf_menu = [(["Config1", "Config2"], 0, "Configuration")]
+        self.load_conf_menu = [(["config1", "config2"], 0, "Configuration"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 , "AI Algorithm")]
         self.choose_conf_menu = [(["5", "10"],0,"Board Size (NxN)" ), (["6","18", "30"],0,"Number of Pieces"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 , "AI Algorithm")]
         
         self.conf_options = self.load_conf_menu #the current conf options in use
