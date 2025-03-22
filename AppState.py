@@ -102,7 +102,7 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
-                    self.saved_config = [options[selected] for options, selected in self.menu.choose_conf_menu]
+                    self.saved_config = [options[selected] for options, selected, description in self.menu.choose_conf_menu]
                     print("DEBUG: saved_config =", self.saved_config)  # Debugging line
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2])  
