@@ -95,7 +95,7 @@ class GameState:
                     if self.board[y][x] != 0:
                         continue
                     if self.is_move_possible(piece_idx, (x,y)):
-                        child = GameState(lin_size, self.board,self.move_history, self.Q, self.L, self.points)
+                        child = GameState(lin_size, 0, self.board,self.move_history, self.Q, self.L, self.points)
                         child.move(piece_idx, (x,y))
                         children.append(child)
 

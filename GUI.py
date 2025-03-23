@@ -83,6 +83,12 @@ class GUI:
         text_surface = font.render(text, True, (255, 255, 255)) 
         lenx,leny = text_surface.get_size()
         self.screen.blit(text_surface, (155 + x - (lenx // 2), y + 25 - (leny // 2)))
+    
+    def draw_ai_warning(self):
+        font = pygame.font.Font(None, 42)
+        text_surface = font.render("Ai is Calculating ...", True, (255, 255, 255)) 
+        lenx,leny = text_surface.get_size()
+        self.screen.blit(text_surface, (300 - (lenx // 2), 360 - (leny // 2)))
 
 
 

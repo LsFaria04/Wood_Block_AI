@@ -78,6 +78,10 @@ class AppState:
 
             if self.menu.current_menu == "Main":
                 if option == "Human":
+                    self.isAI = False
+                    self.menu.change_menu("GameConfig")
+                if option == "AI":
+                    self.isAI = True
                     self.menu.change_menu("GameConfig")
                 elif option == "Exit":
                     self.state = STATE_EXIT
@@ -104,7 +108,7 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
-                    self.saved_config = [options[selected] for options, selected, description in self.menu.conf_options]
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" else options[selected] for options, selected, description in self.menu.conf_options]
                     print("DEBUG: saved_config =", self.saved_config)  # Debugging line
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2])  
@@ -114,7 +118,7 @@ class AppState:
             elif self.menu.current_menu == "LoadConfig":
                 
                 if option == "Continue":
-                    self.saved_config = [options[selected] for options, selected, description in self.menu.conf_options]
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points = parse_config_file(filename)
 
@@ -141,6 +145,11 @@ class AppState:
         if self.game_state is None:
             print("Error: GameState is not initialized!")
             self.state = STATE_MENU  # Go back to the menu instead of crashing
+            return
+        
+        if self.isAI :
+            #The game is only played by the AI
+            self.step_AI_game()
             return
     
         if self.start_time is None:
@@ -174,6 +183,23 @@ class AppState:
             self.gui.screen_needs_update = True
         if self.state == STATE_EXIT:
             pygame.quit()
+
+    def step_AI_game(self):
+        self.gui.draw_background()
+        self.gui.draw_ai_warning()
+        self.gui.refresh_screen()
+
+
+        move_history = self.player.play(self.game_state)
+
+        idx = 0
+        while True:
+            self.gui.draw_background()
+            move_history[idx].draw_board(self.gui)
+            move_history[idx].draw_current_pieces(self.gui)
+            self.gui.refresh_screen()
+        
+    
 
     def handle_mousedown(self):
         # Get the position where the mouse was clicked

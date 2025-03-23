@@ -14,7 +14,7 @@ class Menu:
 
         #Options in the configuration menus (options, option selected)
         self.load_conf_menu = [(["config1", "config2"], 0, "Configuration"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 , "AI Algorithm")]
-        self.choose_conf_menu = [(["5", "10"],0,"Board Size (NxN)" ), (["6","18", "30"],0,"Number of Pieces"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*"], 0 , "AI Algorithm")]
+        self.choose_conf_menu = [(["5", "10"],0,"Board Size (NxN)" ), (["6","18", "30"],0,"Number of Pieces"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*", "A* Weighted"], 0 , "AI Algorithm")]
         
         self.conf_options = self.load_conf_menu #the current conf options in use
         self.arrow_selected = (-1,-1) # Arrow Button selected (idx, isleft)
@@ -106,6 +106,10 @@ class Menu:
     
     def mouse_down_conf_menu(self, isleft, idx):
         options, selected, description = self.conf_options[idx]
+
+        if idx == -1 or isleft == -1:
+            #not a valid arrow
+            return 
 
         if isleft:
             if (selected - 1) >= 0:
