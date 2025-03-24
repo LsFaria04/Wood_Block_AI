@@ -90,11 +90,21 @@ class GUI:
         lenx,leny = text_surface.get_size()
         self.screen.blit(text_surface, (300 - (lenx // 2), 360 - (leny // 2)))
     
+    def draw_above_button_text(self, cords, text, buttonSize):
+        x,y = cords
+        lenx,leny = buttonSize
+        font = pygame.font.Font(None, 42)
+        text_surface = font.render(text, True, (255, 255, 255)) 
+        textx,texty = text_surface.get_size()
+        self.screen.blit(text_surface, (x + lenx // 2 - textx // 2, y - leny + texty // 2))
+
     def draw_next_previous_buttons(self, current_idx, max_idx):
         if current_idx > 0:
-            self.draw_arrow_button(True, (150,540))
+            self.draw_arrow_button(True, (120,540))
+            self.draw_above_button_text((120, 540), "Prev", (50,50))
         if (current_idx + 1) < max_idx:
-            self.draw_arrow_button(False, (450, 540))
+            self.draw_arrow_button(False, (420, 540))
+            self.draw_above_button_text((420, 540), "Next", (50,50))
 
 
 

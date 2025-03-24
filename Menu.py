@@ -81,10 +81,10 @@ class Menu:
         y_space = 500 // ((len(self.conf_options)) + 1) # space for the config selection and continue button
 
         for idx, config in enumerate(self.conf_options):
-            if x >= 150 and x <= 180 and y >= (y_space + y_space*idx) and y <= (y_space + y_space*idx + 30):
+            if x >= 150 and x <= 200 and y >= (y_space + y_space*idx) and y <= (y_space + y_space*idx + 50):
                 self.arrow_selected = (idx, True)
                 return
-            if x >= 400 and x <= 430 and  y >= (y_space + y_space*idx) and y <= (y_space + y_space*idx + 30):
+            if x >= 400 and x <= 450 and  y >= (y_space + y_space*idx) and y <= (y_space + y_space*idx + 50):
                 self.arrow_selected = (idx, False)
                 return
         self.arrow_selected = (-1,-1)

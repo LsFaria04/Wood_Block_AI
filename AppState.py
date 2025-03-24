@@ -221,9 +221,9 @@ class AppState:
         pos = pygame.mouse.get_pos()
         x,y = pos
 
-        if x >= 150 and x <= 180 and y >= 540 and y <= 570 and self.current_move > 0:
+        if x >= 120 and x <= 170 and y >= 540 and y <= 590 and self.current_move > 0:
             self.current_move -= 1
-        if x >= 450 and x <= 480 and y >= 540 and y <= 570 and (self.current_move + 1) < len(self.move_history) :
+        if x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) < len(self.move_history) :
             self.current_move += 1
 
 

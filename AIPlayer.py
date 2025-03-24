@@ -17,7 +17,7 @@ class AIPlayer:
         elif self.algorithm == 2:
             return self.dfs(gamestate)
         elif self.algorithm == 3:
-            return elf.iterative_deepening()
+            return self.iterative_deepening()
         elif self.algorithm == 4:
             return self.uniform_cost(gamestate)
         elif self.algorithm == 5:
@@ -48,21 +48,21 @@ class AIPlayer:
         return None
     
     def dfs(self, gamestate):
-        stack = [TreeNode(gamestate)]
+        stack = [gamestate]
         visited = set()
 
         while stack:
-            node = stack.pop()
-            if node.state.goal_state():
-                return node
+            state = stack.pop()
+            if state.goal_state():
+                return state.move_history
             
-            if node.state not in visited:
-                visited.add(node.state)
+            if state not in visited:
+                visited.add(state)
 
-                for state in node.state.children():
-                    new_node = TreeNode(state)
-                    new_node.parent = node
-                    stack.append(new_node)
+                for child_state in state.children():
+                    if child_state in visited:
+                        continue
+                    stack.append(child_state)
         return None
     
     def iterative_deepening(self):
