@@ -5,7 +5,7 @@ class Menu:
         self.current_menu = "Main"
 
         #Menu options
-        self.main_menu_options = ["Human", "Ai", "Exit"]
+        self.main_menu_options = ["Human", "AI", "Exit"]
         self.pause_menu_options = ["Resume", "Restart", "Exit"]
         self.game_conf_selection = ["Random", "Load Config"]
         self.load_config_menu = ["Continue"]

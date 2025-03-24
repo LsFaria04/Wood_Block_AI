@@ -38,7 +38,7 @@ class AIPlayer:
             visited.add(state) 
                                     # get first element in the queue
             if state.game_over():
-                state.move_history      # check goal state
+                (state.move_history, visited)      # check goal state
 
             for childState in state.children():
                 if (childState not in visited):
@@ -52,16 +52,17 @@ class AIPlayer:
 
         while stack:
             state = stack.pop()
-            if state.goal_state():
-                return state.move_history
-            
+
             if state not in visited:
                 visited.add(state)
 
-                for child_state in state.children():
-                    if child_state in visited:
-                        continue
-                    stack.append(child_state)
+            if state.goal_state():
+                return (state.move_history, visited)
+            
+            for child_state in state.children():
+                if child_state in visited:
+                    continue
+                stack.append(child_state)
         return None
     
     def iterative_deepening(self):
@@ -75,12 +76,10 @@ class AIPlayer:
 
         while states:
             cost, current_state = heapq.heappop(states)
-            
-            if current_state.game_over() :
-                return current_state.move_history
-            
             visited.add(current_state)
-
+            if current_state.game_over() :
+                return (current_state.move_history, visited)
+            
             for childState in current_state.children():
                 if childState in visited:
                     continue
@@ -98,7 +97,7 @@ class AIPlayer:
             visited.add(current_state)
 
             if current_state.game_over() :
-                return current_state.move_history
+                return (current_state.move_history, visited)
             
             for state in current_state.children():
                 if state in visited:

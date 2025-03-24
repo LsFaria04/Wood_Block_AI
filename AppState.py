@@ -4,28 +4,29 @@ from AIPlayer import AIPlayer
 from Menu import Menu
 from ConfigFileParser import parse_config_file
 from collections import deque
+from TextMenu import TextMenu
+import sys
 import pygame
 import time
 
 STATE_MENU = 1
 STATE_GAME = 2
 STATE_EXIT = 3
+STATE_GAMEOVER = 4
 
-GAME_TYPE_HUMAN = 5
-GAME_TYPE_AI = 6
 class AppState:
 
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
         self.state = STATE_MENU
-        self.game_type = GAME_TYPE_HUMAN
         self.gui = GUI(600, 720, "Wood Block")
         self.game_state = GameState(10,12)  # GameState dimensions are set initially and can be updated in the menu
         self.player = AIPlayer(1) #Use the greedy for testing
         self.menu = Menu()
 
         self.current_move = 0 #Ai Move that is being displayed
+        self.visited_states = None #states visited by the AI
 
         self.dragging_piece = None
         self.drag_offset = (0, 0)
@@ -62,6 +63,8 @@ class AppState:
             self.step_game()
         elif self.state == STATE_MENU:
             self.step_menu()
+        elif self.state == STATE_GAMEOVER:
+            self.step_gameover()
     
     def step_menu(self):
          # Prepare the next step in the frame
@@ -144,6 +147,32 @@ class AppState:
         if self.state == STATE_EXIT:
             pygame.quit()
     
+    def step_gameover(self):
+        self.gui.draw_background()
+        self.gameover_menu.draw_text_menu(self.gui)
+        self.gui.refresh_screen()
+
+        event = self.gui.get_event()
+
+        if event == 'q':
+            self.state = STATE_EXIT
+        elif event == 'mousedown':
+            pos = pygame.mouse.get_pos()
+            option = self.gameover_menu.mouse_down_option(pos)
+
+            if option == "Continue":
+                self.state = STATE_MENU
+                self.menu.change_menu("Main")
+
+        elif event == 'esc':
+            self.menu.change_menu("Pause")
+            self.state = STATE_MENU
+            self.gui.screen_needs_update = True
+        if self.state == STATE_EXIT:
+            pygame.quit()
+
+        return
+    
     def step_game(self):
         if self.game_state is None:
             print("Error: GameState is not initialized!")
@@ -169,6 +198,12 @@ class AppState:
         self.gui.draw_score(self.game_state.points)
 
         self.gui.refresh_screen()
+
+        #check gameover
+        if self.game_state.game_over():
+            self.state = STATE_GAMEOVER
+            self.gameover_menu = TextMenu(False, [self.game_state.points, round(self.time_taken, 3)])
+            return
         
         event = self.gui.get_event()
 
@@ -192,8 +227,17 @@ class AppState:
             self.gui.draw_background()
             self.gui.draw_ai_warning()
             self.gui.refresh_screen()
-            self.move_history = self.player.play(self.game_state)
+            init_time = time.time()
+            self.move_history, self.visited_states = self.player.play(self.game_state)
+            final_time = time.time() - init_time
             self.AiAlreadyPlayed = True
+
+            #Pre-load the gameover_menu
+            if self.move_history is None:
+                 self.gameover_menu = TextMenu(False,["No Solution","No Solution"])
+            else:
+                self.gameover_menu = TextMenu(True, [self.move_history[-1].points,round(final_time, 3), str(sys.getsizeof(self.visited_states)) + " bytes", len(self.visited_states)])
+
 
 
         self.gui.draw_background()
@@ -225,6 +269,9 @@ class AppState:
             self.current_move -= 1
         if x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) < len(self.move_history) :
             self.current_move += 1
+        elif x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) == len(self.move_history):
+            self.state = STATE_GAMEOVER
+            self.current_move = 0
 
 
     def handle_mousedown(self):

@@ -102,9 +102,22 @@ class GUI:
         if current_idx > 0:
             self.draw_arrow_button(True, (120,540))
             self.draw_above_button_text((120, 540), "Prev", (50,50))
-        if (current_idx + 1) < max_idx:
+        if (current_idx + 1) == max_idx:
+            self.draw_arrow_button(False, (420, 540))
+            self.draw_above_button_text((420, 540), "Stats", (50,50))
+        elif (current_idx + 1) < max_idx:
             self.draw_arrow_button(False, (420, 540))
             self.draw_above_button_text((420, 540), "Next", (50,50))
+        
+    def draw_gameover_stats(self,cords, description, stat):
+        x,y = cords
+        font = pygame.font.Font(None, 42)
+        text_surface = font.render(description, True, (255, 255, 255)) 
+        textx,texty = text_surface.get_size()
+        self.screen.blit(text_surface, (x , y))
+        text_surface2 = font.render(stat, True, (0, 255, 0)) 
+        self.screen.blit(text_surface2, (x + textx + 20 , y))
+
 
 
 
