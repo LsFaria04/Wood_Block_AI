@@ -25,6 +25,8 @@ class AppState:
         self.player = AIPlayer(1) #Use the greedy for testing
         self.menu = Menu()
 
+        self.current_move = 0 #Ai Move that is being displayed
+
         self.dragging_piece = None
         self.drag_offset = (0, 0)
 
@@ -82,6 +84,7 @@ class AppState:
                     self.menu.change_menu("GameConfig")
                 if option == "AI":
                     self.isAI = True
+                    self.AiAlreadyPlayed = False
                     self.menu.change_menu("GameConfig")
                 elif option == "Exit":
                     self.state = STATE_EXIT
@@ -185,21 +188,44 @@ class AppState:
             pygame.quit()
 
     def step_AI_game(self):
+        if not self.AiAlreadyPlayed:
+            self.gui.draw_background()
+            self.gui.draw_ai_warning()
+            self.gui.refresh_screen()
+            self.move_history = self.player.play(self.game_state)
+            self.AiAlreadyPlayed = True
+
+
         self.gui.draw_background()
-        self.gui.draw_ai_warning()
+        self.move_history[self.current_move].draw_board(self.gui)
+        self.move_history[self.current_move].draw_current_pieces(self.gui)
+        self.gui.draw_next_previous_buttons(self.current_move, len(self.move_history))
         self.gui.refresh_screen()
 
+        event = self.gui.get_event()
 
-        move_history = self.player.play(self.game_state)
-
-        idx = 0
-        while True:
-            self.gui.draw_background()
-            move_history[idx].draw_board(self.gui)
-            move_history[idx].draw_current_pieces(self.gui)
-            self.gui.refresh_screen()
+        if event == 'q':
+            self.state = STATE_EXIT
+        elif event == 'mousedown':
+            self.handle_mousedown_Ai()
+        elif event == 'esc':
+            self.menu.change_menu("Pause")
+            self.state = STATE_MENU
+            self.gui.screen_needs_update = True
+        if self.state == STATE_EXIT:
+            pygame.quit()
         
     
+    def handle_mousedown_Ai(self):
+        # Get the position where the mouse was clicked
+        pos = pygame.mouse.get_pos()
+        x,y = pos
+
+        if x >= 150 and x <= 180 and y >= 540 and y <= 570 and self.current_move > 0:
+            self.current_move -= 1
+        if x >= 450 and x <= 480 and y >= 540 and y <= 570 and (self.current_move + 1) < len(self.move_history) :
+            self.current_move += 1
+
 
     def handle_mousedown(self):
         # Get the position where the mouse was clicked

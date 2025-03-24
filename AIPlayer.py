@@ -17,42 +17,36 @@ class AIPlayer:
         elif self.algorithm == 2:
             return self.dfs(gamestate)
         elif self.algorithm == 3:
-            self.iterative_deepening()
+            return elf.iterative_deepening()
         elif self.algorithm == 4:
-            self.uniform_cost()
+            return self.uniform_cost(gamestate)
         elif self.algorithm == 5:
             return self.greedy(gamestate, self.heuristic3)
         elif self.algorithm == 6:
             return self.a_star(gamestate, self.heuristic3)
         elif self.algorithm == 7:
             #used the board plus the number of pieces as the weight in the algorithm, so that the heuristic weight is proportional to the size of the game 
-            self.a_star_weighted(gamestate, self.heuristic3, (len(gamestate.board) + len(gamestate.Q) + len(gamestate.L)))
+            return self.a_star_weighted(gamestate, self.heuristic3, (len(gamestate.board) + len(gamestate.Q) + len(gamestate.L)))
         else:
             print("Algorithm is not available")
 
     def bfs(self, gamestate):
         queue = deque([gamestate])          # initialize the queue to store the nodes
         visited = set()
-        possibleGoalStates = []
 
         while queue:
             state = queue.popleft()
             visited.add(state) 
                                     # get first element in the queue
-            if state.game_over():      # check goal state
-                possibleGoalStates.append(state)
+            if state.game_over():
+                state.move_history      # check goal state
 
             for childState in state.children():
                 if (childState not in visited):
                     queue.append(childState)
                     
-
-        if possibleGoalStates:
-            bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
-            return bestState.move_history
-        else:
-            return None
-
+        return None
+    
     def dfs(self, gamestate):
         stack = [TreeNode(gamestate)]
         visited = set()
@@ -74,29 +68,26 @@ class AIPlayer:
     def iterative_deepening(self):
         return None
     
-    def uniform_cost(self):
+    def uniform_cost(self,gamestate):
+        setattr(GameState, "__lt__", lambda self, other: other.points < self.points)
         states = []  # Min-heap for UCS
-        heapq.heappush(states, (0, self.gamestate))
+        heapq.heappush(states, (0, gamestate))
         visited = set()
-        possibleGoalStates = []
 
         while states:
             cost, current_state = heapq.heappop(states)
             
             if current_state.game_over() :
-                possibleGoalStates.append(current_state)
+                return current_state.move_history
             
             visited.add(current_state)
 
             for childState in current_state.children():
-                if current_state in visited:
+                if childState in visited:
                     continue
                 heapq.heappush(states, (-childState.points + cost, childState))
 
-        bestState = max([state for state in possibleGoalStates], key=lambda state: state.points)
-
-        return bestState.move_history
-    
+        return None
 
     def greedy(self, game_state, heuristic):
         setattr(GameState, "__lt__", lambda self, other: heuristic(self) < heuristic(other))

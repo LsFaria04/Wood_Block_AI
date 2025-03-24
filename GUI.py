@@ -89,6 +89,12 @@ class GUI:
         text_surface = font.render("Ai is Calculating ...", True, (255, 255, 255)) 
         lenx,leny = text_surface.get_size()
         self.screen.blit(text_surface, (300 - (lenx // 2), 360 - (leny // 2)))
+    
+    def draw_next_previous_buttons(self, current_idx, max_idx):
+        if current_idx > 0:
+            self.draw_arrow_button(True, (150,540))
+        if (current_idx + 1) < max_idx:
+            self.draw_arrow_button(False, (450, 540))
 
 
 
