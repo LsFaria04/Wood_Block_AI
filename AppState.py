@@ -235,6 +235,7 @@ class AppState:
         if not self.AiAlreadyPlayed:
             self.gui.draw_background()
             self.gui.draw_ai_warning()
+            self.gui.screen_needs_update = True
             self.gui.refresh_screen()
             init_time = time.time()
             self.move_history, self.visited_states = self.player.play(self.game_state)
@@ -244,6 +245,7 @@ class AppState:
             #Pre-load the gameover_menu
             if self.move_history is None:
                  self.gameover_menu = TextMenu(False,["No Solution","No Solution"])
+                 return
             else:
                 self.gameover_menu = TextMenu(True, [self.move_history[-1].points,round(final_time, 3), str(sys.getsizeof(self.visited_states)) + " bytes", len(self.visited_states)])
 
