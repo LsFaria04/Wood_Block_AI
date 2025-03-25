@@ -16,7 +16,10 @@ class GUI:
         self.background = pygame.transform.scale(self.background, (width, height))
         self.hint_button_img = pygame.image.load("images/hint.png")
         self.hint_button = pygame.transform.scale(self.hint_button_img, (50, 50))
-    
+        self.sound_img = pygame.image.load("images/sound.png")
+        self.sound_img = pygame.transform.scale(self.sound_img, (50, 50))
+        self.sound_muted_img = pygame.image.load("images/sound_muted.png")
+        self.sound_muted_img = pygame.transform.scale(self.sound_muted_img, (50, 50))    
 
 
     
@@ -172,3 +175,20 @@ class GUI:
         x_position = (screen_width - text_width) // 2
         
         self.screen.blit(text_surface, (x_position, 5))
+
+    def draw_mute_button(self, muted):
+        image = self.sound_muted_img if muted else self.sound_img
+
+        x, y = 545, 60
+
+        if muted:
+            overlay = pygame.Surface((50, 50), pygame.SRCALPHA)
+            overlay.fill((255, 0, 0, 100))  
+            
+            image_with_overlay = image.copy()
+            image_with_overlay.blit(overlay, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+            
+            self.screen.blit(image_with_overlay, (x, y))
+        else:
+            self.screen.blit(image, (x, y))
+

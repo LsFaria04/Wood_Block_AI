@@ -25,6 +25,7 @@ class AppState:
         self.player = AIPlayer(4) #Use the greedy for testing
         self.hint_clicked = False
         self.menu = Menu()
+        self.muted = False
 
         self.current_move = 0 #Ai Move that is being displayed
         self.visited_states = None #states visited by the AI
@@ -40,7 +41,8 @@ class AppState:
 
     def load_music(self):
         try:
-            pygame.mixer.music.load("music/jazz.mp3")
+            if not self.muted:
+                pygame.mixer.music.load("music/jazz.mp3")
         except pygame.error as e:
             print(f"Error loading music file: {e}")
 
@@ -201,6 +203,7 @@ class AppState:
             self.move_history[len(self.game_state.move_history)].draw_current_pieces(self.gui)
 
         self.gui.draw_hint_button()
+        self.gui.draw_mute_button(self.muted)
         self.gui.refresh_screen()
         self.gui.draw_timer(self.time_taken)
         self.gui.draw_score(self.game_state.points)
@@ -283,10 +286,22 @@ class AppState:
 
 
     def handle_mousedown(self):
-        # Get the position where the mouse was clicked
         pos = pygame.mouse.get_pos()
-        if (pos[0] >= 545 and pos[0] <= 595 and pos[1] >= 5 and pos[1] <= 55):
-            self.hint_clicked = self.hint_clicked ^ True
+
+        #mute button
+        if 545 <= pos[0] <= 595 and 60 <= pos[1] <= 110:
+            self.muted = not self.muted 
+            if self.muted:
+                pygame.mixer.music.pause()  
+            else:
+                pygame.mixer.music.unpause()  
+            return
+        
+        #hint button
+        if 545 <= pos[0] <= 595 and 5 <= pos[1] <= 55:
+            self.hint_clicked = not self.hint_clicked
+            return
+
         for piece in self.game_state.L:
             if self.is_mouse_on_piece(piece, pos):
                 if piece.isPlaced:
