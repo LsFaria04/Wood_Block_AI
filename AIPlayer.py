@@ -16,7 +16,7 @@ class AIPlayer:
         elif self.algorithm == 2:
             return self.dfs(gamestate)
         elif self.algorithm == 3:
-            return self.iterative_deepening()
+            return self.iterative_deepening(gamestate)
         elif self.algorithm == 4:
             return self.uniform_cost(gamestate)
         elif self.algorithm == 5:
