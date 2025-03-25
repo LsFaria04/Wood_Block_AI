@@ -56,7 +56,7 @@ class AIPlayer:
             if state not in visited:
                 visited.add(state)
 
-            if state.goal_state():
+            if state.game_over():
                 return (state.move_history, visited)
             
             for child_state in state.children():
