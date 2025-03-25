@@ -35,6 +35,16 @@ class GUI:
             # Use stored `piece.x` and `piece.y` for drawing
             self.screen.blit(self.block_img, (draw_x, draw_y))
 
+    def drawHighlightedPiece(self, piece, block_size):
+        self.screen_needs_update = True
+        occupied_cells = piece.getOccupiedCells()
+        for (x, y) in occupied_cells:
+            draw_x = piece.x + x * block_size
+            draw_y = piece.y + y * block_size
+            highlight_surface = pygame.Surface((block_size, block_size), pygame.SRCALPHA)
+            highlight_surface.fill((0, 255, 0, 128))  # Green with transparency
+            self.screen.blit(highlight_surface, (draw_x, draw_y))
+
     def drawRectangle(self, cords):
         self.screen_needs_update = True
         x, y = cords
@@ -192,3 +202,19 @@ class GUI:
         else:
             self.screen.blit(image, (x, y))
 
+    def drawHighlightedCell(self, cords):
+        """ Draws a highlighted cell to indicate AI's suggested move. """
+        x, y = cords
+        x_offset = 30
+        y_offset = 30
+        
+        highlight_color = (0, 255, 0, 128)  # Green with transparency
+        
+        # Create a surface with transparency
+        highlight_surface = pygame.Surface((30, 30), pygame.SRCALPHA)
+        highlight_surface.fill(highlight_color)
+        
+        # Blit it onto the screen at the correct position
+        self.screen.blit(highlight_surface, (x * x_offset, y * y_offset))
+        
+        self.screen_needs_update = True
