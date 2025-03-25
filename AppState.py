@@ -22,7 +22,8 @@ class AppState:
         self.state = STATE_MENU
         self.gui = GUI(600, 720, "Wood Block")
         self.game_state = GameState(10,12)  # GameState dimensions are set initially and can be updated in the menu
-        self.player = AIPlayer(1) #Use the greedy for testing
+        self.player = AIPlayer(4) #Use the greedy for testing
+        self.hint_clicked = False
         self.menu = Menu()
 
         self.current_move = 0 #Ai Move that is being displayed
@@ -189,15 +190,20 @@ class AppState:
         self.update_time()
 
         # Prepare the next step in the frame
-        self.gui.draw_background()
-        self.game_state.draw_board(self.gui)
-        self.game_state.draw_current_pieces(self.gui)
-        self.gui.draw_hint_button()
+        if not self.hint_clicked:
+            self.gui.draw_background()
+            self.game_state.draw_board(self.gui)
+            self.game_state.draw_current_pieces(self.gui)
+        else:
+            self.move_history, self.visited_states = self.player.play(self.game_state)
+            self.gui.draw_background()
+            self.move_history[len(self.game_state.move_history)].draw_board(self.gui)
+            self.move_history[len(self.game_state.move_history)].draw_current_pieces(self.gui)
 
+        self.gui.draw_hint_button()
+        self.gui.refresh_screen()
         self.gui.draw_timer(self.time_taken)
         self.gui.draw_score(self.game_state.points)
-
-        self.gui.refresh_screen()
 
         #check gameover
         if self.game_state.game_over():
@@ -277,6 +283,8 @@ class AppState:
     def handle_mousedown(self):
         # Get the position where the mouse was clicked
         pos = pygame.mouse.get_pos()
+        if (pos[0] >= 545 and pos[0] <= 595 and pos[1] >= 5 and pos[1] <= 55):
+            self.hint_clicked = self.hint_clicked ^ True
         for piece in self.game_state.L:
             if self.is_mouse_on_piece(piece, pos):
                 if piece.isPlaced:
