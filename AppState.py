@@ -197,13 +197,16 @@ class AppState:
         else:
             self.move_history, self.visited_states = self.player.play(self.game_state)
             self.gui.draw_background()
-            self.move_history[len(self.game_state.move_history)].draw_board(self.gui)
-            self.move_history[len(self.game_state.move_history)].draw_current_pieces(self.gui)
+            piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
+            self.game_state.draw_board(self.gui)
+            self.game_state.draw_highlighted_move(self.gui, piece, position)
+            self.game_state.draw_current_pieces(self.gui)
+            self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
 
         self.gui.draw_hint_button()
-        self.gui.refresh_screen()
         self.gui.draw_timer(self.time_taken)
         self.gui.draw_score(self.game_state.points)
+        self.gui.refresh_screen()
 
         #check gameover
         if self.game_state.game_over():

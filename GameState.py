@@ -14,6 +14,7 @@ class GameState:
             self.piece_factory = PieceFactory()
             self.points = 0
             self.move_history = []
+            self.move_made = None
             for i in range(nPieces//3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
@@ -72,6 +73,15 @@ class GameState:
                     gui.drawRectangle(pos)
                 else:
                     gui.draw_board_background(pos)
+    
+    def draw_highlighted_move(self, gui, piece, piece_pos):
+        """ Highlights the suggested move on the board. """
+        offset_x, offset_y = 2, 1 # Offset to draw the board
+        grid_x, grid_y = piece_pos
+        for y in range(piece.ylen):
+            for x in range(piece.xlen):
+                if piece.matrix[y][x] == 1:
+                    gui.drawHighlightedCell((grid_x + x + offset_x , grid_y + y + offset_y))
 
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board
@@ -79,6 +89,12 @@ class GameState:
 
         for i, piece in enumerate(self.L):
             gui.drawPiece(piece, tile_size)
+
+    def draw_highlighted_piece(self,gui, pieceIdx):
+        # Draws the three pieces available for the player below the game board
+        tile_size = 30
+        
+        gui.drawHighlightedPiece(self.L[pieceIdx], tile_size)
 
     def children(self):
         '''
@@ -141,6 +157,7 @@ class GameState:
                     self.board[y + y_offset][x + x_offset] = 1
         
         self.move_history.append(self)
+        self.move_made = (piece, piece_idx, cords)
 
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
 
