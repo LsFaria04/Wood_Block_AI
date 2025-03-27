@@ -214,7 +214,6 @@ class AppState:
 
         self.gui.draw_hint_button()
         self.gui.draw_mute_button(self.muted)
-        self.gui.refresh_screen()
         self.gui.draw_timer(self.time_taken)
         self.gui.draw_score(self.game_state.points)
         self.gui.refresh_screen()
