@@ -26,6 +26,7 @@ class AppState:
         self.hint_clicked = False
         self.menu = Menu()
         self.muted = False
+        self.notLoaded = True
 
         self.current_move = 0 #Ai Move that is being displayed
         self.visited_states = None #states visited by the AI
@@ -117,17 +118,17 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
-                    self.saved_config = [selected + 1 if description == "AI Algorithm" else options[selected] for options, selected, description in self.menu.conf_options]
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     print("DEBUG: saved_config =", self.saved_config)  # Debugging line
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
-                    self.player = AIPlayer(self.saved_config[2])  
+                    self.player = AIPlayer(self.saved_config[2], self.saved_config[3])  
                     
                     self.state = STATE_GAME  
 
             elif self.menu.current_menu == "LoadConfig":
                 
                 if option == "Continue":
-                    self.saved_config = [selected + 1 if description == "AI Algorithm" else options[selected] for options, selected, description in self.menu.conf_options]
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points = parse_config_file(filename)
 
@@ -138,7 +139,7 @@ class AppState:
                     for piece in pieces[3:]:
                         self.game_state.Q.append(piece)
 
-                    self.player = AIPlayer(self.saved_config[1])
+                    self.player = AIPlayer(self.saved_config[1], self.saved_config[2])
                     
 
                     self.state = STATE_GAME
@@ -196,18 +197,23 @@ class AppState:
             self.gui.draw_background()
             self.game_state.draw_board(self.gui)
             self.game_state.draw_current_pieces(self.gui)
+            self.notLoaded = True
         else:
-            self.move_history, self.visited_states = self.player.play(self.game_state)
+
+            if self.notLoaded:
+                self.move_history, self.visited_states = self.player.play(self.game_state)
+                self.notLoaded = False
+
             self.gui.draw_background()
-            piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
-            self.game_state.draw_board(self.gui)
-            self.game_state.draw_highlighted_move(self.gui, piece, position)
-            self.game_state.draw_current_pieces(self.gui)
-            self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
+            if (len(self.game_state.move_history) < len(self.move_history)):
+                piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
+                self.game_state.draw_board(self.gui)
+                self.game_state.draw_highlighted_move(self.gui, piece, position)
+                self.game_state.draw_current_pieces(self.gui)
+                self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
 
         self.gui.draw_hint_button()
         self.gui.draw_mute_button(self.muted)
-        self.gui.refresh_screen()
         self.gui.draw_timer(self.time_taken)
         self.gui.draw_score(self.game_state.points)
         self.gui.refresh_screen()
@@ -215,6 +221,7 @@ class AppState:
         #check gameover
         if self.game_state.game_over():
             self.state = STATE_GAMEOVER
+            self.hint_clicked = False
             self.gameover_menu = TextMenu(False, [self.game_state.points, round(self.time_taken, 3)])
             return
         

@@ -4,8 +4,18 @@ from GameState import GameState
 import heapq
 
 class AIPlayer:
-    def __init__(self, algorithm):
+    def __init__(self, algorithm, heuristic = 1):
         self.algorithm = algorithm
+        
+        if heuristic == 1:
+            self.heuristic = self.heuristic1
+        elif heuristic == 2:
+            self.heuristic = self.heuristic2
+        elif heuristic == 3:
+            self.heuristic = self.heuristic3
+        elif heuristic == 4:
+            self.heuristic = self.heuristic4
+
 
     def play(self,gamestate):
         '''
@@ -20,12 +30,12 @@ class AIPlayer:
         elif self.algorithm == 4:
             return self.uniform_cost(gamestate)
         elif self.algorithm == 5:
-            return self.greedy(gamestate, self.heuristic3)
+            return self.greedy(gamestate, self.heuristic)
         elif self.algorithm == 6:
-            return self.a_star(gamestate, self.heuristic3)
+            return self.a_star(gamestate, self.heuristic)
         elif self.algorithm == 7:
             #used the board plus the number of pieces as the weight in the algorithm, so that the heuristic weight is proportional to the size of the game 
-            return self.a_star_weighted(gamestate, self.heuristic3, (len(gamestate.board) + len(gamestate.Q) + len(gamestate.L)))
+            return self.a_star_weighted(gamestate, self.heuristic, (len(gamestate.board) + len(gamestate.Q) + len(gamestate.L)))
         else:
             print("Algorithm is not available")
 
@@ -37,7 +47,7 @@ class AIPlayer:
             state = queue.popleft()
             visited.add(state) 
                                     # get first element in the queue
-            if state.game_over():
+            if state.game_over_AI():
                 (state.move_history, visited)      # check goal state
 
             for childState in state.children():
@@ -56,7 +66,7 @@ class AIPlayer:
             if state not in visited:
                 visited.add(state)
 
-            if state.game_over():
+            if state.game_over_AI():
                 return (state.move_history, visited)
             
             for child_state in state.children():
@@ -106,7 +116,7 @@ class AIPlayer:
         while states:
             cost, current_state = heapq.heappop(states)
             visited.add(current_state)
-            if current_state.game_over() :
+            if current_state.game_over_AI() :
                 return (current_state.move_history, visited)
             
             for childState in current_state.children():
@@ -125,7 +135,7 @@ class AIPlayer:
             current_state = heapq.heappop(states)
             visited.add(current_state)
 
-            if current_state.game_over() :
+            if current_state.game_over_AI() :
                 return (current_state.move_history, visited)
             
             for state in current_state.children():
@@ -198,9 +208,12 @@ class AIPlayer:
         return res
     
     def heuristic3(self, gamestate):
-        # Gives more weight to the obtention of points.
-        # The near_full_line function give more weight to states that have more lines almost completed
+        #Equal weight to the completion of lines and points earned
         res = (-gamestate.points) + self.near_full_line(gamestate.board)
         return res
     
+    def heuristic4(self, gamestate):
+        #Equal weight for the number of pieces (how close if from gameover) and points earned
+        res = (-gamestate.points) + len(gamestate.Q) + len(gamestate.L)
+        return res
     

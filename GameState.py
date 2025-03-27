@@ -220,6 +220,10 @@ class GameState:
             for col in full_columns:
                 self.board[lin][col] = 0
     
+    def game_over_AI(self):
+        # no pieces to play 
+        if len(self.L) == 0 and len(self.Q) == 0:
+            return True
     
     def game_over(self):
         # no pieces to play 

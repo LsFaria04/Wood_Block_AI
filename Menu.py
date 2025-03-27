@@ -13,8 +13,8 @@ class Menu:
         self.options = ["Human", "AI", "Exit"] #options in use in the current menu
 
         #Options in the configuration menus (options, option selected)
-        self.load_conf_menu = [(["config1", "config2"], 0, "Configuration"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*", "A* Weighted"], 0 , "AI Algorithm")]
-        self.choose_conf_menu = [(["5", "10"],0,"Board Size (NxN)" ), (["6","18", "30"],0,"Number of Pieces"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*", "A* Weighted"], 0 , "AI Algorithm")]
+        self.load_conf_menu = [(["config1", "config2"], 0, "Configuration"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*", "A* Weighted"], 0 , "AI Algorithm"), (["Heuristic 1", "Heuristic 2", "Heuristic 3", "Heuristic 4"], 0 , "Algorithm Heuristic")]
+        self.choose_conf_menu = [(["5", "10"],0,"Board Size (NxN)" ), (["6","18", "30"],0,"Number of Pieces"), (["BFS", "DFS", "Iter-Deep", "UCS", "Greedy", "A*", "A* Weighted"], 0 , "AI Algorithm"), (["Heuristic 1", "Heuristic 2", "Heuristic 3", "Heuristic 4"], 0 , "Algorithm Heuristic")]
         
         self.conf_options = self.load_conf_menu #the current conf options in use
         self.arrow_selected = (-1,-1) # Arrow Button selected (idx, isleft)
@@ -58,6 +58,10 @@ class Menu:
             gui.draw_arrow_button(False, (400, y_space + y_space*idx))
             
             gui.draw_option_text((150,y_space + y_space*idx),options[selected])
+
+            if selected < 4 and description == "AI Algorithm":
+                #Algorithms with no heuristic don't have heuristic
+                break
 
         gui.draw_button((200, (y_space + y_space*len(self.conf_options))), "Continue")
 
