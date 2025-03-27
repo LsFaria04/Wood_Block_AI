@@ -37,7 +37,7 @@ class AIPlayer:
             state = queue.popleft()
             visited.add(state) 
                                     # get first element in the queue
-            if state.game_over():
+            if state.game_over_AI():
                 (state.move_history, visited)      # check goal state
 
             for childState in state.children():
@@ -56,7 +56,7 @@ class AIPlayer:
             if state not in visited:
                 visited.add(state)
 
-            if state.game_over():
+            if state.game_over_AI():
                 return (state.move_history, visited)
             
             for child_state in state.children():
@@ -69,7 +69,7 @@ class AIPlayer:
         if depth == 0:
             return None
         
-        if state.game_over():
+        if state.game_over_AI():
             return state.move_history
         
         visited.add(state)
@@ -105,7 +105,7 @@ class AIPlayer:
         while states:
             cost, current_state = heapq.heappop(states)
             visited.add(current_state)
-            if current_state.game_over() :
+            if current_state.game_over_AI() :
                 return (current_state.move_history, visited)
             
             for childState in current_state.children():
@@ -124,7 +124,7 @@ class AIPlayer:
             current_state = heapq.heappop(states)
             visited.add(current_state)
 
-            if current_state.game_over() :
+            if current_state.game_over_AI() :
                 return (current_state.move_history, visited)
             
             for state in current_state.children():
