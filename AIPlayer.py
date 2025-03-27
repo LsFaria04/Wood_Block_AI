@@ -65,36 +65,37 @@ class AIPlayer:
                 stack.append(child_state)
         return None
     
-    def depth_limited_search(self, state, depth, visited):
-        if depth == 0:
-            return None
-        
-        if state.game_over():
-            return state.move_history
-        
-        visited.add(state)
+    def depth_limited_search(self, gamestate, max_depth):
+        stack = [(gamestate, 0)]
+        visited = set()
 
-        for child_state in state.children():
-            if child_state in visited:
+        while stack:
+            state, depth = stack.pop()
+
+            if state in visited:
                 continue
+            visited.add(state)
 
-            result = self.depth_limited_search(child_state, depth - 1, visited)
+            if state.game_over():
+                return (state.move_history, visited)
 
-            if result is not None:
-                return result
+            if depth < max_depth:
+                for child_state in state.children():
+                    if child_state not in visited:
+                        stack.append((child_state, depth + 1))
+
         return None
     
     def iterative_deepening(self, gamestate):
         depth = 0
 
         while True:
-            visited = set()
-            result = self.depth_limited_search(gamestate, depth, visited)
+            print(f"Visiting depth {depth}")
+            result = self.depth_limited_search(gamestate, depth)
 
             if result is not None:
-                return (result, visited)
+                return result
             depth += 1
-        return None
     
     def uniform_cost(self,gamestate):
         setattr(GameState, "__lt__", lambda self, other: other.points < self.points)

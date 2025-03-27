@@ -42,7 +42,7 @@ class AppState:
     def load_music(self):
         try:
             if not self.muted:
-                pygame.mixer.music.load("music/jazz.mp3")
+                pygame.mixer.music.load("music/lock_in_song.mp3")
         except pygame.error as e:
             print(f"Error loading music file: {e}")
 
