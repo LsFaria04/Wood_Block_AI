@@ -118,17 +118,17 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
-                    self.saved_config = [selected + 1 if description == "AI Algorithm" else options[selected] for options, selected, description in self.menu.conf_options]
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     print("DEBUG: saved_config =", self.saved_config)  # Debugging line
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
-                    self.player = AIPlayer(self.saved_config[2])  
+                    self.player = AIPlayer(self.saved_config[2], self.saved_config[3])  
                     
                     self.state = STATE_GAME  
 
             elif self.menu.current_menu == "LoadConfig":
                 
                 if option == "Continue":
-                    self.saved_config = [selected + 1 if description == "AI Algorithm" else options[selected] for options, selected, description in self.menu.conf_options]
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points = parse_config_file(filename)
 
@@ -139,7 +139,7 @@ class AppState:
                     for piece in pieces[3:]:
                         self.game_state.Q.append(piece)
 
-                    self.player = AIPlayer(self.saved_config[1])
+                    self.player = AIPlayer(self.saved_config[1], self.saved_config[2])
                     
 
                     self.state = STATE_GAME
