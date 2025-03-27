@@ -26,6 +26,7 @@ class AppState:
         self.hint_clicked = False
         self.menu = Menu()
         self.muted = False
+        self.notLoaded = True
 
         self.current_move = 0 #Ai Move that is being displayed
         self.visited_states = None #states visited by the AI
@@ -196,14 +197,20 @@ class AppState:
             self.gui.draw_background()
             self.game_state.draw_board(self.gui)
             self.game_state.draw_current_pieces(self.gui)
+            self.notLoaded = True
         else:
-            self.move_history, self.visited_states = self.player.play(self.game_state)
+
+            if self.notLoaded:
+                self.move_history, self.visited_states = self.player.play(self.game_state)
+                self.notLoaded = False
+
             self.gui.draw_background()
-            piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
-            self.game_state.draw_board(self.gui)
-            self.game_state.draw_highlighted_move(self.gui, piece, position)
-            self.game_state.draw_current_pieces(self.gui)
-            self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
+            if (len(self.game_state.move_history) < len(self.move_history)):
+                piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
+                self.game_state.draw_board(self.gui)
+                self.game_state.draw_highlighted_move(self.gui, piece, position)
+                self.game_state.draw_current_pieces(self.gui)
+                self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
 
         self.gui.draw_hint_button()
         self.gui.draw_mute_button(self.muted)
@@ -215,6 +222,7 @@ class AppState:
         #check gameover
         if self.game_state.game_over():
             self.state = STATE_GAMEOVER
+            self.hint_clicked = False
             self.gameover_menu = TextMenu(False, [self.game_state.points, round(self.time_taken, 3)])
             return
         
