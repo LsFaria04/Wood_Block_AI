@@ -1,4 +1,5 @@
 from PieceFactory import PieceFactory
+from datetime import datetime
 
 
 def parse_config_file(filename):
@@ -49,3 +50,28 @@ def parse_config_file(filename):
             points = int(line)
     
     return (board, pieces, points)
+
+def store_results(algorithm, heuristic, move_history, time_execution, points, memory_used):
+    now = datetime.now()
+    # Format the date and time
+    formatted_date = now.strftime("%Y_%m_%d %H_%M_%S")
+
+    with open("saved_ai_results/" + str(formatted_date) + ".txt", "w") as file:
+        file.write("Saved at : " + formatted_date + "\n\n")
+        file.write("Algorithm: " + algorithm + "\n")
+        if algorithm in ["Greedy", "A*", "A* Weighted"]:
+            file.write("Heuristic: " + heuristic + "\n\n")
+        file.write("Execution Time: " + str(time_execution) + "\n")
+        file.write("Points: " + points + "\n")
+        file.write("Memory Used: " + memory_used + "\n")
+        file.write("Move History: \n\n")
+        for state in move_history:
+            file.write("Move Made (piece index, cords): ")
+            file.write(str(state.move_made[1]) + ", " + str(state.move_made[2]) + "\n")
+            for line in state.board:
+                for element in line:
+                    file.write(str(element))
+                file.write("\n")
+            file.write("\n")
+            
+            

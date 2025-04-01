@@ -2,7 +2,7 @@ from GUI import GUI
 from GameState import GameState
 from AIPlayer import AIPlayer
 from Menu import Menu
-from ConfigFileParser import parse_config_file
+from FileParser import parse_config_file, store_results
 from collections import deque
 from TextMenu import TextMenu
 import sys
@@ -43,7 +43,7 @@ class AppState:
     def load_music(self):
         try:
             if not self.muted:
-                pygame.mixer.music.load("music/lock_in_song.mp3")
+                pygame.mixer.music.load("music/jazz.mp3")
         except pygame.error as e:
             print(f"Error loading music file: {e}")
 
@@ -167,6 +167,13 @@ class AppState:
             if option == "Continue":
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
+            if option == "Save":
+                #stores the results into a file before changing the menu
+                algorithm = self.menu.conf_options[-2][0][self.saved_config[1] - 1]
+                heuristic = self.menu.conf_options[-1][0][self.saved_config[2] - 1]
+                store_results(algorithm, heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
+                self.state = STATE_MENU
+                self.menu.change_menu("Main")
 
         elif event == 'esc':
             self.menu.change_menu("Pause")
@@ -201,6 +208,11 @@ class AppState:
         else:
 
             if self.notLoaded:
+                #The hint is not loaded. Run the algorithm
+                self.gui.draw_background()
+                self.gui.draw_ai_warning()
+                self.gui.screen_needs_update = True
+                self.gui.refresh_screen()
                 self.move_history, self.visited_states = self.player.play(self.game_state)
                 self.notLoaded = False
 
@@ -253,9 +265,13 @@ class AppState:
             final_time = time.time() - init_time
             self.AiAlreadyPlayed = True
 
+            #Used to store the results in a file
+            self.saved_results = [self.move_history, round(final_time, 3),self.move_history[-1].points, str(sys.getsizeof(self.visited_states))]
+
             #Pre-load the gameover_menu
             if self.move_history is None:
                  self.gameover_menu = TextMenu(False,["No Solution","No Solution"])
+                 self.state = STATE_GAMEOVER
                  return
             else:
                 self.gameover_menu = TextMenu(True, [self.move_history[-1].points,round(final_time, 3), str(sys.getsizeof(self.visited_states)) + " bytes", len(self.visited_states)])

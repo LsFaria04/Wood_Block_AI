@@ -11,20 +11,23 @@ class TextMenu :
     def draw_text_menu(self, gui):
         gui.screen_needs_update = True
         gui.draw_menu_title("Game Over")
-        y_space = 420 // 5
+        y_space = 550 // 6
 
-        gui.draw_gameover_stats((150, (100 + y_space)), "Points", str(self.points))
-        gui.draw_gameover_stats((150, (100 + y_space * 2)), "Time", str(self.time))
+        gui.draw_gameover_stats((150, (50 + y_space)), "Points", str(self.points))
+        gui.draw_gameover_stats((150, (50 + y_space * 2)), "Time", str(self.time))
         if self.is_ai_stats:
-            gui.draw_gameover_stats((150, (100 + y_space * 3)), "Memory Usage", self.memory_usage)
-            gui.draw_gameover_stats((150, (100 + y_space * 4)), "Number of Visited States", str(self.visited_states))
+            gui.draw_gameover_stats((150, (50 + y_space * 3)), "Memory Usage", self.memory_usage)
+            gui.draw_gameover_stats((150, (50 + y_space * 4)), "Number of Visited States", str(self.visited_states))
+            gui.draw_button((200, (50 + y_space * 5)), "Save Results")
         
-        gui.draw_button((200, (100 + y_space * 5)), "Continue")
+        gui.draw_button((200, (50 + y_space * 6)), "Continue")
     
     def mouse_down_option(self, cords):
         x,y = cords
-        y_space = 420 // 5
-        if x >= 200 and x <= 500 and y >= (100 + y_space * 5) and y <= (100 + y_space * 5 + 70):
+        y_space = 550 // 6
+        if x >= 200 and x <= 500 and y >= (50 + y_space * 5) and y <= (50 + y_space * 5 + 70):
+            return "Save"
+        if x >= 200 and x <= 500 and y >= (50 + y_space * 6) and y <= (50 + y_space * 6 + 70):
             return "Continue"
         
 
