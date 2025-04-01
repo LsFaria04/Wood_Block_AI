@@ -169,8 +169,8 @@ class AppState:
                 self.menu.change_menu("Main")
             if option == "Save":
                 #stores the results into a file before changing the menu
-                algorithm = self.menu.conf_options[-2][0][self.saved_config[1] - 1]
-                heuristic = self.menu.conf_options[-1][0][self.saved_config[2] - 1]
+                algorithm = self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
+                heuristic = self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
                 store_results(algorithm, heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
