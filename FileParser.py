@@ -3,6 +3,9 @@ from datetime import datetime
 
 
 def parse_config_file(filename):
+   '''
+   Parses the file with the name given as argument and returns the game configuration stored in the file
+   '''
    
    with open(filename, 'r') as file :
     board = []
@@ -40,7 +43,9 @@ def parse_config_file(filename):
             spacing = 180
             piece_conf = list(map(lambda item: int(item), line.split(',')))
             if len(piece_conf) != 4:
-                print("Not a piece config")
+                print("Not a piece config!!!")
+                piece_counter += 1
+                continue
             x, y = offset_x + piece_counter * spacing, offset_y
             piece = factory.create_piece(x,y, piece_conf[0], piece_conf[1], piece_conf[2], piece_conf[3])
             pieces.append(piece)
@@ -52,6 +57,9 @@ def parse_config_file(filename):
     return (board, pieces, points)
 
 def store_results(algorithm, heuristic, move_history, time_execution, points, memory_used):
+    '''
+    Stores the results of a game solved by the AI.
+    '''
     now = datetime.now()
     # Format the date and time
     formatted_date = now.strftime("%Y_%m_%d %H_%M_%S")

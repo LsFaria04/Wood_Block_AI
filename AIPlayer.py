@@ -40,6 +40,9 @@ class AIPlayer:
             print("Algorithm is not available")
 
     def bfs(self, gamestate):
+        '''
+        Bfs algorithm to solve the game. Uses a deque to store the nodes that weren't visited and a set to store the visited ones
+        '''
         queue = deque([gamestate])          # initialize the queue to store the nodes
         visited = set()
 
@@ -57,6 +60,9 @@ class AIPlayer:
         return None
     
     def dfs(self, gamestate):
+        '''
+        Dfs algorithm to solve the game. Uses a list as a stack to store the nodes that weren't visited and a set to store the visited ones.
+        '''
         stack = [gamestate]
         visited = set()
 
@@ -76,6 +82,9 @@ class AIPlayer:
         return None
     
     def depth_limited_search(self, gamestate, max_depth):
+        '''
+        Depth limited search algorithm to solve the game. Uses a list as a stack to store a pair (unvisited node, depth)  and a set to store the visited nodes.
+        '''
         stack = [(gamestate, 0)]
         visited = set()
 
@@ -97,6 +106,9 @@ class AIPlayer:
         return None
     
     def iterative_deepening(self, gamestate):
+        '''
+        Iterative deepening algorithm to solve the game. Uses the depth limited search but increasing the depth at each iteration
+        '''
         depth = 0
 
         while True:

@@ -41,6 +41,9 @@ class AppState:
         self.play_music()
 
     def load_music(self):
+        '''
+        Loads the music that is played during the game.
+        '''
         try:
             if not self.muted:
                 pygame.mixer.music.load("music/jazz.mp3")
@@ -48,20 +51,32 @@ class AppState:
             print(f"Error loading music file: {e}")
 
     def play_music(self):
+        '''
+        Starts playing the game music.
+        '''
         try:
             pygame.mixer.music.play(-1)
         except pygame.error as e:
             print(f"Error playing music: {e}")
 
     def start_timer(self):
+        '''
+        Starts the time counter that is displayed during the game.
+        '''
         if self.start_time is None:  # Only start the timer once
             self.start_time = time.time()  # Start the timer when the game begins
 
     def update_time(self):
+        '''
+        Updates the timer thta is displayed during the game.
+        '''
         if self.start_time is not None:
             self.time_taken = time.time() - self.start_time
 
     def step(self):
+        '''
+        Executes the code of the new frame (new step).
+        '''
         
         if self.state == STATE_GAME:
             self.step_game()
@@ -71,18 +86,24 @@ class AppState:
             self.step_gameover()
     
     def step_menu(self):
-         # Prepare the next step in the frame
-        self.gui.draw_background()
+        '''
+        Step (new frame) for the menu
+        '''
 
+        #Draw the frame
+        self.gui.draw_background()
         self.menu.draw_menu(self.gui)
         self.gui.refresh_screen()
         
-        event = self.gui.get_event()
+        event = self.gui.get_event() # get the most recent event (mouse click, keyboard key press, etc...) 
         
-
+        #Execute an action according to the event captured
         if event == 'q':
             self.state = STATE_EXIT
         elif event == 'mousedown':
+            #Mouse click detected
+
+            #get the option (button) select
             option = self.menu.mouse_down_option()
 
             if self.menu.current_menu == "Main":
@@ -117,9 +138,8 @@ class AppState:
 
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
-                    print("DEBUG: choose_conf_menu =", self.menu.choose_conf_menu)  # Debugging line
+                    #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
-                    print("DEBUG: saved_config =", self.saved_config)  # Debugging line
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2], self.saved_config[3])  
                     
@@ -128,6 +148,7 @@ class AppState:
             elif self.menu.current_menu == "LoadConfig":
                 
                 if option == "Continue":
+                    #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points = parse_config_file(filename)
@@ -146,21 +167,29 @@ class AppState:
             
 
         elif event == 'mousemove':
+            #Mouse movement detected
             pos = pygame.mouse.get_pos()
             self.menu.mouse_over_option(pos)
         if self.state == STATE_EXIT:
             pygame.quit()
     
     def step_gameover(self):
+        '''
+        Step (new frame) for the Game Over Screen
+        '''
+
+        #Draw the Game over Screen
         self.gui.draw_background()
         self.gameover_menu.draw_text_menu(self.gui)
         self.gui.refresh_screen()
 
-        event = self.gui.get_event()
+        event = self.gui.get_event() # get the most recent event (mouse click, keyboard key press, etc...) 
 
+        #Execute an action according to the event captured
         if event == 'q':
             self.state = STATE_EXIT
         elif event == 'mousedown':
+            #Mouse click detected
             pos = pygame.mouse.get_pos()
             option = self.gameover_menu.mouse_down_option(pos)
 
@@ -175,16 +204,15 @@ class AppState:
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
 
-        elif event == 'esc':
-            self.menu.change_menu("Pause")
-            self.state = STATE_MENU
-            self.gui.screen_needs_update = True
         if self.state == STATE_EXIT:
             pygame.quit()
 
         return
     
     def step_game(self):
+        '''
+        Step (new frame) for the Game
+        '''
         if self.game_state is None:
             print("Error: GameState is not initialized!")
             self.state = STATE_MENU  # Go back to the menu instead of crashing
@@ -201,6 +229,7 @@ class AppState:
 
         # Prepare the next step in the frame
         if not self.hint_clicked:
+            #Draw game
             self.gui.draw_background()
             self.game_state.draw_board(self.gui)
             self.game_state.draw_current_pieces(self.gui)
@@ -218,12 +247,14 @@ class AppState:
 
             self.gui.draw_background()
             if (len(self.game_state.move_history) < len(self.move_history)):
+                #Draw board and pieces with the hint
                 piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
                 self.game_state.draw_board(self.gui)
                 self.game_state.draw_highlighted_move(self.gui, piece, position)
                 self.game_state.draw_current_pieces(self.gui)
                 self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
 
+        #Draw game UI
         self.gui.draw_hint_button()
         self.gui.draw_mute_button(self.muted)
         self.gui.draw_timer(self.time_taken)
@@ -237,17 +268,22 @@ class AppState:
             self.gameover_menu = TextMenu(False, [self.game_state.points, round(self.time_taken, 3)])
             return
         
-        event = self.gui.get_event()
+        event = self.gui.get_event() # get the most recent event (mouse click, keyboard key press, etc...) 
 
+        #Execute an action according to the event captured
         if event == 'q':
             self.state = STATE_EXIT
         elif event == 'mousedown':
+            #Mouse click detected
             self.handle_mousedown()
         elif event == 'mousemove':
+            #Mouse move detected
             self.handle_mousemove()
         elif event == 'mouseup':
+            #Mouse button up detected
             self.handle_mouseup()
         elif event == 'esc':
+            #Esc key pressed. Change to pause menu
             self.menu.change_menu("Pause")
             self.state = STATE_MENU
             self.gui.screen_needs_update = True
@@ -255,12 +291,18 @@ class AppState:
             pygame.quit()
 
     def step_AI_game(self):
+        '''
+        Step (new frame) for the Game solved by the AI
+        '''
         if not self.AiAlreadyPlayed:
+            #The ai hasn't played
+            #Draw the warning (Ai is calculating...)
             self.gui.draw_background()
             self.gui.draw_ai_warning()
             self.gui.screen_needs_update = True
             self.gui.refresh_screen()
             init_time = time.time()
+            #Ai solves the game
             self.move_history, self.visited_states = self.player.play(self.game_state)
             final_time = time.time() - init_time
             self.AiAlreadyPlayed = True
@@ -277,42 +319,50 @@ class AppState:
                 self.gameover_menu = TextMenu(True, [self.move_history[-1].points,round(final_time, 3), str(sys.getsizeof(self.visited_states)) + " bytes", len(self.visited_states)])
 
 
-
+        #Draw the result
         self.gui.draw_background()
         self.move_history[self.current_move].draw_board(self.gui)
         self.move_history[self.current_move].draw_current_pieces(self.gui)
         self.gui.draw_next_previous_buttons(self.current_move, len(self.move_history))
         self.gui.refresh_screen()
 
-        event = self.gui.get_event()
+        event = self.gui.get_event() # get the most recent event (mouse click, keyboard key press, etc...) 
 
         if event == 'q':
             self.state = STATE_EXIT
         elif event == 'mousedown':
+            #Mouse click dectected
             self.handle_mousedown_Ai()
-        elif event == 'esc':
-            self.menu.change_menu("Pause")
-            self.state = STATE_MENU
-            self.gui.screen_needs_update = True
         if self.state == STATE_EXIT:
             pygame.quit()
         
     
     def handle_mousedown_Ai(self):
+        '''
+        Handles the mouse clicks in the Ai mode to check if a button was selected (next, previous and stats)
+        '''
         # Get the position where the mouse was clicked
         pos = pygame.mouse.get_pos()
         x,y = pos
 
+        #Check if is next
         if x >= 120 and x <= 170 and y >= 540 and y <= 590 and self.current_move > 0:
             self.current_move -= 1
+        
+        #Check if is previous
         if x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) < len(self.move_history) :
             self.current_move += 1
+        
+        #Check if is stats
         elif x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) == len(self.move_history):
             self.state = STATE_GAMEOVER
             self.current_move = 0
 
 
     def handle_mousedown(self):
+        '''
+        Handles the mouse clicks in the human mode to check if the hint button or the mute button were pressed
+        '''
         pos = pygame.mouse.get_pos()
 
         #mute button
@@ -338,11 +388,17 @@ class AppState:
                 break
 
     def handle_mousemove(self):
+        '''
+        Handles the mouse movement to update the position of a piece that is being dragged
+        '''
         if self.dragging_piece:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             self.update_piece_position(mouse_x - self.drag_offset[0], mouse_y - self.drag_offset[1])
 
     def handle_mouseup(self):
+        '''
+        Handles the mouse button up. Inserts the dragging piece into the board if possible
+        '''
         if self.dragging_piece:
             pos = pygame.mouse.get_pos()
             grid_x = round((pos[0] - self.drag_offset[0]) / 30) - 2
@@ -357,8 +413,14 @@ class AppState:
             self.game_state.draw_current_pieces(self.gui)
 
     def update_piece_position(self, x, y):
+        '''
+        Updates the dragging piece position
+        '''
         self.dragging_piece.x = x
         self.dragging_piece.y = y
     def is_mouse_on_piece(self, piece, pos):
+        '''
+        Checks if the mouse is above a piece (is able to drag it)
+        '''
         return piece.x <= pos[0] <= piece.x + piece.xlen * 30 and piece.y <= pos[1] <= piece.y + piece.ylen * 30
 
