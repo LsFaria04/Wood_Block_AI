@@ -73,7 +73,7 @@ class GameState:
     def draw_board(self, gui):
         for y, row in enumerate(self.board):
             for x, cell in enumerate(row):
-                pos = (x + self.offset_x, y + self.offset_y - 2)
+                pos = (x + self.offset_x, y + self.offset_y)
                 if cell == 1:
                     gui.drawRectangle(pos)
                 else:
@@ -165,7 +165,8 @@ class GameState:
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
 
         tile_size = 30
-        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        offset_x = 60
+        offset_y = (self.offset_y + len(self.board)) * tile_size + 50
         spacing = 180
 
         newX, newY = offset_x + piece_idx * spacing, offset_y
