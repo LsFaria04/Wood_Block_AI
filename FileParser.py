@@ -80,7 +80,7 @@ def store_results(algorithm, heuristic, move_history, time_execution, points, me
             file.write(str(state.move_made[1]) + ", " + str(state.move_made[2]) + "\n")
             for line in state.board:
                 for element in line:
-                    file.write(str(element))
+                    file.write(str(int(element)))
                 file.write("\n")
             file.write("\n")
             
