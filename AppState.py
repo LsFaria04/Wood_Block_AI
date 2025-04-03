@@ -407,7 +407,9 @@ class AppState:
             # Check if the position is valid for placing the piece
             if self.game_state.is_move_possible(self.game_state.L.index(self.dragging_piece), (grid_x, grid_y)):
                 self.dragging_piece.isPlaced = True
+                self.hint_clicked = False
                 self.game_state.move(self.game_state.L.index(self.dragging_piece), (grid_x, grid_y))
+
             
             self.dragging_piece = None  # Stop dragging the piece
             self.game_state.draw_current_pieces(self.gui)
