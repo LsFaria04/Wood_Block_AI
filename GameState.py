@@ -107,7 +107,7 @@ class GameState:
         # Draws the three pieces available for the player below the game board
         tile_size = 30
         
-        gui.drawHighlightedPiece(self.L[pieceIdx], tile_size)
+        gui.draw_highlighted_piece(self.L[pieceIdx], tile_size)
 
     def children(self):
         '''

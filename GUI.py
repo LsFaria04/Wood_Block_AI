@@ -252,7 +252,7 @@ class GUI:
         else:
             self.screen.blit(image, (x, y))
 
-    def drawHighlightedCell(self, cords):
+    def draw_highlighted_cell(self, cords):
         """ Draws a highlighted cell to indicate AI's suggested move. """
         x, y = cords
         x_offset = 30
