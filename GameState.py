@@ -41,9 +41,14 @@ class GameState:
         return [item for sublist in self.board for item in sublist] == [item for sublist in other.board for item in sublist] and len(self.Q) == len(other.Q) and self.points == other.points
 
     def generate_pieces(self):
-        
         tile_size = 30
-        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        screen_width = 600 / tile_size
+        screen_height = 720 / tile_size
+        self.offset_x = screen_width // 2 - len(self.board[0]) // 2
+        self.offset_y = screen_height // 2 - len(self.board) // 2
+
+        offset_x = 60 
+        offset_y = (self.offset_y + len(self.board)) * tile_size + 50
         spacing = 180
 
         common_pieces = [
@@ -66,11 +71,6 @@ class GameState:
 
 
     def draw_board(self, gui):
-        screen_width = 600 / 30
-        screen_height = 720 / 30
-        self.offset_x = screen_width // 2 - len(self.board[0]) // 2
-        self.offset_y = screen_height // 2 - len(self.board) // 2
-
         for y, row in enumerate(self.board):
             for x, cell in enumerate(row):
                 pos = (x + self.offset_x, y + self.offset_y)
@@ -93,7 +93,7 @@ class GameState:
         tile_size = 30
 
         for i, piece in enumerate(self.L):
-            gui.drawPiece(piece, tile_size)
+            gui.draw_piece(piece, tile_size)
 
     def draw_highlighted_piece(self,gui, pieceIdx):
         # Draws the three pieces available for the player below the game board
