@@ -15,6 +15,8 @@ class GameState:
             self.points = 0
             self.move_history = []
             self.move_made = None
+            self.offset_x = 0
+            self.offset_y = 0
             for i in range(nPieces//3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
@@ -64,11 +66,14 @@ class GameState:
 
 
     def draw_board(self, gui):
-        offset_x, offset_y = 2, 1 # Offset to draw the board
+        screen_width = 600 / 30
+        screen_height = 720 / 30
+        self.offset_x = screen_width // 2 - len(self.board[0]) // 2
+        self.offset_y = screen_height // 2 - len(self.board) // 2
 
         for y, row in enumerate(self.board):
             for x, cell in enumerate(row):
-                pos = (x + offset_x, y + offset_y)
+                pos = (x + self.offset_x, y + self.offset_y)
                 if cell == 1:
                     gui.drawRectangle(pos)
                 else:
@@ -143,8 +148,6 @@ class GameState:
                     return False
 
         return True
-
-
 
     def move(self, piece_idx, cords):
         '''Executes a move updating the game board with the given piece in the given coordinates. Assumes that the move is possible !!!!'''
