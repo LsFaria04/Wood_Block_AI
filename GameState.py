@@ -73,7 +73,7 @@ class GameState:
     def draw_board(self, gui):
         for y, row in enumerate(self.board):
             for x, cell in enumerate(row):
-                pos = (x + self.offset_x, y + self.offset_y)
+                pos = (x + self.offset_x, y + self.offset_y - 2)
                 if cell == 1:
                     gui.drawRectangle(pos)
                 else:
