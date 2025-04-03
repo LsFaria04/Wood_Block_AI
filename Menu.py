@@ -67,6 +67,9 @@ class Menu:
 
     
     def mouse_over_option(self, pos):
+        '''
+        Checks if the mouse if over some option and returns the option it is selecting
+        '''
         if self.current_menu == "LoadConfig" or self.current_menu == "ChooseConfig":
             self.mouse_over_option_config_menu(pos)
             return
@@ -80,6 +83,9 @@ class Menu:
         self.selected = -1
     
     def mouse_over_option_config_menu(self, pos):
+        '''
+        Checks if the mouse if over some option and returns the option it is selecting (only for the config menus)
+        '''
         x,y = pos
 
         y_space = 500 // ((len(self.conf_options)) + 1) # space for the config selection and continue button
@@ -103,12 +109,18 @@ class Menu:
         return None
 
     def mouse_down_option(self):
+        '''
+        Gets the option that is selected by the mouse
+        '''
         if self.current_menu == "LoadConfig" or self.current_menu == "ChooseConfig":
             self.mouse_down_conf_menu(self.arrow_selected[1], self.arrow_selected[0])
         if self.selected != -1:
             return self.options[self.selected]
     
     def mouse_down_conf_menu(self, isleft, idx):
+        '''
+        Changes the selected config according to the mouse selection
+        '''
         options, selected, description = self.conf_options[idx]
 
         if idx == -1 or isleft == -1:
@@ -127,6 +139,9 @@ class Menu:
         return None
     
     def change_menu(self, new_menu):
+        '''
+        Changes to a new menu
+        '''
         if new_menu == "Main":
             self.current_menu = "Main"
             self.options = self.main_menu_options
