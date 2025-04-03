@@ -30,6 +30,8 @@ class GameState:
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
             self.points = points
+            self.offset_x = 0
+            self.offset_y = 0
             self.move_history = deepcopy(move_history)
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
@@ -81,12 +83,11 @@ class GameState:
     
     def draw_highlighted_move(self, gui, piece, piece_pos):
         """ Highlights the suggested move on the board. """
-        offset_x, offset_y = 2, 1 # Offset to draw the board
         grid_x, grid_y = piece_pos
         for y in range(piece.ylen):
             for x in range(piece.xlen):
                 if piece.matrix[y][x] == 1:
-                    gui.drawHighlightedCell((grid_x + x + offset_x , grid_y + y + offset_y))
+                    gui.drawHighlightedCell((grid_x + x + self.offset_x , grid_y + y + self.offset_y))
 
     def draw_current_pieces(self, gui):
         # Draws the three pieces available for the player below the game board
