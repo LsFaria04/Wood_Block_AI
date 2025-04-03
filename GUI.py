@@ -26,7 +26,10 @@ class GUI:
     def __del__(self):
         pygame.quit()
 
-    def drawPiece(self, piece, block_size):
+    def draw_piece(self, piece, block_size):
+        '''
+        Draws a playable piece into the screen
+        '''
         self.screen_needs_update = True
         occupied_cells = piece.getOccupiedCells()
         for (x, y) in occupied_cells:
@@ -35,7 +38,10 @@ class GUI:
             # Use stored `piece.x` and `piece.y` for drawing
             self.screen.blit(self.block_img, (draw_x, draw_y))
 
-    def drawHighlightedPiece(self, piece, block_size):
+    def draw_highlighted_piece(self, piece, block_size):
+        '''
+        Draws the playable piece highlighted by the hint
+        '''
         self.screen_needs_update = True
         occupied_cells = piece.getOccupiedCells()
         for (x, y) in occupied_cells:
@@ -45,7 +51,10 @@ class GUI:
             highlight_surface.fill((0, 255, 0, 128))  # Green with transparency
             self.screen.blit(highlight_surface, (draw_x, draw_y))
 
-    def drawRectangle(self, cords):
+    def draw_rectangle(self, cords):
+        '''
+        Draws a rectangle (wood block, small portion of the piece) into the screen at the given coordinates
+        '''
         self.screen_needs_update = True
         x, y = cords
         x_offset = 30
@@ -53,15 +62,24 @@ class GUI:
         self.screen.blit(self.block_img, (x * x_offset, y * y_offset))
 
     def draw_board_background(self, cords):
+        '''
+        Draws a piece of the background of the board in the given coordinates (wood blocks with darker color)
+        '''
         x, y = cords
         x_offset = 30
         y_offset = 30
         self.screen.blit(self.block_background, (x * x_offset, y *y_offset))
 
     def draw_background(self):
+        '''
+        Draws the background of the game (wood texture)
+        '''
         self.screen.blit(self.background, (0, 0))
     
     def draw_button(self, cords, text):
+        '''
+        Draws a menu button in the given coordinates with the given text inside it
+        '''
         x,y = cords
         self.screen.blit(self.menu_button, (x, y))
         font = pygame.font.Font(None, 42)
@@ -70,6 +88,9 @@ class GUI:
         self.screen.blit(text_surface, (x + 100 - (lenx // 2), y + 35 - (leny // 2)))
     
     def draw_menu_title(self, text):
+        '''
+        Draws the menu title at the top of the screen using the given text
+        '''
         x = 300
         y = 60
 
@@ -79,6 +100,9 @@ class GUI:
         self.screen.blit(text_surface, (x - (lenx // 2), y - (leny // 2)))
     
     def draw_arrow_button(self, isLeft, cords):
+        '''
+        Draws arrow buttons (buttons to change options) at the given coordinates. Used the isLeft parameter to identify the direction of the arrow
+        '''
         x,y = cords
         small_button =  pygame.transform.scale(self.menu_button_img, (50, 50))
         self.screen.blit(small_button, (x,y))
@@ -91,6 +115,9 @@ class GUI:
         self.screen.blit(text_surface, (x + 25 - (lenx // 2), y + 25 - (leny // 2)))
     
     def draw_option_text(self, cords, text):
+        '''
+        Draws the text that appears in the options selection at the given coordinates
+        '''
         x,y = cords
         font = pygame.font.Font(None, 42)
         text_surface = font.render(text, True, (255, 255, 255)) 
@@ -98,12 +125,18 @@ class GUI:
         self.screen.blit(text_surface, (155 + x - (lenx // 2), y + 25 - (leny // 2)))
     
     def draw_ai_warning(self):
+        '''
+        Draws a warning when the AI is playing
+        '''
         font = pygame.font.Font(None, 42)
         text_surface = font.render("Ai is Calculating ...", True, (255, 255, 255)) 
         lenx,leny = text_surface.get_size()
         self.screen.blit(text_surface, (300 - (lenx // 2), 360 - (leny // 2)))
     
     def draw_above_button_text(self, cords, text, buttonSize):
+        '''
+        Draws the text that appears at the top of some buttons at the given coordinates.
+        '''
         x,y = cords
         lenx,leny = buttonSize
         font = pygame.font.Font(None, 42)
@@ -112,6 +145,9 @@ class GUI:
         self.screen.blit(text_surface, (x + lenx // 2 - textx // 2, y - leny + texty // 2))
 
     def draw_next_previous_buttons(self, current_idx, max_idx):
+        '''
+        Draws the next and previous buttons that appear in the Ai moves review
+        '''
         if current_idx > 0:
             self.draw_arrow_button(True, (120,540))
             self.draw_above_button_text((120, 540), "Prev", (50,50))
@@ -123,6 +159,9 @@ class GUI:
             self.draw_above_button_text((420, 540), "Next", (50,50))
         
     def draw_gameover_stats(self,cords, description, stat):
+        '''
+        Draws the game over screen stats (time, memory used, points, ...)
+        '''
         x,y = cords
         font = pygame.font.Font(None, 42)
         text_surface = font.render(description, True, (255, 255, 255)) 
@@ -130,15 +169,11 @@ class GUI:
         self.screen.blit(text_surface, (x , y))
         text_surface2 = font.render(stat, True, (0, 255, 0)) 
         self.screen.blit(text_surface2, (x + textx + 20 , y))
-
-
-
-
-
-
-
-    
+ 
     def get_event(self):
+        '''
+        Gets the events captured by the pygame event (keyboard, mouse)
+        '''
         event = pygame.event.poll()
 
         if event.type == pygame.QUIT:
@@ -160,21 +195,33 @@ class GUI:
             return None
 
     def refresh_screen(self):
+        '''
+        Refreshes the screen to update the frame
+        '''
         if self.screen_needs_update:
             pygame.display.flip()
             self.screen_needs_update = False
 
     def draw_timer(self, time_taken):
+        '''
+        Draws the game timer into the screen
+        '''
         font = pygame.font.Font(None, 36)
         time_text = f"Time: {int(time_taken)}s"
         text_surface = font.render(time_text, True, (255, 255, 255)) 
         self.screen.blit(text_surface, (10, 5))
 
     def draw_hint_button(self):
+        '''
+        Draws the Ai hint button into the screen
+        '''
         x, y = 545, 5
         self.screen.blit(self.hint_button, (x, y))
 
     def draw_score(self, score):
+        '''
+        Draws the game score into the screen during the game 
+        '''
         font = pygame.font.Font(None, 36)
         score_text = f"Score: {score}"
         text_surface = font.render(score_text, True, (255, 255, 255))
@@ -187,6 +234,9 @@ class GUI:
         self.screen.blit(text_surface, (x_position, 5))
 
     def draw_mute_button(self, muted):
+        '''
+        Draws the mute button to stop the music during the game
+        '''
         image = self.sound_muted_img if muted else self.sound_img
 
         x, y = 545, 60

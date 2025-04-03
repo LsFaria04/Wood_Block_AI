@@ -6,6 +6,7 @@ from copy import deepcopy
 
 class GameState:
     def __init__(self, board_size, nPieces, board=[], move_history=None, Q=None, L=None, points = 0):
+        #Check if the GameState is being initialized  by the first time or if it is the child of another GametState
         if len(board) == 0:
             self.board = np.zeros((board_size, board_size))
             self.Q = deque() # where the pieces will be stored by order
@@ -39,6 +40,9 @@ class GameState:
         return [item for sublist in self.board for item in sublist] == [item for sublist in other.board for item in sublist] and len(self.Q) == len(other.Q) and self.points == other.points
 
     def generate_pieces(self):
+        '''
+        Generates 3 pieces randomly a insert them into the queue
+        '''
         
         tile_size = 30
         offset_x, offset_y = 60, len(self.board) * tile_size + 70
@@ -64,13 +68,16 @@ class GameState:
 
 
     def draw_board(self, gui):
+        '''
+        Draws the game board. Uses a GUI object to access the draw methods
+        '''
         offset_x, offset_y = 2, 1 # Offset to draw the board
 
         for y, row in enumerate(self.board):
             for x, cell in enumerate(row):
                 pos = (x + offset_x, y + offset_y)
                 if cell == 1:
-                    gui.drawRectangle(pos)
+                    gui.draw_rectangle(pos)
                 else:
                     gui.draw_board_background(pos)
     
@@ -81,16 +88,22 @@ class GameState:
         for y in range(piece.ylen):
             for x in range(piece.xlen):
                 if piece.matrix[y][x] == 1:
-                    gui.drawHighlightedCell((grid_x + x + offset_x , grid_y + y + offset_y))
+                    gui.draw_highlighted_cell((grid_x + x + offset_x , grid_y + y + offset_y))
 
     def draw_current_pieces(self, gui):
+        '''
+        Draw the current playable pieces below the board
+        '''
         # Draws the three pieces available for the player below the game board
         tile_size = 30
 
         for i, piece in enumerate(self.L):
-            gui.drawPiece(piece, tile_size)
+            gui.draw_piece(piece, tile_size)
 
     def draw_highlighted_piece(self,gui, pieceIdx):
+        '''
+        Draw the piece highlighted by the hint
+        '''
         # Draws the three pieces available for the player below the game board
         tile_size = 30
         
@@ -180,6 +193,9 @@ class GameState:
         self.remove_full_lines_columns(full_lin, full_col)
     
     def full_lines_columns(self):
+        '''
+        Gets all the lines and columns that are full
+        '''
         full_lines = []
         full_columns = []
         line_numb = len(self.board)
@@ -205,6 +221,9 @@ class GameState:
         return (full_lines,full_columns)
     
     def remove_full_lines_columns(self, full_lines, full_columns):
+        '''
+        Removes the lines and columns passed as arguments (assumed to be full)
+        '''
         lin_size = len(self.board)
         col_size = len(self.board[0])
 
@@ -221,11 +240,17 @@ class GameState:
                 self.board[lin][col] = 0
     
     def game_over_AI(self):
+        '''
+        Check if is Game Over state when the Ai is playing
+        '''
         # no pieces to play 
         if len(self.L) == 0 and len(self.Q) == 0:
             return True
     
     def game_over(self):
+        '''
+        Check if is game over when a Human is playing
+        '''
         # no pieces to play 
         if len(self.L) == 0 and len(self.Q) == 0:
             return True

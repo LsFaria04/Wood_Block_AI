@@ -9,6 +9,9 @@ class TextMenu :
         
 
     def draw_text_menu(self, gui):
+        '''
+        Draws the menu into the screen using the provided GUI object
+        '''
         gui.screen_needs_update = True
         gui.draw_menu_title("Game Over")
         y_space = 550 // 6
@@ -23,6 +26,9 @@ class TextMenu :
         gui.draw_button((200, (50 + y_space * 6)), "Continue")
     
     def mouse_down_option(self, cords):
+        '''
+        Checks if the mosuse is over one of the menu options 
+        '''
         x,y = cords
         y_space = 550 // 6
         if x >= 200 and x <= 500 and y >= (50 + y_space * 5) and y <= (50 + y_space * 5 + 70):

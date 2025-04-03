@@ -10,7 +10,10 @@ class PieceFactory:
     #type 5 -> T shape
     #type 6 -> rotated T shape
 
-    def create_piece(self, x, y, XLen, YLen, piece_type, rev): 
+    def create_piece(self, x, y, XLen, YLen, piece_type, rev):
+        '''
+        Creates a new piece accordig to the provided characteristics
+        '''
         piece = None    
         if piece_type == 1:
             piece = self.type1(x, y, XLen, YLen)
@@ -28,6 +31,9 @@ class PieceFactory:
         return piece
     
     def type1(self, x, y, XLen,YLen):
+        '''
+        Creates a type 1 (square) piece
+        '''
         if XLen != YLen:
             raise ValueError("Square must have the same size for the height and length.")
         pieceMatrix = []
@@ -39,12 +45,18 @@ class PieceFactory:
         return Piece(1, False, XLen, YLen,pieceMatrix , x, y)
     
     def type2(self, x, y, XLen, YLen):
+            '''
+            Creates a type 2 (rectangle) piece
+            '''
             if XLen == YLen:
                 raise ValueError("Rectangle cannot have the same size for the height and length.")
             pieceMatrix = [[1 for _ in range(XLen)] for _ in range(YLen)]
             return Piece(2, False, XLen, YLen, pieceMatrix, x, y )
     
     def type3(self, x1, y1, XLen,YLen, rev):
+        '''
+        Creates a type 3 (L shape) piece
+        '''
         pieceMatrix = []
         for y in range(YLen):
             line = []
@@ -61,6 +73,9 @@ class PieceFactory:
         return Piece(3, rev, XLen, YLen, pieceMatrix, x1, y1)
     
     def type4(self, x1, y1, XLen,YLen,rev):
+        '''
+        Creates a type 4 (inverted L shape) piece
+        '''
         pieceMatrix = []
         for y in range(YLen):
             line = []
@@ -77,6 +92,9 @@ class PieceFactory:
         return Piece(4, rev, XLen, YLen, pieceMatrix, x1, y1)
         
     def type5(self, x1, y1, XLen,YLen,rev):
+        '''
+        Creates a type 4 (T shape) piece
+        '''
         pieceMatrix = []
         idx_leg = round(XLen / 2)
         idx_leg = XLen // 2
@@ -95,6 +113,9 @@ class PieceFactory:
         return Piece(5, rev, XLen, YLen, pieceMatrix, x1, y1)
 
     def type6(self, x1, y1, XLen,YLen, rev):
+        '''
+        Creates a type 6 (rorated T shape) piece
+        '''
         pieceMatrix = []
         idx_leg = YLen // 2
         idx_leg = YLen // 2
