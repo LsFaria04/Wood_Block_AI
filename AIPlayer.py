@@ -95,7 +95,7 @@ class AIPlayer:
                 continue
             visited.add(state)
 
-            if state.game_over():
+            if state.game_over_AI():
                 return (state.move_history, visited)
 
             if depth < max_depth:
