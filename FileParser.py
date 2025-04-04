@@ -1,5 +1,6 @@
 from PieceFactory import PieceFactory
 from datetime import datetime
+import ast
 
 
 def parse_config_file(filename):
@@ -12,6 +13,8 @@ def parse_config_file(filename):
     pieces = []
     points = 0
     current = ""
+    ai = ""
+    moves = []
     factory = PieceFactory()
     piece_counter = 0
     for line in file:
@@ -26,6 +29,10 @@ def parse_config_file(filename):
         elif line == "points\n":
             current = "po"
             continue
+        elif line == "ai\n":
+            current = "ai"
+        elif line == "moves\n":
+            current = "mov"
     
 
         if current == "b":
@@ -53,8 +60,16 @@ def parse_config_file(filename):
 
         elif current == "po":
             points = int(line)
+        elif current == "ai":
+            ai = line
+        elif current == "mov" and line.strip() != 'moves':
+            try:
+                moves.append(ast.literal_eval(line.strip()))  # Convert string to actual Python data structure
+            except Exception as e:
+                print(f"Error parsing move: {line.strip()}, {e}")
+
     
-    return (board, pieces, points)
+    return (board, pieces, points, ai, moves)
 
 def store_results(algorithm, heuristic, move_history, time_execution, points, memory_used):
     '''

@@ -85,9 +85,9 @@ class GameState:
         """ Highlights the suggested move on the board. """
         offset_x, offset_y = 2, 1 # Offset to draw the board
         grid_x, grid_y = piece_pos
-        for y in range(piece.ylen):
-            for x in range(piece.xlen):
-                if piece.matrix[y][x] == 1:
+        for y in range(piece[3]):
+            for x in range(piece[1]):
+                if piece[4][y][x] == 1:
                     gui.draw_highlighted_cell((grid_x + x + offset_x , grid_y + y + offset_y))
 
     def draw_current_pieces(self, gui):
@@ -170,7 +170,8 @@ class GameState:
                     self.board[y + y_offset][x + x_offset] = 1
         
         self.move_history.append(self)
-        self.move_made = (piece, piece_idx, cords)
+        pieceList = [piece.x,piece.xlen,piece.y,piece.ylen,piece.matrix]
+        self.move_made = (pieceList, piece_idx, cords)
 
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
 

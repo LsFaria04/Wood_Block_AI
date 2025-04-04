@@ -27,6 +27,7 @@ class AppState:
         self.menu = Menu()
         self.muted = False
         self.notLoaded = True
+        self.move_history = []
 
         self.current_move = 0 #Ai Move that is being displayed
         self.visited_states = None #states visited by the AI
@@ -139,7 +140,6 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
-                    self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2], self.saved_config[3])  
                     
@@ -151,16 +151,29 @@ class AppState:
                     #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
-                    board,pieces,points = parse_config_file(filename)
+                    board,pieces,points,ai,move_history = parse_config_file(filename)
 
+                    self.move_history = move_history
                     self.game_state.board = board
                     self.game_state.L = pieces[:3]
                     self.game_state.points = points
                     self.game_state.Q = deque()
                     for piece in pieces[3:]:
                         self.game_state.Q.append(piece)
-
-                    self.player = AIPlayer(self.saved_config[1], self.saved_config[2])
+                    if (ai == "bfs"):
+                        self.player = AIPlayer(1)
+                    elif (ai == "dfs"):
+                        self.player = AIPlayer(2)
+                    elif (ai == "iter"):
+                        self.player = AIPlayer(3)
+                    elif (ai == "ucs"):
+                        self.player = AIPlayer(4)
+                    elif (ai == "greed"):
+                        self.player = AIPlayer(5)
+                    elif (ai == "astar"):
+                        self.player = AIPlayer(6)
+                    elif (ai == "astarw"):
+                        self.player = AIPlayer(7)
                     
 
                     self.state = STATE_GAME
@@ -227,32 +240,60 @@ class AppState:
             self.start_timer()
         self.update_time()
 
-        # Prepare the next step in the frame
-        if not self.hint_clicked:
-            #Draw game
-            self.gui.draw_background()
-            self.game_state.draw_board(self.gui)
-            self.game_state.draw_current_pieces(self.gui)
-            self.notLoaded = True
-        else:
-
-            if self.notLoaded:
-                #The hint is not loaded. Run the algorithm
+        if (self.menu.current_menu == "ChooseConfig"):
+            # Prepare the next step in the frame
+            if not self.hint_clicked:
+                #Draw game
                 self.gui.draw_background()
-                self.gui.draw_ai_warning()
-                self.gui.screen_needs_update = True
-                self.gui.refresh_screen()
-                self.move_history, self.visited_states = self.player.play(self.game_state)
-                self.notLoaded = False
-
-            self.gui.draw_background()
-            if (len(self.game_state.move_history) < len(self.move_history)):
-                #Draw board and pieces with the hint
-                piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
                 self.game_state.draw_board(self.gui)
-                self.game_state.draw_highlighted_move(self.gui, piece, position)
                 self.game_state.draw_current_pieces(self.gui)
-                self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
+                self.notLoaded = True
+            else:
+                
+                if self.notLoaded:
+                    #The hint is not loaded. Run the algorithm
+                    self.gui.draw_background()
+                    self.gui.draw_ai_warning()
+                    self.gui.screen_needs_update = True
+                    self.gui.refresh_screen()
+                    self.move_history, self.visited_states = self.player.play(self.game_state)
+                    self.notLoaded = False
+
+                self.gui.draw_background()
+                if (len(self.game_state.move_history) < len(self.move_history)):
+                    #Draw board and pieces with the hint
+                    piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
+                    self.game_state.draw_board(self.gui)
+                    self.game_state.draw_highlighted_move(self.gui, piece, position)
+                    self.game_state.draw_current_pieces(self.gui)
+                    self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
+        else:
+            if not self.hint_clicked:
+                #Draw game
+                self.gui.draw_background()
+                self.game_state.draw_board(self.gui)
+                self.game_state.draw_current_pieces(self.gui)
+                self.notLoaded = True
+            else:
+                
+                if self.notLoaded:
+                    #The hint is not loaded. Just dont show highlights
+                    self.gui.draw_background()
+                    self.gui.draw_ai_warning()
+                    self.gui.screen_needs_update = True
+                    self.gui.refresh_screen()
+                    self.notLoaded = False
+
+                self.gui.draw_background()
+                if (len(self.game_state.move_history) < len(self.move_history)):
+                    #Draw board and pieces with the hint
+                    print(self.move_history[len(self.game_state.move_history)])
+                    piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)]
+                    self.game_state.draw_board(self.gui)
+                    self.game_state.draw_highlighted_move(self.gui, piece, position)
+                    self.game_state.draw_current_pieces(self.gui)
+                    self.game_state.draw_highlighted_piece(self.gui, pieceIdx)
+
 
         #Draw game UI
         self.gui.draw_hint_button()
