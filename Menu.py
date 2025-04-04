@@ -163,10 +163,3 @@ class Menu:
             self.current_menu = "ChooseConfig"
             self.options = self.load_config_menu
             self.conf_options = self.choose_conf_menu
-
-    
-            
-
-        
-
-        

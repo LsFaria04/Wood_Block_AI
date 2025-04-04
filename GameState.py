@@ -16,6 +16,8 @@ class GameState:
             self.points = 0
             self.move_history = []
             self.move_made = None
+            self.offset_x = 0
+            self.offset_y = 0
             for i in range(nPieces//3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
@@ -29,6 +31,8 @@ class GameState:
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
             self.points = points
+            self.offset_x = 0
+            self.offset_y = 0
             self.move_history = deepcopy(move_history)
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
@@ -43,9 +47,14 @@ class GameState:
         '''
         Generates 3 pieces randomly a insert them into the queue
         '''
-        
         tile_size = 30
-        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        screen_width = 600 / tile_size
+        screen_height = 720 / tile_size
+        self.offset_x = screen_width // 2 - len(self.board[0]) // 2
+        self.offset_y = screen_height // 2 - len(self.board) // 2
+
+        offset_x = 60 
+        offset_y = (self.offset_y + len(self.board)) * tile_size + 50
         spacing = 180
 
         common_pieces = [
@@ -71,11 +80,9 @@ class GameState:
         '''
         Draws the game board. Uses a GUI object to access the draw methods
         '''
-        offset_x, offset_y = 2, 1 # Offset to draw the board
-
         for y, row in enumerate(self.board):
             for x, cell in enumerate(row):
-                pos = (x + offset_x, y + offset_y)
+                pos = (x + self.offset_x, y + self.offset_y)
                 if cell == 1:
                     gui.draw_rectangle(pos)
                 else:
@@ -83,7 +90,6 @@ class GameState:
     
     def draw_highlighted_move(self, gui, piece, piece_pos):
         """ Highlights the suggested move on the board. """
-        offset_x, offset_y = 2, 1 # Offset to draw the board
         grid_x, grid_y = piece_pos
         for y in range(piece[3]):
             for x in range(piece[1]):
@@ -157,8 +163,6 @@ class GameState:
 
         return True
 
-
-
     def move(self, piece_idx, cords):
         '''Executes a move updating the game board with the given piece in the given coordinates. Assumes that the move is possible !!!!'''
         x,y = cords
@@ -176,7 +180,8 @@ class GameState:
         #inserts a new piece into the list of pieces that the player can play or removes it from the list if there aren't any more pieces
 
         tile_size = 30
-        offset_x, offset_y = 60, len(self.board) * tile_size + 70
+        offset_x = 60
+        offset_y = (self.offset_y + len(self.board)) * tile_size + 50
         spacing = 180
 
         newX, newY = offset_x + piece_idx * spacing, offset_y

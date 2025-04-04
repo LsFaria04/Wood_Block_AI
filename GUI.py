@@ -30,6 +30,7 @@ class GUI:
         '''
         Draws a playable piece into the screen
         '''
+    def draw_piece(self, piece, block_size):
         self.screen_needs_update = True
         occupied_cells = piece.getOccupiedCells()
         for (x, y) in occupied_cells:
@@ -169,7 +170,7 @@ class GUI:
         self.screen.blit(text_surface, (x , y))
         text_surface2 = font.render(stat, True, (0, 255, 0)) 
         self.screen.blit(text_surface2, (x + textx + 20 , y))
- 
+    
     def get_event(self):
         '''
         Gets the events captured by the pygame event (keyboard, mouse)

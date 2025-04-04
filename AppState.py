@@ -441,9 +441,9 @@ class AppState:
         Handles the mouse button up. Inserts the dragging piece into the board if possible
         '''
         if self.dragging_piece:
-            pos = pygame.mouse.get_pos()
-            grid_x = round((pos[0] - self.drag_offset[0]) / 30) - 2
-            grid_y = round((pos[1] - self.drag_offset[1]) / 30) - 1
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            grid_x = round((mouse_x - self.drag_offset[0]) / 30 - self.game_state.offset_x)
+            grid_y = round((mouse_y - self.drag_offset[1]) / 30 - self.game_state.offset_y)
 
             # Check if the position is valid for placing the piece
             if self.game_state.is_move_possible(self.game_state.L.index(self.dragging_piece), (grid_x, grid_y)):
