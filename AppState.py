@@ -258,6 +258,8 @@ class AppState:
                     self.gui.screen_needs_update = True
                     self.gui.refresh_screen()
                     self.move_history, self.visited_states = self.player.play(self.game_state)
+                    for move in self.move_history:
+                        print(move.move_made)
                     self.notLoaded = False
 
                 self.gui.draw_background()
@@ -280,7 +282,6 @@ class AppState:
                 if self.notLoaded:
                     #The hint is not loaded. Just dont show highlights
                     self.gui.draw_background()
-                    self.gui.draw_ai_warning()
                     self.gui.screen_needs_update = True
                     self.gui.refresh_screen()
                     self.notLoaded = False
