@@ -94,7 +94,7 @@ class GameState:
         for y in range(piece[3]):
             for x in range(piece[1]):
                 if piece[4][y][x] == 1:
-                    gui.draw_highlighted_cell((grid_x + x + offset_x , grid_y + y + offset_y))
+                     gui.draw_highlighted_cell((grid_x + x + self.offset_x , grid_y + y + self.offset_y))
 
     def draw_current_pieces(self, gui):
         '''

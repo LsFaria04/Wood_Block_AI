@@ -140,6 +140,7 @@ class AppState:
             elif self.menu.current_menu == "ChooseConfig":
                 if option == "Continue":
                     #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
+                    self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2], self.saved_config[3])  
                     
@@ -287,7 +288,6 @@ class AppState:
                 self.gui.draw_background()
                 if (len(self.game_state.move_history) < len(self.move_history)):
                     #Draw board and pieces with the hint
-                    print(self.move_history[len(self.game_state.move_history)])
                     piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)]
                     self.game_state.draw_board(self.gui)
                     self.game_state.draw_highlighted_move(self.gui, piece, position)
