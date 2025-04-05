@@ -16,12 +16,12 @@ class GameState:
             self.points = 0
             self.move_history = []
             self.move_made = None
+            self.calculate_offsets()
             for i in range(nPieces//3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
-            self.calculate_offsets()
             
         else:
             self.board = deepcopy(board)
@@ -31,10 +31,9 @@ class GameState:
             self.piece_factory = PieceFactory()
             self.points = points
             self.move_history = deepcopy(move_history)
+            self.calculate_offsets()
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
-            self.calculate_offsets()
-
 
     def __hash__(self):
         return hash(( str([item for sublist in self.board for item in sublist]), len(self.Q), len(self.L), self.points))
