@@ -59,7 +59,7 @@ class Menu:
             
             gui.draw_option_text((150,y_space + y_space*idx),options[selected])
 
-            if selected < 4 and description == "AI Algorithm":
+            if options[selected] in ["BFS", "DFS", "Iter-Deep", "UCS"] and description == "AI Algorithm":
                 #Algorithms with no heuristic don't have heuristic
                 break
 
@@ -121,9 +121,13 @@ class Menu:
         '''
         Changes the selected config according to the mouse selection
         '''
+        if idx < 0 or idx >= len(self.conf_options):
+            # Invalid index, do nothing
+            return
+
         options, selected, description = self.conf_options[idx]
 
-        if idx == -1 or isleft == -1:
+        if idx == -1 or isleft is None:
             #not a valid arrow
             return 
 

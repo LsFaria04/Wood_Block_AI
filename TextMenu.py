@@ -35,6 +35,3 @@ class TextMenu :
             return "Save"
         if x >= 200 and x <= 500 and y >= (50 + y_space * 6) and y <= (50 + y_space * 6 + 70):
             return "Continue"
-        
-
-        
