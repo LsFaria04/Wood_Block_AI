@@ -50,8 +50,8 @@ class GameState:
         tile_size = 30
         screen_width = 600 / tile_size
         screen_height = 720 / tile_size
-        self.offset_x = screen_width // 2 - len(self.board[0]) // 2
-        self.offset_y = screen_height // 2 - len(self.board) // 2
+        self.offset_x = (screen_width - len(self.board[0])) // 2
+        self.offset_y = (screen_height - len(self.board)) // 2
 
         offset_x = 60 
         offset_y = (self.offset_y + len(self.board)) * tile_size + 50
@@ -97,14 +97,14 @@ class GameState:
                      gui.draw_highlighted_cell((grid_x + x + self.offset_x , grid_y + y + self.offset_y))
 
     def draw_current_pieces(self, gui):
-        '''
-        Draw the current playable pieces below the board
-        '''
-        # Draws the three pieces available for the player below the game board
-        tile_size = 30
+            '''
+            Draw the current playable pieces below the board
+            '''
+            # Draws the three pieces available for the player below the game board
+            tile_size = 30
 
-        for i, piece in enumerate(self.L):
-            gui.draw_piece(piece, tile_size)
+            for i, piece in enumerate(self.L):
+                gui.draw_piece(piece, tile_size)
 
     def draw_highlighted_piece(self,gui, pieceIdx):
         '''

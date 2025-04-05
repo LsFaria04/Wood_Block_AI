@@ -30,7 +30,6 @@ class GUI:
         '''
         Draws a playable piece into the screen
         '''
-    def draw_piece(self, piece, block_size):
         self.screen_needs_update = True
         occupied_cells = piece.getOccupiedCells()
         for (x, y) in occupied_cells:
