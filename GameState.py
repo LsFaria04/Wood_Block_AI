@@ -16,13 +16,12 @@ class GameState:
             self.points = 0
             self.move_history = []
             self.move_made = None
-            self.offset_x = 0
-            self.offset_y = 0
             for i in range(nPieces//3):
                 self.generate_pieces()
             self.L = [self.Q.popleft() for _ in range(3)]
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
+            self.calculate_offsets()
             
         else:
             self.board = deepcopy(board)
@@ -31,11 +30,10 @@ class GameState:
             self.piece = None  # Initialize self.piece
             self.piece_factory = PieceFactory()
             self.points = points
-            self.offset_x = 0
-            self.offset_y = 0
             self.move_history = deepcopy(move_history)
             if self.L:
                 self.piece = self.L[0]  # Initialize self.piece with the first piece in the list
+            self.calculate_offsets()
 
 
     def __hash__(self):
@@ -43,15 +41,18 @@ class GameState:
     def __eq__(self, other) :
         return [item for sublist in self.board for item in sublist] == [item for sublist in other.board for item in sublist] and len(self.Q) == len(other.Q) and self.points == other.points
 
+    def calculate_offsets(self):
+        tile_size = 30
+        screen_width = 600 / tile_size
+        screen_height = 720 / tile_size
+        self.offset_x = int((screen_width - len(self.board[0])) // 2)
+        self.offset_y = int((screen_height - len(self.board)) // 2)
+
     def generate_pieces(self):
         '''
         Generates 3 pieces randomly a insert them into the queue
         '''
         tile_size = 30
-        screen_width = 600 / tile_size
-        screen_height = 720 / tile_size
-        self.offset_x = (screen_width - len(self.board[0])) // 2
-        self.offset_y = (screen_height - len(self.board)) // 2
 
         offset_x = 60 
         offset_y = (self.offset_y + len(self.board)) * tile_size + 50
