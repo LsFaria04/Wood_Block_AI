@@ -292,7 +292,13 @@ class AppState:
                     self.gui.draw_ai_warning()
                     self.gui.screen_needs_update = True
                     self.gui.refresh_screen()
-                    self.move_history, self.visited_states = self.player.play(self.game_state)
+                    res = self.player.play(self.game_state)
+                    if res is None:
+                        print("No solution found")
+                        self.move_history, self.visited_states = ([], {}) #is empty
+                        self.hint_clicked = False
+                    else:
+                        self.move_history, self.visited_states = res
                     for move in self.move_history:
                         print(move.move_made)
                     self.notLoaded = False
