@@ -34,7 +34,6 @@ def parse_config_file(filename):
         elif line == "moves\n":
             current = "mov"
     
-
         if current == "b":
             board_line = list(map(lambda item: int(item), line.split(',')))
             board.append(board_line)
@@ -53,7 +52,6 @@ def parse_config_file(filename):
             offset_y = ((screen_height - len(board)) // 2 + len(board)) * tile_size + 50
             spacing = 180
 
-            #offset_x, offset_y = 60, len(board) * tile_size + 70
             piece_conf = list(map(lambda item: int(item), line.split(',')))
             if len(piece_conf) != 4:
                 print("Not a piece config!!!")
@@ -73,7 +71,6 @@ def parse_config_file(filename):
                 moves.append(ast.literal_eval(line.strip()))  # Convert string to actual Python data structure
             except Exception as e:
                 print(f"Error parsing move: {line.strip()}, {e}")
-
     
     return (board, pieces, points, ai, moves)
 

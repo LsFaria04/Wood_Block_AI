@@ -188,6 +188,7 @@ class AppState:
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points,ai,move_history = parse_config_file(filename)
+                    self.game_state.update_board(board)
 
                     self.move_history = move_history
                     self.game_state.board = board

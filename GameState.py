@@ -44,6 +44,7 @@ class GameState:
         tile_size = 30
         screen_width = 600 / tile_size
         screen_height = 720 / tile_size
+
         self.offset_x = int((screen_width - len(self.board[0])) // 2)
         self.offset_y = int((screen_height - len(self.board)) // 2)
 
@@ -280,3 +281,10 @@ class GameState:
             move.draw_board(gui)
             move.draw_current_pieces(gui)
             gui.refresh_screen()
+
+    def update_board(self, new_board):
+        '''
+        Updates the board with a new configuration and recalculates offsets.
+        '''
+        self.board = new_board
+        self.calculate_offsets()  # Recalculate offsets based on the new board dimensions
