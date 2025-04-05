@@ -21,6 +21,7 @@ class AIPlayer:
         '''
         AI play. Returns the move history that lead to the solution or fail if no solution was found
         '''
+
         if self.algorithm == 1:
             return self.bfs(gamestate)
         elif self.algorithm == 2:
@@ -51,7 +52,7 @@ class AIPlayer:
             visited.add(state) 
                                     # get first element in the queue
             if state.game_over_AI():
-                (state.move_history, visited)      # check goal state
+                return (state.move_history, visited)      # check goal state
 
             for childState in state.children():
                 if (childState not in visited):
