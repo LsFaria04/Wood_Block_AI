@@ -430,15 +430,15 @@ class AppState:
         x,y = pos
 
         #Check if is next
-        if x >= 120 and x <= 170 and y >= 540 and y <= 590 and self.current_move > 0:
+        if x >= 120 and x <= 170 and y >= 600 and y <= 650 and self.current_move > 0:
             self.current_move -= 1
         
         #Check if is previous
-        if x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) < len(self.move_history) :
+        if x >= 420 and x <= 470 and y >= 600 and y <= 650 and (self.current_move + 1) < len(self.move_history) :
             self.current_move += 1
         
         #Check if is stats
-        elif x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) == len(self.move_history):
+        elif x >= 420 and x <= 470 and y >= 600 and y <= 650 and (self.current_move + 1) == len(self.move_history):
             self.state = STATE_GAMEOVER
             self.current_move = 0
 

@@ -149,14 +149,14 @@ class GUI:
         Draws the next and previous buttons that appear in the Ai moves review
         '''
         if current_idx > 0:
-            self.draw_arrow_button(True, (120,540))
-            self.draw_above_button_text((120, 540), "Prev", (50,50))
+            self.draw_arrow_button(True, (120,600))
+            self.draw_above_button_text((120, 600), "Prev", (50,50))
         if (current_idx + 1) == max_idx:
-            self.draw_arrow_button(False, (420, 540))
-            self.draw_above_button_text((420, 540), "Stats", (50,50))
+            self.draw_arrow_button(False, (420, 600))
+            self.draw_above_button_text((420, 600), "Stats", (50,50))
         elif (current_idx + 1) < max_idx:
-            self.draw_arrow_button(False, (420, 540))
-            self.draw_above_button_text((420, 540), "Next", (50,50))
+            self.draw_arrow_button(False, (420, 600))
+            self.draw_above_button_text((420, 600), "Next", (50,50))
         
     def draw_gameover_stats(self,cords, description, stat):
         '''
