@@ -28,6 +28,7 @@ class AppState:
         self.muted = False
         self.notLoaded = True
         self.move_history = []
+        self.isConfig = False
 
         self.current_move = 0 #Ai Move that is being displayed
         self.visited_states = None #states visited by the AI
@@ -124,17 +125,51 @@ class AppState:
                 elif option == "Restart":
                     self.state = STATE_GAME
                     self.start_time = None
-                    self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))
+                    if not self.isConfig:
+                        self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))
+                    else:
+                        filename = "config_files/" + self.saved_config[0] + ".txt"
+                        board,pieces,points,ai,move_history = parse_config_file(filename)
+
+                        self.move_history = move_history
+                        self.game_state.board = board
+                        self.game_state.L = pieces[:3]
+                        self.game_state.points = points
+                        self.game_state.Q = deque()
+                        for piece in pieces[3:]:
+                            self.game_state.Q.append(piece)
+                        if (ai == "bfs"):
+                            self.player = AIPlayer(1)
+                        elif (ai == "dfs"):
+                            self.player = AIPlayer(2)
+                        elif (ai == "iter"):
+                            self.player = AIPlayer(3)
+                        elif (ai == "ucs"):
+                            self.player = AIPlayer(4)
+                        elif (ai == "greed"):
+                            self.player = AIPlayer(5)
+                        elif (ai == "astar"):
+                            self.player = AIPlayer(6)
+                        elif (ai == "astarw"):
+                            self.player = AIPlayer(7)
+
+                    self.hint_clicked = False          
+                    self.notLoaded = True  
+                    self.game_state.move_history = []
                 elif option == "Exit":
                     self.menu.change_menu("Main")
                     self.state = STATE_MENU
                     self.gui.screen_needs_update = True
                     self.start_time = None
+                    self.hint_clicked = False          
+                    self.notLoaded = True  
+                    self.game_state.move_history = []
             
             elif self.menu.current_menu == "GameConfig":
                 if option == "Random":
                     self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
+                    self.isConfig = True
                     self.menu.change_menu("LoadConfig")
 
             elif self.menu.current_menu == "ChooseConfig":
@@ -241,7 +276,7 @@ class AppState:
             self.start_timer()
         self.update_time()
 
-        if (self.menu.current_menu == "ChooseConfig"):
+        if (not self.isConfig):
             # Prepare the next step in the frame
             if not self.hint_clicked:
                 #Draw game
