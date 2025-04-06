@@ -57,6 +57,8 @@ class AIPlayer:
             for childState in state.children():
                 if (childState not in visited):
                     queue.append(childState)
+                else:
+                    print("here")
                     
         return None
     
