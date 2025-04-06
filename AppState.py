@@ -197,7 +197,8 @@ class AppState:
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points,ai,movesAi = parse_config_file(filename)
-
+                    
+                    print(ai)
                     self.game_state.update_board(board)
                     self.move_history = movesAi
                     self.game_state.board = board
@@ -259,7 +260,7 @@ class AppState:
                 self.menu.change_menu("Main")
             if option == "Save":
                 #stores the results into a file before changing the menu
-                algorithm = "UCS"#self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
+                algorithm = "BFS"#self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
                 heuristic = ""#self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
                 store_results(algorithm, heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
                 self.state = STATE_MENU
