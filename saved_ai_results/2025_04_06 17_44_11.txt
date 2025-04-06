@@ -1,0 +1,37 @@
+Saved at : 2025_04_06 17_44_11
+
+Algorithm: A* Weighted
+Heuristic: Heuristic 1
+Execution Time: 0.028
+Points: 15
+Memory Used: 728
+Move History: 
+
+Move Made (piece index, cords): 1, (0, 0)
+00100
+11100
+00000
+00000
+00000
+
+Move Made (piece index, cords): 0, (3, 0)
+00111
+00000
+00000
+00000
+00000
+
+Move Made (piece index, cords): 1, (0, 0)
+00000
+11000
+00000
+00000
+00000
+
+Move Made (piece index, cords): 0, (2, 0)
+00100
+00000
+00000
+00000
+00000
+

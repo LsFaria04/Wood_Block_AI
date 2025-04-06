@@ -1,0 +1,36 @@
+Saved at : 2025_04_06 17_35_39
+
+Algorithm: BFS
+Execution Time: 9.705
+Points: 10
+Memory Used: 131288
+Move History: 
+
+Move Made (piece index, cords): 0, (0, 0)
+11000
+11000
+00000
+00000
+00000
+
+Move Made (piece index, cords): 0, (2, 0)
+11100
+00000
+00000
+00000
+00000
+
+Move Made (piece index, cords): 0, (0, 1)
+11100
+00100
+11100
+00000
+00000
+
+Move Made (piece index, cords): 0, (3, 0)
+00000
+00111
+11100
+00000
+00000
+

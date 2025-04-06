@@ -12,4 +12,4 @@ pieces
 points
 0
 ai
-astar
+astarw
