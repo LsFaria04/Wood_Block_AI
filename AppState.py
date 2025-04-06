@@ -176,6 +176,7 @@ class AppState:
                 self.start_time = None
 
                 if option == "Random":
+                    self.isConfig = False
                     self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
                     self.isConfig = True
@@ -300,25 +301,16 @@ class AppState:
             else:
                 
                 if self.notLoaded:
-                    #The hint is not loaded. Run the algorithm
+                    #In config mode there is no need to run the algorithm
                     self.gui.draw_background()
-                    self.gui.draw_ai_warning()
                     self.gui.screen_needs_update = True
                     self.gui.refresh_screen()
-                    res = self.player.play(self.game_state)
-                    if res is None:
-                        print("No solution found")
-                        self.move_history, self.visited_states = ([], {}) #is empty
-                        self.hint_clicked = False
-                    else:
-                        self.move_history, self.visited_states = res
-
                     self.notLoaded = False
 
                 self.gui.draw_background()
                 if (len(self.game_state.move_history) < len(self.move_history)):
                     #Draw board and pieces with the hint
-                    piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
+                    piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)]
                     self.game_state.draw_board(self.gui)
                     self.game_state.draw_highlighted_move(self.gui, piece, position)
                     self.game_state.draw_current_pieces(self.gui)
@@ -333,16 +325,24 @@ class AppState:
             else:
                 
                 if self.notLoaded:
-                    #The hint is not loaded. Just dont show highlights
+                    #The hint is not loaded. Run the algorithm
                     self.gui.draw_background()
+                    self.gui.draw_ai_warning()
                     self.gui.screen_needs_update = True
                     self.gui.refresh_screen()
+                    res = self.player.play(self.game_state)
+                    if res is None:
+                        print("No solution found")
+                        self.move_history, self.visited_states = ([], {}) #is empty
+                        self.hint_clicked = False
+                    else:
+                        self.move_history, self.visited_states = res
                     self.notLoaded = False
 
                 self.gui.draw_background()
                 if (len(self.game_state.move_history) < len(self.move_history)):
                     #Draw board and pieces with the hint
-                    piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)]
+                    piece, pieceIdx, position = self.move_history[len(self.game_state.move_history)].move_made
                     self.game_state.draw_board(self.gui)
                     self.game_state.draw_highlighted_move(self.gui, piece, position)
                     self.game_state.draw_current_pieces(self.gui)

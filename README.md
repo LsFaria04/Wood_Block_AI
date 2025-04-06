@@ -71,10 +71,37 @@ $ python3 Game.py #Starts the game. The game window should appear in your screen
     - **Number of Pieces to Play:**
     Evaluates the number of pieces that the player can still play and favor states with less pieces (closer to the goal state).
 
+## ScreenShots
+
+**Main Menu**
+
+<img src="screenshots/main_menu.png" alt="Description" style="max-width:400px;">
+
+**Configuration Selection**
+
+<img src="screenshots/config_selection.png" alt="Description" style="max-width:400px;">
+
+**Game in Human Mode**
+
+<img src="screenshots/game_human.png" alt="Description" style="max-width:400px;">
+
+**Hint**
+
+<img src="screenshots/game_human_hint.png" alt="Description" style="max-width:400px;">
+
+**Game in AI mode**
+
+<img src="screenshots/game_ai.png" alt="Description" style="max-width:400px;">
+
+**Game Over Screen**
+
+<img src="screenshots/game_over.png" alt="Description" style="max-width:400px;">
+
 ## Bibliography
 
 - **Python docs:** https://docs.python.org/3/
 - **Numpy docs:** https://numpy.org/doc/
+- **PyGame docs:** https://www.pygame.org/news
 - **Wood Block:** https://play.google.com/store/apps/details?id=com.block.puzzle.free.wood&hl=en
 - **Wood Blocks:** https://www.crazygames.com/game/wood-blocks
 - **Wood Block Journey:** https://www.crazygames.com/game/wood-block-journey
