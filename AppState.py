@@ -28,6 +28,7 @@ class AppState:
         self.muted = False
         self.notLoaded = True
         self.move_history = []
+        self.isConfig = False
 
         self.current_move = 0 #Ai Move that is being displayed
         self.visited_states = None #states visited by the AI
@@ -124,17 +125,57 @@ class AppState:
                 elif option == "Restart":
                     self.state = STATE_GAME
                     self.start_time = None
-                    self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))
+                    if not self.isConfig:
+                        self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))
+                    else:
+                        filename = "config_files/" + self.saved_config[0] + ".txt"
+                        board,pieces,points,ai,move_history = parse_config_file(filename)
+
+                        self.move_history = move_history
+                        self.game_state.board = board
+                        self.game_state.L = pieces[:3]
+                        self.game_state.points = points
+                        self.game_state.Q = deque()
+                        for piece in pieces[3:]:
+                            self.game_state.Q.append(piece)
+                        if (ai == "bfs"):
+                            self.player = AIPlayer(1)
+                        elif (ai == "dfs"):
+                            self.player = AIPlayer(2)
+                        elif (ai == "iter"):
+                            self.player = AIPlayer(3)
+                        elif (ai == "ucs"):
+                            self.player = AIPlayer(4)
+                        elif (ai == "greed"):
+                            self.player = AIPlayer(5)
+                        elif (ai == "astar"):
+                            self.player = AIPlayer(6)
+                        elif (ai == "astarw"):
+                            self.player = AIPlayer(7)
+
+                    self.hint_clicked = False          
+                    self.notLoaded = True  
+                    self.game_state.move_history = []
                 elif option == "Exit":
                     self.menu.change_menu("Main")
                     self.state = STATE_MENU
                     self.gui.screen_needs_update = True
                     self.start_time = None
+                    self.hint_clicked = False          
+                    self.notLoaded = True  
+                    self.game_state.move_history = []
             
             elif self.menu.current_menu == "GameConfig":
+
+                self.hint_clicked = False          
+                self.notLoaded = True  
+                self.game_state.move_history = []
+                self.start_time = None
+                
                 if option == "Random":
                     self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
+                    self.isConfig = True
                     self.menu.change_menu("LoadConfig")
 
             elif self.menu.current_menu == "ChooseConfig":
@@ -152,9 +193,10 @@ class AppState:
                     #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
-                    board,pieces,points,ai,move_history = parse_config_file(filename)
+                    board,pieces,points,ai,movesAi = parse_config_file(filename)
+                    self.game_state.update_board(board)
 
-                    self.move_history = move_history
+                    self.move_history = movesAi
                     self.game_state.board = board
                     self.game_state.L = pieces[:3]
                     self.game_state.points = points
@@ -241,7 +283,7 @@ class AppState:
             self.start_timer()
         self.update_time()
 
-        if (self.menu.current_menu == "ChooseConfig"):
+        if (not self.isConfig):
             # Prepare the next step in the frame
             if not self.hint_clicked:
                 #Draw game
@@ -257,7 +299,13 @@ class AppState:
                     self.gui.draw_ai_warning()
                     self.gui.screen_needs_update = True
                     self.gui.refresh_screen()
-                    self.move_history, self.visited_states = self.player.play(self.game_state)
+                    res = self.player.play(self.game_state)
+                    if res is None:
+                        print("No solution found")
+                        self.move_history, self.visited_states = ([], {}) #is empty
+                        self.hint_clicked = False
+                    else:
+                        self.move_history, self.visited_states = res
                     for move in self.move_history:
                         print(move.move_made)
                     self.notLoaded = False
@@ -388,15 +436,15 @@ class AppState:
         x,y = pos
 
         #Check if is next
-        if x >= 120 and x <= 170 and y >= 540 and y <= 590 and self.current_move > 0:
+        if x >= 120 and x <= 170 and y >= 660 and y <= 710 and self.current_move > 0:
             self.current_move -= 1
         
         #Check if is previous
-        if x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) < len(self.move_history) :
+        if x >= 420 and x <= 470 and y >= 660 and y <= 710 and (self.current_move + 1) < len(self.move_history) :
             self.current_move += 1
         
         #Check if is stats
-        elif x >= 420 and x <= 470 and y >= 540 and y <= 590 and (self.current_move + 1) == len(self.move_history):
+        elif x >= 420 and x <= 470 and y >= 660 and y <= 710 and (self.current_move + 1) == len(self.move_history):
             self.state = STATE_GAMEOVER
             self.current_move = 0
 
@@ -467,4 +515,3 @@ class AppState:
         Checks if the mouse is above a piece (is able to drag it)
         '''
         return piece.x <= pos[0] <= piece.x + piece.xlen * 30 and piece.y <= pos[1] <= piece.y + piece.ylen * 30
-
