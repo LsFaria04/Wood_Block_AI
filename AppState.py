@@ -212,17 +212,22 @@ class AppState:
                     if (ai == "bfs\n"):
                         self.player = AIPlayer(1)
                     elif (ai == "dfs\n"):
+                        print ("hi")
                         self.player = AIPlayer(2)
                     elif (ai == "iter\n"):
+                        print ("hi")
                         self.player = AIPlayer(3)
                     elif (ai == "ucs\n"):
+                        print ("nig")
                         self.player = AIPlayer(4)
                     elif (ai == "greed\n"):
-                        print("hello")
+                        print ("hi")
                         self.player = AIPlayer(5)
                     elif (ai == "astar\n"):
+                        print ("hi")
                         self.player = AIPlayer(6)
                     elif (ai == "astarw\n"):
+                        print ("hi")
                         self.player = AIPlayer(7)
                     
                     
@@ -262,8 +267,8 @@ class AppState:
                 self.menu.change_menu("Main")
             if option == "Save":
                 #stores the results into a file before changing the menu
-                algorithm = "A* Weighted"#self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
-                heuristic = "Heuristic 4"#self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
+                algorithm = "Iter-Deep"#self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
+                heuristic = ""#self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
                 store_results(algorithm, heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
