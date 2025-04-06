@@ -97,6 +97,25 @@ $ python3 Game.py #Starts the game. The game window should appear in your screen
 
 <img src="screenshots/game_over.png" alt="Description" style="max-width:400px;">
 
+## Results
+
+**Time and points - 5X5 4 Pieces**
+
+<img src="results/time_points_1.png" alt="Description" style="max-width:400px;">
+
+**Memory - 5X5 4 Pieces**
+
+<img src="results/memory_1.png" alt="Description" style="max-width:400px;">
+
+**Time and points - 8X8 9 Pieces**
+
+<img src="results/time_points_2.png" alt="Description" style="max-width:400px;">
+
+**Memory - 8X8 9 Pieces**
+
+<img src="results/memory_2.png" alt="Description" style="max-width:400px;">
+
+
 ## Bibliography
 
 - **Python docs:** https://docs.python.org/3/

@@ -48,7 +48,7 @@ class AppState:
         '''
         try:
             if not self.muted:
-                pygame.mixer.music.load("music/lock_in_song.mp3")
+                pygame.mixer.music.load("music/jazz.mp3")
         except pygame.error as e:
             print(f"Error loading music file: {e}")
 
@@ -131,6 +131,8 @@ class AppState:
                         filename = "config_files/" + self.saved_config[0] + ".txt"
                         board,pieces,points,ai,move_history = parse_config_file(filename)
 
+                        self.ai = ai
+                        self.heuristic = "Heuristic 1" #Default algorithm
                         self.move_history = move_history
                         self.game_state.board = board
                         self.game_state.L = pieces[:3]
@@ -188,7 +190,8 @@ class AppState:
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     self.game_state = GameState(int(self.saved_config[0]), int(self.saved_config[1]))  
                     self.player = AIPlayer(self.saved_config[2], self.saved_config[3])  
-                    
+                    self.ai = self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
+                    self.heuristic = self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
                     self.state = STATE_GAME  
 
             elif self.menu.current_menu == "LoadConfig":
@@ -199,7 +202,8 @@ class AppState:
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points,ai,movesAi = parse_config_file(filename)
                     
-                    print(ai)
+                    self.ai = ai
+                    self.heuristic = "Heuristic 1" #Default algorithm
                     self.game_state.update_board(board)
                     self.move_history = movesAi
                     self.game_state.board = board
@@ -266,10 +270,7 @@ class AppState:
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
             if option == "Save":
-                #stores the results into a file before changing the menu
-                algorithm = "Iter-Deep"#self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
-                heuristic = ""#self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
-                store_results(algorithm, heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
+                store_results(self.ai, self.heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
 

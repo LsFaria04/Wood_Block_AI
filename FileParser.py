@@ -86,7 +86,7 @@ def store_results(algorithm, heuristic, move_history, time_execution, points, me
 
         file.write("Saved at : " + formatted_date + "\n\n")
         file.write("Algorithm: " + algorithm + "\n")
-        if algorithm in ["Greedy", "A*", "A* Weighted"]:
+        if algorithm in ["Greedy", "A*", "A* Weighted", "greed", "astar", "astarw"]:
             file.write("Heuristic: " + heuristic + "\n")
         file.write("Execution Time: " + str(time_execution) + "\n")
         file.write("Points: " + points + "\n")

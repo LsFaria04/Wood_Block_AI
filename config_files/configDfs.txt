@@ -20,4 +20,4 @@ pieces
 points
 0
 ai
-iter
+dfs
