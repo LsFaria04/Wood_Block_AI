@@ -216,22 +216,16 @@ class AppState:
                     if (ai == "bfs\n"):
                         self.player = AIPlayer(1)
                     elif (ai == "dfs\n"):
-                        print ("hi")
                         self.player = AIPlayer(2)
                     elif (ai == "iter\n"):
-                        print ("hi")
                         self.player = AIPlayer(3)
                     elif (ai == "ucs\n"):
-                        print ("nig")
                         self.player = AIPlayer(4)
                     elif (ai == "greed\n"):
-                        print ("hi")
                         self.player = AIPlayer(5)
                     elif (ai == "astar\n"):
-                        print ("hi")
                         self.player = AIPlayer(6)
                     elif (ai == "astarw\n"):
-                        print ("hi")
                         self.player = AIPlayer(7)
                     
                     
