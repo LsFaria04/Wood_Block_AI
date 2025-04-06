@@ -166,6 +166,12 @@ class AppState:
                     self.game_state.move_history = []
             
             elif self.menu.current_menu == "GameConfig":
+
+                self.hint_clicked = False          
+                self.notLoaded = True  
+                self.game_state.move_history = []
+                self.start_time = None
+                
                 if option == "Random":
                     self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
@@ -187,10 +193,10 @@ class AppState:
                     #save the config selected by the player in the menu to be used later (restarts, saves, etc...)
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
-                    board,pieces,points,ai,move_history = parse_config_file(filename)
+                    board,pieces,points,ai,movesAi = parse_config_file(filename)
                     self.game_state.update_board(board)
 
-                    self.move_history = move_history
+                    self.move_history = movesAi
                     self.game_state.board = board
                     self.game_state.L = pieces[:3]
                     self.game_state.points = points
