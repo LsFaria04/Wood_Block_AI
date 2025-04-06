@@ -136,22 +136,25 @@ class AppState:
                         self.game_state.L = pieces[:3]
                         self.game_state.points = points
                         self.game_state.Q = deque()
+                        
                         for piece in pieces[3:]:
                             self.game_state.Q.append(piece)
-                        if (ai == "bfs"):
+
+                        if (ai == "bfs\n"):
                             self.player = AIPlayer(1)
-                        elif (ai == "dfs"):
+                        elif (ai == "dfs\n"):
                             self.player = AIPlayer(2)
-                        elif (ai == "iter"):
+                        elif (ai == "iter\n"):
                             self.player = AIPlayer(3)
-                        elif (ai == "ucs"):
+                        elif (ai == "ucs\n"):
                             self.player = AIPlayer(4)
-                        elif (ai == "greed"):
+                        elif (ai == "greed\n"):
                             self.player = AIPlayer(5)
-                        elif (ai == "astar"):
+                        elif (ai == "astar\n"):
                             self.player = AIPlayer(6)
-                        elif (ai == "astarw"):
+                        elif (ai == "astarw\n"):
                             self.player = AIPlayer(7)
+                    
 
                     self.hint_clicked = False          
                     self.notLoaded = True  
@@ -171,7 +174,7 @@ class AppState:
                 self.notLoaded = True  
                 self.game_state.move_history = []
                 self.start_time = None
-                
+
                 if option == "Random":
                     self.menu.change_menu("ChooseConfig")
                 elif option == "Load Config":
@@ -194,8 +197,8 @@ class AppState:
                     self.saved_config = [selected + 1 if description == "AI Algorithm" or description == "Algorithm Heuristic" else options[selected] for options, selected, description in self.menu.conf_options]
                     filename = "config_files/" + self.saved_config[0] + ".txt"
                     board,pieces,points,ai,movesAi = parse_config_file(filename)
-                    self.game_state.update_board(board)
 
+                    self.game_state.update_board(board)
                     self.move_history = movesAi
                     self.game_state.board = board
                     self.game_state.L = pieces[:3]
@@ -203,20 +206,22 @@ class AppState:
                     self.game_state.Q = deque()
                     for piece in pieces[3:]:
                         self.game_state.Q.append(piece)
-                    if (ai == "bfs"):
+
+                    if (ai == "bfs\n"):
                         self.player = AIPlayer(1)
-                    elif (ai == "dfs"):
+                    elif (ai == "dfs\n"):
                         self.player = AIPlayer(2)
-                    elif (ai == "iter"):
+                    elif (ai == "iter\n"):
                         self.player = AIPlayer(3)
-                    elif (ai == "ucs"):
+                    elif (ai == "ucs\n"):
                         self.player = AIPlayer(4)
-                    elif (ai == "greed"):
+                    elif (ai == "greed\n"):
                         self.player = AIPlayer(5)
-                    elif (ai == "astar"):
+                    elif (ai == "astar\n"):
                         self.player = AIPlayer(6)
-                    elif (ai == "astarw"):
+                    elif (ai == "astarw\n"):
                         self.player = AIPlayer(7)
+                    
                     
 
                     self.state = STATE_GAME
@@ -254,8 +259,8 @@ class AppState:
                 self.menu.change_menu("Main")
             if option == "Save":
                 #stores the results into a file before changing the menu
-                algorithm = self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
-                heuristic = self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
+                algorithm = "UCS"#self.menu.conf_options[-2][0][self.saved_config[-2] - 1]
+                heuristic = ""#self.menu.conf_options[-1][0][self.saved_config[-1] - 1]
                 store_results(algorithm, heuristic,self.saved_results[0], self.saved_results[1], str(self.saved_results[2]), self.saved_results[3])
                 self.state = STATE_MENU
                 self.menu.change_menu("Main")
@@ -283,7 +288,7 @@ class AppState:
             self.start_timer()
         self.update_time()
 
-        if (not self.isConfig):
+        if (self.isConfig):
             # Prepare the next step in the frame
             if not self.hint_clicked:
                 #Draw game
@@ -306,8 +311,7 @@ class AppState:
                         self.hint_clicked = False
                     else:
                         self.move_history, self.visited_states = res
-                    for move in self.move_history:
-                        print(move.move_made)
+
                     self.notLoaded = False
 
                 self.gui.draw_background()
