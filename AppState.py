@@ -519,4 +519,3 @@ class AppState:
         Checks if the mouse is above a piece (is able to drag it)
         '''
         return piece.x <= pos[0] <= piece.x + piece.xlen * 30 and piece.y <= pos[1] <= piece.y + piece.ylen * 30
-
