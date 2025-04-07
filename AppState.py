@@ -291,7 +291,7 @@ class AppState:
             self.start_timer()
         self.update_time()
 
-        if (self.isConfig):
+        if (not self.isConfig):
             # Prepare the next step in the frame
             if not self.hint_clicked:
                 #Draw game
@@ -338,6 +338,9 @@ class AppState:
                         self.hint_clicked = False
                     else:
                         self.move_history, self.visited_states = res
+                    for move in self.move_history:
+                        print(move.move_made)
+                    print()
                     self.notLoaded = False
 
                 self.gui.draw_background()
