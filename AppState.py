@@ -291,7 +291,7 @@ class AppState:
             self.start_timer()
         self.update_time()
 
-        if (not self.isConfig):
+        if (self.isConfig):
             # Prepare the next step in the frame
             if not self.hint_clicked:
                 #Draw game
