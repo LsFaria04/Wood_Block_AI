@@ -1,5 +1,11 @@
 # Wood Block - IA First Project
 
+## Context
+
+This project was developed as part of the Artificial Intelligence course at LEIC. It specifically explores AI search algorithms, including A* and Greedy Search.
+
+**Project Grade:** 18,5
+
 ## Game Presentation
 
 "World Block Puzzle" is a captivating and challenging single-player game that combines elements of strategy, spatial reasoning, and pattern recognition. The objective of the game is to fit different block shapes into a given grid, filling the lines/columns of the grid without leaving any gaps.
